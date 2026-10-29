@@ -1,0 +1,45 @@
+<Window x:Class="HonorAdbPackageManager.Views.DevicePickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="/Assets/logo-256.png"
+        Height="300"
+        Width="560"
+        ResizeMode="CanMinimize"
+        Background="{StaticResource WindowBackBrush}"
+        FontFamily="Microsoft YaHei UI"
+        FontSize="13">
+    <Grid Margin="24,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="荣耀 ADB 应用包管理工具" FontSize="19" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimary}"/>
+            <TextBlock Text="读取设备应用包 · 知识库风险标记 · 停用 / 还原 / 卸载 / 备份"
+                       FontSize="12" Margin="0,4,0,0"
+                       Foreground="{StaticResource TextSecondary}"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="{StaticResource DangerLightBrush}" CornerRadius="8"
+                Padding="12,9" Margin="0,14,0,0">
+            <TextBlock Foreground="{StaticResource DangerBrush}" FontSize="12" TextWrapping="Wrap"
+                       Text="仅自用工具，非 ROOT，系统包仅停用不删除。操作前建议备份手机数据；禁用核心组件可能导致设备异常。"/>
+        </Border>
+
+        <TextBlock x:Name="StatusText" Grid.Row="2" Margin="0,14,0,0" FontSize="12.5"
+                   Foreground="{StaticResource TextSecondary}"
+                   Text="正在检测 ADB 与设备…"/>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="重新检测" Style="{StaticResource GhostButton}"
+                    Width="96" Click="Refresh_Click"/>
+            <Button x:Name="EnterButton" Content="进入主界面" Style="{StaticResource PrimaryButton}"
+                    Width="110" Margin="10,0,0,0" IsEnabled="False" Click="Enter_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

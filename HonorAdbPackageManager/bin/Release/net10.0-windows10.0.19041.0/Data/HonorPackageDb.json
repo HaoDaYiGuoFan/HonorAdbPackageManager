@@ -1,0 +1,3926 @@
+{
+  "SchemaVersion": "3",
+  "UpdatedAt": "2026-10-29",
+  "Packages": {
+    "com.android.bluetooth": {
+      "Name": "蓝牙",
+      "Desc": "蓝牙栈与配对管理",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后蓝牙不可用"
+    },
+    "com.android.calendar": {
+      "Name": "日历（AOSP）",
+      "Desc": "Android 原生日历界面",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.camera2": {
+      "Name": "相机（AOSP）",
+      "Desc": "Android 原生相机（荣耀机型通常内置荣耀相机）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.cellbroadcastreceiver": {
+      "Name": "小区广播",
+      "Desc": "地震预警、应急广播接收",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "建议保留以接收预警"
+    },
+    "com.android.contacts": {
+      "Name": "联系人（AOSP）",
+      "Desc": "Android 原生联系人界面",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.defcontainer": {
+      "Name": "软件包安装服务",
+      "Desc": "APK 安装与外部存储管理核心",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法安装应用"
+    },
+    "com.android.deskclock": {
+      "Name": "时钟（AOSP）",
+      "Desc": "Android 原生时钟（通常被荣耀时钟替代）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.dialer": {
+      "Name": "拨号盘（AOSP）",
+      "Desc": "Android 原生拨号器（通常被荣耀电话替代）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.egg": {
+      "Name": "彩蛋",
+      "Desc": "Android 版本彩蛋",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.email": {
+      "Name": "电子邮件（AOSP）",
+      "Desc": "Android 原生邮件客户端",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.externalstorage": {
+      "Name": "外部存储服务",
+      "Desc": "外部存储挂载与访问授权",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": ""
+    },
+    "com.android.filemanager": {
+      "Name": "文件管理（AOSP）",
+      "Desc": "Android 原生文件管理器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.gallery3d": {
+      "Name": "图库（AOSP）",
+      "Desc": "Android 原生图库",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.huawei.HiMediaEngine": {
+      "Name": "相机媒体引擎",
+      "Desc": "相机调试与能力上报",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.huawei.projectmenu": {
+      "Name": "工程菜单(变体)",
+      "Desc": "隐藏工程模式变体",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.inputmethod.latin": {
+      "Name": "AOSP 键盘",
+      "Desc": "Android 原生输入法（荣耀机型主输入法为百度输入法荣耀版）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "保留至少一个可用输入法"
+    },
+    "com.android.keychain": {
+      "Name": "密钥链",
+      "Desc": "证书与密钥安全存储",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用影响 Wi-Fi 与 VPN 证书"
+    },
+    "com.android.location.fused": {
+      "Name": "融合定位",
+      "Desc": "GPS / 网络 / 传感器融合定位服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后所有定位失效"
+    },
+    "com.android.managedprovisioning": {
+      "Name": "工作资料配置",
+      "Desc": "企业设备管理与工作资料开通",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "个人用户可停用"
+    },
+    "com.android.mms": {
+      "Name": "信息（AOSP）",
+      "Desc": "Android 原生短信组件（荣耀机型通常被荣耀信息替代）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.music": {
+      "Name": "音乐（AOSP）",
+      "Desc": "Android 原生音乐播放器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.networkstack": {
+      "Name": "网络组件",
+      "Desc": "网络连接底层服务（DHCP 等）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后断网"
+    },
+    "com.android.nfc": {
+      "Name": "NFC",
+      "Desc": "NFC 近场通信服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用 NFC 可停用"
+    },
+    "com.android.phone": {
+      "Name": "电话服务（AOSP）",
+      "Desc": "Android 通话框架底层，modem 交互",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无信号"
+    },
+    "com.android.printspooler": {
+      "Name": "打印处理服务",
+      "Desc": "打印任务队列管理",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.providers.calendar": {
+      "Name": "日历存储",
+      "Desc": "日历数据库提供器",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "与系统日历配套"
+    },
+    "com.android.providers.contacts": {
+      "Name": "联系人存储",
+      "Desc": "联系人数据库提供器",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后通讯录崩溃"
+    },
+    "com.android.providers.downloads": {
+      "Name": "下载管理器",
+      "Desc": "系统统一下载组件，浏览器与应用更新依赖",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法下载"
+    },
+    "com.android.providers.media": {
+      "Name": "媒体存储",
+      "Desc": "照片、音频、视频索引数据库",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后图库与音乐失效"
+    },
+    "com.android.providers.telephony": {
+      "Name": "电话与短信存储",
+      "Desc": "短信、彩信、APN 数据库提供器",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后短信功能崩溃"
+    },
+    "com.android.quicksearchbox": {
+      "Name": "搜索（AOSP）",
+      "Desc": "Android 原生搜索组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.seaccess": {
+      "Name": "安全元件访问",
+      "Desc": "eSE 安全芯片访问服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "影响 NFC 卡模拟"
+    },
+    "com.android.settings": {
+      "Name": "设置（AOSP）",
+      "Desc": "Android 原生设置组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": ""
+    },
+    "com.android.soundrecorder": {
+      "Name": "录音机（AOSP）",
+      "Desc": "Android 原生录音",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.stk": {
+      "Name": "SIM 卡应用(AOSP)",
+      "Desc": "Android 原生 SIM 工具箱",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.systemui": {
+      "Name": "系统界面（AOSP）",
+      "Desc": "Android 原生系统 UI 组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": ""
+    },
+    "com.android.wallpaper.livepicker": {
+      "Name": "动态壁纸选择器",
+      "Desc": "动态壁纸选择组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.wallpaperbackup": {
+      "Name": "壁纸备份",
+      "Desc": "壁纸设置备份还原",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.android.wifi.service": {
+      "Name": "Wi-Fi 服务",
+      "Desc": "Wi-Fi 连接管理服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后 Wi-Fi 失效"
+    },
+    "com.androidvpnservicer": {
+      "Name": "VPN 服务",
+      "Desc": "VPN 连接管理组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用 VPN 请保留"
+    },
+    "com.baidu.input_honor": {
+      "Name": "百度输入法荣耀版",
+      "Desc": "MagicOS 默认中文输入法",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用前必须有其他输入法"
+    },
+    "com.baidu.input_huawei": {
+      "Name": "百度输入法华为版",
+      "Desc": "华为机型预装中文输入法",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用前必须有其他输入法"
+    },
+    "com.bjbyhd.screenreader_huawei": {
+      "Name": "读屏服务",
+      "Desc": "视障辅助屏幕朗读",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "视障用户保留"
+    },
+    "com.google.android.gms": {
+      "Name": "Google Play 服务",
+      "Desc": "Google 移动服务核心框架",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "依赖 GMS 的应用会失效（国行多数无此包）"
+    },
+    "com.google.android.googlequicksearchbox": {
+      "Name": "Google 搜索",
+      "Desc": "Google 搜索小部件与应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.google.android.gsf": {
+      "Name": "Google 服务框架",
+      "Desc": "Google 账户与推送基础框架",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.google.android.inputmethod.pinyin": {
+      "Name": "谷歌拼音输入法",
+      "Desc": "Google 拼音输入",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.google.android.maps": {
+      "Name": "Google 地图",
+      "Desc": "Google 地图组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.google.android.tts": {
+      "Name": "Google 文字转语音",
+      "Desc": "TTS 语音合成引擎",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用屏幕朗读请保留"
+    },
+    "com.google.android.youtube": {
+      "Name": "YouTube",
+      "Desc": "Google 视频平台",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.HnMultiScreenShot": {
+      "Name": "滚动截屏",
+      "Desc": "长截图/滚动截屏功能组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD 对应华为 HwMultiScreenShot：滚动截屏依赖"
+    },
+    "com.hihonor.adsservice": {
+      "Name": "广告服务",
+      "Desc": "系统广告投放框架",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "停用不影响系统功能"
+    },
+    "com.hihonor.aipluginengine": {
+      "Name": "AI 插件引擎",
+      "Desc": "YOYO 智慧能力与 AI 场景插件底座",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后智慧功能失效"
+    },
+    "com.hihonor.airlink": {
+      "Name": "无线投屏服务",
+      "Desc": "无线投屏（无线镜像）底层服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.chr": {
+      "Name": "通话质量上报",
+      "Desc": "通话记录/质量数据收集上报",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.findmyphone": {
+      "Name": "查找设备",
+      "Desc": "远程定位、锁定、丢失保护",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后设备丢失无法远程定位"
+    },
+    "com.hihonor.android.floattasks": {
+      "Name": "悬浮球导航",
+      "Desc": "悬浮窗/悬浮导航球（Floating Dock）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.fmradio": {
+      "Name": "收音机",
+      "Desc": "FM 收音机（需插耳机作天线）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.hnaps": {
+      "Name": "智能分辨率",
+      "Desc": "智能分辨率调节服务（省电）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.hnupgradeguide": {
+      "Name": "升级引导",
+      "Desc": "系统升级后的功能引导页",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.instantshare": {
+      "Name": "荣耀分享",
+      "Desc": "蓝牙+Wi-Fi Direct 近场文件分享",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.internal.app": {
+      "Name": "系统分享组件",
+      "Desc": "系统分享面板底层组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：移除后部分应用分享崩溃"
+    },
+    "com.hihonor.android.launcher": {
+      "Name": "荣耀桌面",
+      "Desc": "MagicOS 桌面启动器，管理图标、文件夹、负一屏与手势",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏"
+    },
+    "com.hihonor.android.launcher3": {
+      "Name": "荣耀桌面(备用)",
+      "Desc": "旧版桌面启动器包名",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏"
+    },
+    "com.hihonor.android.mirrorshare": {
+      "Name": "镜像分享",
+      "Desc": "Miracast 无线投屏（荣耀更名 MirrorShare）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.projectmenu": {
+      "Name": "工程菜单",
+      "Desc": "隐藏工程模式（*#*#2846579#*#*），普通用户无用",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.android.totemweather": {
+      "Name": "天气组件",
+      "Desc": "天气数据与桌面天气插件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后桌面天气插件失效"
+    },
+    "com.hihonor.android.wfdft": {
+      "Name": "Wi-Fi Direct 诊断",
+      "Desc": "Wi-Fi 直连诊断测试组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.aod": {
+      "Name": "息屏显示",
+      "Desc": "AOD 息屏时钟与通知",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.appassistant": {
+      "Name": "应用助手",
+      "Desc": "应用侧边栏与小工具",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.appmarket.service": {
+      "Name": "应用市场服务组件",
+      "Desc": "应用市场推送与静默安装服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.ar.measure": {
+      "Name": "AR 测量",
+      "Desc": "测量长度、面积、体积",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.assetsync": {
+      "Name": "云同步资产服务",
+      "Desc": "荣耀云空间数据同步底层",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后云同步失效"
+    },
+    "com.hihonor.assetsyncservice": {
+      "Name": "云同步安全服务",
+      "Desc": "配合安全服务完成云同步加密",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.assistant": {
+      "Name": "YOYO 建议",
+      "Desc": "智慧助手场景建议与服务直达卡片",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.autoinstallapkfrommcc": {
+      "Name": "运营商自动安装",
+      "Desc": "按运营商 MCC 自动安装应用的组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.awareness": {
+      "Name": "情境感知",
+      "Desc": "时间/位置/行为情境感知能力服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.behaviorauth": {
+      "Name": "行为认证",
+      "Desc": "用户行为可信验证与安全增强",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.bluetooth": {
+      "Name": "蓝牙联系人传输",
+      "Desc": "通过蓝牙导入联系人的组件，蓝牙本体不受影响",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：移除后蓝牙仍正常"
+    },
+    "com.hihonor.browser": {
+      "Name": "荣耀浏览器",
+      "Desc": "系统自带浏览器，网页浏览与下载",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后请确保有第三方浏览器可用"
+    },
+    "com.hihonor.browserhomepage": {
+      "Name": "浏览器主页组件",
+      "Desc": "浏览器主页与导航页数据组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.calculator": {
+      "Name": "计算器",
+      "Desc": "基础与科学计算",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.calendar": {
+      "Name": "日历",
+      "Desc": "日程管理与提醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.camera": {
+      "Name": "相机",
+      "Desc": "系统相机，拍照录像核心",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法拍照"
+    },
+    "com.hihonor.cardemulation": {
+      "Name": "NFC 服务",
+      "Desc": "NFC 卡模拟底层服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.cloud": {
+      "Name": "云空间",
+      "Desc": "荣耀云同步：图库、联系人、备份",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后云备份不可用"
+    },
+    "com.hihonor.coauthservice": {
+      "Name": "认证服务",
+      "Desc": "应用锁、锁屏密码、指纹人脸协同认证，手动安装 APK 也依赖",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "影响应用锁与指纹"
+    },
+    "com.hihonor.compass": {
+      "Name": "指南针",
+      "Desc": "磁场方向与水平仪",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.contacts": {
+      "Name": "联系人",
+      "Desc": "通讯录管理",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后通讯录无法使用"
+    },
+    "com.hihonor.contacts.sync": {
+      "Name": "联系人云同步",
+      "Desc": "通讯录与荣耀账号的同步适配器",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.ddmp": {
+      "Name": "通话框架数据组件",
+      "Desc": "通话相关数据管理，拨号盘依赖",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "UAD 社区实测：禁用后通话应用异常"
+    },
+    "com.hihonor.deskclock": {
+      "Name": "时钟",
+      "Desc": "闹钟、世界时钟、秒表、计时器",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "依赖闹钟请勿停用"
+    },
+    "com.hihonor.detectrepair": {
+      "Name": "智能诊断",
+      "Desc": "故障自检与修复（已停更类组件）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.deviceauth": {
+      "Name": "设备认证",
+      "Desc": "可信设备认证密钥管理",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.devicemanager": {
+      "Name": "设备管理",
+      "Desc": "荣耀账号关联的设备管理与激活服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "CSDN 资料：账号设备管理依赖"
+    },
+    "com.hihonor.drivermode": {
+      "Name": "驾驶模式",
+      "Desc": "车载驾驶场景聚合",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.email": {
+      "Name": "电子邮件",
+      "Desc": "IMAP / POP3 / Exchange 邮件客户端",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.face": {
+      "Name": "人脸识别",
+      "Desc": "3D / 2D 人脸录入与解锁服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后人脸解锁失效"
+    },
+    "com.hihonor.fastapp": {
+      "Name": "快应用中心",
+      "Desc": "免安装快应用引擎与分发",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.feedback": {
+      "Name": "服务与反馈",
+      "Desc": "会员服务、自助诊断、维修预约",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.fido.uafclient": {
+      "Name": "FIDO 认证客户端",
+      "Desc": "免密码生物认证标准客户端",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "影响免密登录/支付验证"
+    },
+    "com.hihonor.filemanager": {
+      "Name": "文件管理",
+      "Desc": "本地文件浏览、清理、分类管理",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.findmyphone": {
+      "Name": "查找设备",
+      "Desc": "设备定位、远程锁定与丢失保护",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后设备丢失无法远程定位"
+    },
+    "com.hihonor.fingerprint": {
+      "Name": "指纹服务",
+      "Desc": "指纹录入、识别与解锁服务（FIDO 供体）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后指纹解锁失效"
+    },
+    "com.hihonor.gallery": {
+      "Name": "图库",
+      "Desc": "相册照片管理与云端同步入口",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后拍照无法查看，建议保留"
+    },
+    "com.hihonor.game.kitserver": {
+      "Name": "游戏服务框架",
+      "Desc": "游戏工具箱服务端：悬浮窗、按键映射、防误触",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.gameassistant": {
+      "Name": "游戏助手",
+      "Desc": "游戏免打扰、录屏、性能模式悬浮窗",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.gamecenter.overlay": {
+      "Name": "游戏中心浮层",
+      "Desc": "游戏中心悬浮菜单/浮层组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.globalwrite": {
+      "Name": "全局书写组件",
+      "Desc": "全局手写/批注相关组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "社区归属存在争议，操作前请自行确认"
+    },
+    "com.hihonor.handoff": {
+      "Name": "跨设备接续",
+      "Desc": "手机-平板-PC 任务接力与剪贴板接续",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.health": {
+      "Name": "运动健康",
+      "Desc": "计步与运动健康管理（含穿戴连接）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用手环手表请保留"
+    },
+    "com.hihonor.hicar": {
+      "Name": "车机互联",
+      "Desc": "HiCar 手机-车机互联",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hiskytone": {
+      "Name": "畅连通话",
+      "Desc": "荣耀设备间高清音视频通话",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hiview": {
+      "Name": "日志与图片属性组件",
+      "Desc": "崩溃日志收集 + 图库照片属性查看（ISO/曝光等）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：含较多权限与日志上报"
+    },
+    "com.hihonor.hiviewpush": {
+      "Name": "日志推送组件",
+      "Desc": "诊断日志推送上报组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hiviewtunnel": {
+      "Name": "图片属性隧道组件",
+      "Desc": "图库照片 EXIF 属性展示的数据通道",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hnasm": {
+      "Name": "FIDO ASM 模块",
+      "Desc": "FIDO 免密认证的认证器专用模块（UAF ASM）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hncloud": {
+      "Name": "云空间组件",
+      "Desc": "荣耀云空间相关服务组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "影响云备份/查找设备"
+    },
+    "com.hihonor.hndockbar": {
+      "Name": "多任务 Dock 栏",
+      "Desc": "多窗口侧边 Dock 栏",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hnmusicplayer": {
+      "Name": "荣耀音乐",
+      "Desc": "荣耀音乐播放器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hnpanpayservice": {
+      "Name": "刷卡支付服务",
+      "Desc": "NFC 刷卡/支付相关服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hnstartupguide": {
+      "Name": "开机引导",
+      "Desc": "首次开机设置向导，之后无用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hotalk2placeholder": {
+      "Name": "5G消息占位组件",
+      "Desc": "RCS 5G 消息占位/兼容组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hwsearch": {
+      "Name": "智慧搜索组件",
+      "Desc": "全局搜索小部件与热搜",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.hwvoipservice": {
+      "Name": "畅连通话 VoIP",
+      "Desc": "荣耀畅连音视频通话底层",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "不用畅连可停用"
+    },
+    "com.hihonor.iaware": {
+      "Name": "应用调度优化",
+      "Desc": "智能调度前台应用优先级，保障流畅",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：移除后滑动等场景可能轻微卡顿"
+    },
+    "com.hihonor.iconnect": {
+      "Name": "互联组件",
+      "Desc": "连接 PC 时提示安装助手的隐藏服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.id": {
+      "Name": "荣耀账号",
+      "Desc": "荣耀帐号登录、云空间、查找设备的账号底座",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后账号与云服务失效"
+    },
+    "com.hihonor.imedia.sws": {
+      "Name": "音效引擎",
+      "Desc": "Histen 音效 3D 环绕声设置项",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后音效设置失效，重启后首播可能有声响异常"
+    },
+    "com.hihonor.ims": {
+      "Name": "VoLTE 通话服务",
+      "Desc": "VoLTE 高清通话底层（IP 多媒体子系统）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后 SIM 卡通话失效"
+    },
+    "com.hihonor.intelligent": {
+      "Name": "智慧推荐",
+      "Desc": "购物与内容推荐组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.keychain": {
+      "Name": "密钥链",
+      "Desc": "系统证书与密钥安全存储",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用影响 Wi-Fi/VPN 证书"
+    },
+    "com.hihonor.kobackup": {
+      "Name": "手机备份",
+      "Desc": "系统自带整机备份恢复应用",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "换机/备份依赖"
+    },
+    "com.hihonor.launcher": {
+      "Name": "荣耀桌面",
+      "Desc": "MagicOS 桌面启动器（旧版本包名）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏"
+    },
+    "com.hihonor.lbs": {
+      "Name": "荣耀位置服务",
+      "Desc": "系统级位置服务框架，定位依赖",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后地图/天气等定位失效"
+    },
+    "com.hihonor.lens": {
+      "Name": "智慧镜头",
+      "Desc": "相机内 AI 识物/扫码/翻译入口",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.linktowindowsservice": {
+      "Name": "连接 Windows",
+      "Desc": "与 Windows 电脑跨设备协同（Link to Windows）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.linkturboservice": {
+      "Name": "多设备协同",
+      "Desc": "手机与平板 / PC 协同互联服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用多屏协同可停用"
+    },
+    "com.hihonor.magazine": {
+      "Name": "杂志锁屏",
+      "Desc": "锁屏杂志壁纸订阅与下载",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.magicservice": {
+      "Name": "MagicOS 服务",
+      "Desc": "MagicOS 智慧服务框架",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "部分系统功能依赖，谨慎停用"
+    },
+    "com.hihonor.market": {
+      "Name": "荣耀应用市场",
+      "Desc": "官方应用商店，应用下载与更新",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法从商店安装应用"
+    },
+    "com.hihonor.mediacontroller": {
+      "Name": "媒体控制中心",
+      "Desc": "控制中心媒体播放卡片",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：停用后快捷媒体控制失效"
+    },
+    "com.hihonor.memberservice": {
+      "Name": "我的荣耀",
+      "Desc": "会员中心与服务商城",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.messaging": {
+      "Name": "信息",
+      "Desc": "短信 / 彩信收发，验证码短信依赖此组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法收验证码"
+    },
+    "com.hihonor.mmitest": {
+      "Name": "工厂硬件测试",
+      "Desc": "产线硬件测试程序（MMI），日常无用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.mms": {
+      "Name": "信息",
+      "Desc": "短信 / 彩信收发，验证码依赖此组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法收验证码"
+    },
+    "com.hihonor.motionservice": {
+      "Name": "手势与动作服务",
+      "Desc": "抬起亮屏、翻转静音等体感手势",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.music": {
+      "Name": "音乐",
+      "Desc": "荣耀音乐播放器与在线曲库",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.nearby": {
+      "Name": "附近设备分享",
+      "Desc": "近距离发现与分享传输（荣耀分享依赖）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.notepad": {
+      "Name": "备忘录",
+      "Desc": "笔记与待办速记",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.numberidentity": {
+      "Name": "号码识别",
+      "Desc": "来电号码识别与骚扰标记（国内可用）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.omacp": {
+      "Name": "运营商参数配置",
+      "Desc": "通过短信下发 APN/运营商参数配置",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用可能影响上网参数自动配置"
+    },
+    "com.hihonor.ouc": {
+      "Name": "系统更新",
+      "Desc": "OTA 系统更新客户端",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法在线升级系统"
+    },
+    "com.hihonor.parentalcontrol": {
+      "Name": "屏幕使用时间",
+      "Desc": "家长控制与应用限额",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.parentcontrol": {
+      "Name": "屏幕使用时间",
+      "Desc": "家长控制与应用限额",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：部分系统拒绝停用，失败属正常"
+    },
+    "com.hihonor.pcassistant": {
+      "Name": "PC 助手",
+      "Desc": "手机连接荣耀电脑的协同服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.pegasus": {
+      "Name": "图库搜索",
+      "Desc": "图库智能搜索与场景分类引擎",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.pengine": {
+      "Name": "智慧识屏引擎",
+      "Desc": "屏幕内容智能分析（识物/购物推荐）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.permissioncontroller.overlay": {
+      "Name": "权限界面资源包",
+      "Desc": "权限控制界面/弹窗的 overlay 资源",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "建议保留，避免界面资源缺失"
+    },
+    "com.hihonor.phone": {
+      "Name": "电话",
+      "Desc": "拨号与通话核心组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法接打电话"
+    },
+    "com.hihonor.phoneservice": {
+      "Name": "电话服务组件",
+      "Desc": "通话相关后台组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "可能影响通话功能，谨慎"
+    },
+    "com.hihonor.powergenie": {
+      "Name": "后台耗电管控",
+      "Desc": "EMUI/MagicOS 后台应用查杀（PowerGenie）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：强杀后台，移除可能更省心"
+    },
+    "com.hihonor.printservice": {
+      "Name": "打印服务",
+      "Desc": "无线打印框架",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.privatespace": {
+      "Name": "隐私空间",
+      "Desc": "独立加密的隐藏空间",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.quicksearchbox": {
+      "Name": "全局搜索",
+      "Desc": "桌面下拉搜索与应用内搜索聚合",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.radio": {
+      "Name": "收音机",
+      "Desc": "FM 收音机（需插耳机天线）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.rcsserviceapplication": {
+      "Name": "5G消息 RCS",
+      "Desc": "运营商富媒体消息服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.recsys": {
+      "Name": "智荐系统",
+      "Desc": "个性化推荐服务（智能助手卡片）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.remotepassword": {
+      "Name": "远程密码服务",
+      "Desc": "远程密码相关服务组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.report": {
+      "Name": "问题反馈",
+      "Desc": "用户反馈与日志上报",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "系统保护，disable 返回失败属正常"
+    },
+    "com.hihonor.scanner": {
+      "Name": "智慧扫描",
+      "Desc": "文档扫描与 OCR 识别",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.screenrecorder": {
+      "Name": "屏幕录制",
+      "Desc": "录屏服务与悬浮控制",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.screenshot": {
+      "Name": "截屏服务",
+      "Desc": "按键/指关节截屏组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法截屏"
+    },
+    "com.hihonor.searchservice": {
+      "Name": "全局搜索服务",
+      "Desc": "桌面下滑全局搜索的后端服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.security": {
+      "Name": "安全服务",
+      "Desc": "系统安全中心，支付保护、权限管理底层服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用可能导致支付与解锁异常"
+    },
+    "com.hihonor.securitypluginbase": {
+      "Name": "安全插件基座",
+      "Desc": "安全插件框架底层（反病毒等）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.securityserver": {
+      "Name": "安全服务",
+      "Desc": "系统安全底层服务，人脸解锁依赖",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：部分机型移除后黑屏，谨慎"
+    },
+    "com.hihonor.settings": {
+      "Name": "设置",
+      "Desc": "系统设置应用，全部系统配置入口",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法进入设置"
+    },
+    "com.hihonor.simcontacts": {
+      "Name": "SIM 卡联系人",
+      "Desc": "读取 SIM 卡存储的联系人",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": ""
+    },
+    "com.hihonor.smartcontroller": {
+      "Name": "智灵 / 智能遥控",
+      "Desc": "红外遥控家电",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.smarthome": {
+      "Name": "智慧生活",
+      "Desc": "智能家居设备管理（AI Life）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.smartshot": {
+      "Name": "智能截屏",
+      "Desc": "智能截屏与局部截屏",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：截屏功能依赖"
+    },
+    "com.hihonor.soundrecorder": {
+      "Name": "录音机",
+      "Desc": "语音录音与通话录音",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.stb": {
+      "Name": "系统传输",
+      "Desc": "系统数据传输组件（换机克隆底层）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": ""
+    },
+    "com.hihonor.stk": {
+      "Name": "SIM 卡应用",
+      "Desc": "SIM 卡工具箱菜单（运营商增值服务）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.suggestion": {
+      "Name": "智慧推荐",
+      "Desc": "场景化推荐与广告卡片",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "停用可减少推荐内容"
+    },
+    "com.hihonor.synergy": {
+      "Name": "云协同服务",
+      "Desc": "荣耀云/网络协同 B2B 组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.systemappsupdater": {
+      "Name": "系统应用更新",
+      "Desc": "系统内置应用的更新服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后内置应用不再更新"
+    },
+    "com.hihonor.systemmanager": {
+      "Name": "手机管家",
+      "Desc": "清理加速、骚扰拦截、权限管理、病毒查杀",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后安全与清理功能失效"
+    },
+    "com.hihonor.systemserver": {
+      "Name": "系统服务",
+      "Desc": "MagicOS 系统服务宿主进程",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用直接导致系统崩溃"
+    },
+    "com.hihonor.systemui": {
+      "Name": "系统界面",
+      "Desc": "状态栏、通知中心、控制中心、导航栏的宿主进程",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用直接黑屏"
+    },
+    "com.hihonor.talkback": {
+      "Name": "屏幕朗读",
+      "Desc": "无障碍屏幕朗读服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "视障用户请保留"
+    },
+    "com.hihonor.thememanager": {
+      "Name": "主题",
+      "Desc": "主题、壁纸、AOD 表盘管理",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后无法换主题，已用主题不受影响"
+    },
+    "com.hihonor.tips": {
+      "Name": "使用技巧",
+      "Desc": "新手引导与玩机技巧推送",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.trafficmanager": {
+      "Name": "流量管理",
+      "Desc": "流量统计与超额提醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.trustcircle": {
+      "Name": "可信圈认证",
+      "Desc": "多设备互信认证服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "与荣耀账号配套"
+    },
+    "com.hihonor.upnpkgservice": {
+      "Name": "应用市场服务",
+      "Desc": "应用市场后台更新与推荐服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.vassistant": {
+      "Name": "YOYO 语音",
+      "Desc": "语音助手与语音唤醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.video": {
+      "Name": "视频",
+      "Desc": "荣耀视频播放器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.voiceassistant": {
+      "Name": "YOYO 语音",
+      "Desc": "语音助手与语音唤醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后无法语音唤醒"
+    },
+    "com.hihonor.wallet": {
+      "Name": "钱包",
+      "Desc": "NFC 门禁卡、银行卡、交通卡",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用 NFC 交通卡请保留"
+    },
+    "com.hihonor.weather": {
+      "Name": "天气",
+      "Desc": "天气预报与桌面天气卡片数据源",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后桌面天气插件失效"
+    },
+    "com.hihonor.welinknow": {
+      "Name": "Link Now",
+      "Desc": "荣耀会议/协作应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.hihonor.wifieapsimplmn": {
+      "Name": "Wi-Fi 认证组件",
+      "Desc": "EAP-SIM/AKA 企业与运营商 Wi-Fi 认证",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：部分场景 Wi-Fi 可能异常"
+    },
+    "com.honor.adsservice": {
+      "Name": "广告服务",
+      "Desc": "系统广告投放框架",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "停用不影响系统功能"
+    },
+    "com.honor.android.launcher": {
+      "Name": "荣耀桌面",
+      "Desc": "MagicOS 桌面启动器，负责任务、图标、负一屏",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏"
+    },
+    "com.honor.appassistant": {
+      "Name": "应用助手",
+      "Desc": "应用侧边栏与小工具",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.appmarket.service": {
+      "Name": "应用市场服务组件",
+      "Desc": "应用市场推送与静默安装服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.assistant": {
+      "Name": "YOYO 建议",
+      "Desc": "智慧助手场景建议与服务直达卡片",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.browser": {
+      "Name": "荣耀浏览器",
+      "Desc": "系统自带浏览器，网页浏览与下载",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后请确保有第三方浏览器可用"
+    },
+    "com.honor.calculator": {
+      "Name": "计算器",
+      "Desc": "基础与科学计算",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.calendar": {
+      "Name": "日历",
+      "Desc": "日程管理与提醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.camera": {
+      "Name": "相机",
+      "Desc": "系统相机应用，拍照录像核心",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法拍照"
+    },
+    "com.honor.cardemulation": {
+      "Name": "NFC 服务",
+      "Desc": "NFC 卡模拟底层服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.cloud": {
+      "Name": "云空间",
+      "Desc": "荣耀云同步：图库、联系人、备份",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后云备份不可用"
+    },
+    "com.honor.compass": {
+      "Name": "指南针",
+      "Desc": "磁场方向与水平仪",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.contacts": {
+      "Name": "联系人",
+      "Desc": "通讯录管理，存储与展示联系人信息",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后通讯录无法使用"
+    },
+    "com.honor.deskclock": {
+      "Name": "时钟",
+      "Desc": "闹钟、世界时钟、秒表、计时器",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "依赖闹钟请勿停用"
+    },
+    "com.honor.drivermode": {
+      "Name": "驾驶模式",
+      "Desc": "车载驾驶场景聚合",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.email": {
+      "Name": "电子邮件",
+      "Desc": "IMAP / POP3 / Exchange 邮件客户端",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.face": {
+      "Name": "人脸识别",
+      "Desc": "3D / 2D 人脸录入与解锁服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后人脸解锁失效"
+    },
+    "com.honor.feedback": {
+      "Name": "服务与反馈",
+      "Desc": "会员服务、自助诊断、维修预约",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.filemanager": {
+      "Name": "文件管理",
+      "Desc": "本地文件浏览、清理、分类管理",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.findmyphone": {
+      "Name": "查找设备",
+      "Desc": "设备定位、远程锁定与丢失保护",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后设备丢失无法远程定位"
+    },
+    "com.honor.fingerprint": {
+      "Name": "指纹服务",
+      "Desc": "指纹录入、识别与解锁服务（FIDO 供体）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后指纹解锁失效"
+    },
+    "com.honor.gallery": {
+      "Name": "图库",
+      "Desc": "相册照片管理与云端同步入口",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后拍照无法查看，建议保留"
+    },
+    "com.honor.gameassistant": {
+      "Name": "游戏助手",
+      "Desc": "游戏免打扰、录屏、性能模式悬浮窗",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.health": {
+      "Name": "运动健康",
+      "Desc": "计步与运动健康管理（含穿戴连接）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用手环手表请保留"
+    },
+    "com.honor.hiskytone": {
+      "Name": "畅连通话",
+      "Desc": "荣耀设备间高清音视频通话",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.id": {
+      "Name": "荣耀账号",
+      "Desc": "荣耀帐号登录与云服务同步",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后荣耀账号与查找设备失效"
+    },
+    "com.honor.launcher": {
+      "Name": "荣耀桌面",
+      "Desc": "MagicOS 桌面启动器（旧版本包名）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏"
+    },
+    "com.honor.linkturboservice": {
+      "Name": "多设备协同",
+      "Desc": "手机与平板 / PC 协同互联服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用多屏协同可停用"
+    },
+    "com.honor.magicservice": {
+      "Name": "MagicOS 服务",
+      "Desc": "MagicOS 智慧服务框架",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "部分系统功能依赖，谨慎停用"
+    },
+    "com.honor.market": {
+      "Name": "荣耀应用市场",
+      "Desc": "官方应用商店，应用下载与更新",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法从商店安装应用"
+    },
+    "com.honor.memberservice": {
+      "Name": "我的荣耀",
+      "Desc": "会员中心与服务商城",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.messaging": {
+      "Name": "信息",
+      "Desc": "短信 / 彩信收发，验证码短信依赖此组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法收验证码"
+    },
+    "com.honor.music": {
+      "Name": "音乐",
+      "Desc": "荣耀音乐播放器与在线曲库",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.notepad": {
+      "Name": "备忘录",
+      "Desc": "笔记与待办速记",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.parentalcontrol": {
+      "Name": "屏幕使用时间",
+      "Desc": "家长控制与应用限额",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.pcassistant": {
+      "Name": "PC 助手",
+      "Desc": "手机连接荣耀电脑的协同服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.phone": {
+      "Name": "电话",
+      "Desc": "拨号与通话核心组件，管理通话、来电、联系人拨号入口",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法接打电话"
+    },
+    "com.honor.phoneservice": {
+      "Name": "电话服务组件",
+      "Desc": "通话相关后台组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "可能影响通话功能，谨慎"
+    },
+    "com.honor.printservice": {
+      "Name": "打印服务",
+      "Desc": "无线打印框架",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.quicksearchbox": {
+      "Name": "全局搜索",
+      "Desc": "桌面下拉搜索与应用内搜索聚合",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.radio": {
+      "Name": "收音机",
+      "Desc": "FM 收音机（需插耳机天线）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.report": {
+      "Name": "问题反馈",
+      "Desc": "用户反馈与日志上报",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "系统保护，disable 返回失败属正常"
+    },
+    "com.honor.scanner": {
+      "Name": "智慧扫描",
+      "Desc": "文档扫描与 OCR 识别",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.screenrecorder": {
+      "Name": "屏幕录制",
+      "Desc": "录屏服务与悬浮控制",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.screenshot": {
+      "Name": "截屏服务",
+      "Desc": "截屏与滚动截屏组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法截屏"
+    },
+    "com.honor.security": {
+      "Name": "安全服务",
+      "Desc": "系统安全中心，支付保护、权限管理底层服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用可能导致支付与解锁异常"
+    },
+    "com.honor.settings": {
+      "Name": "设置",
+      "Desc": "系统设置入口，管理全部系统配置项",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法进入设置"
+    },
+    "com.honor.simcontacts": {
+      "Name": "SIM 卡联系人",
+      "Desc": "读取 SIM 卡存储的联系人",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": ""
+    },
+    "com.honor.smartcontroller": {
+      "Name": "智灵 / 智能遥控",
+      "Desc": "红外遥控家电",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.soundrecorder": {
+      "Name": "录音机",
+      "Desc": "语音录音与通话录音",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.stb": {
+      "Name": "系统传输",
+      "Desc": "系统数据传输组件（换机克隆底层）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": ""
+    },
+    "com.honor.suggestion": {
+      "Name": "智慧推荐",
+      "Desc": "场景化推荐与广告卡片",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "停用可减少推荐内容"
+    },
+    "com.honor.systemserver": {
+      "Name": "系统服务",
+      "Desc": "MagicOS 系统服务宿主进程",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用直接导致系统崩溃"
+    },
+    "com.honor.systemui": {
+      "Name": "系统界面",
+      "Desc": "状态栏、通知中心、控制中心、导航栏宿主",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用直接黑屏"
+    },
+    "com.honor.talkback": {
+      "Name": "屏幕朗读",
+      "Desc": "无障碍屏幕朗读服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "视障用户请保留"
+    },
+    "com.honor.thememanager": {
+      "Name": "主题",
+      "Desc": "主题、壁纸、AOD 表盘管理",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后无法换主题，已用主题不受影响"
+    },
+    "com.honor.tips": {
+      "Name": "使用技巧",
+      "Desc": "新手引导与玩机技巧推送",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.trafficmanager": {
+      "Name": "流量管理",
+      "Desc": "流量统计与超额提醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.upnpkgservice": {
+      "Name": "应用市场服务",
+      "Desc": "应用市场后台更新与推荐服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.video": {
+      "Name": "视频",
+      "Desc": "荣耀视频播放器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.honor.voiceassistant": {
+      "Name": "YOYO 语音",
+      "Desc": "语音助手与语音唤醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后无法语音唤醒"
+    },
+    "com.honor.wallet": {
+      "Name": "钱包",
+      "Desc": "NFC 门禁卡、银行卡、交通卡",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用 NFC 交通卡请保留"
+    },
+    "com.honor.weather": {
+      "Name": "天气",
+      "Desc": "天气预报与桌面天气卡片数据源",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后桌面天气插件失效"
+    },
+    "com.huawei.HnMultiScreenShot": {
+      "Name": "滚动截屏",
+      "Desc": "长截图/滚动截屏功能组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD 对应华为 HwMultiScreenShot：滚动截屏依赖；华为系同名遗留组件"
+    },
+    "com.huawei.adsservice": {
+      "Name": "广告服务",
+      "Desc": "系统广告投放框架",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "停用不影响系统功能；华为系同名遗留组件"
+    },
+    "com.huawei.aipluginengine": {
+      "Name": "AI 插件引擎",
+      "Desc": "YOYO 智慧能力与 AI 场景插件底座",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后智慧功能失效；华为系同名遗留组件"
+    },
+    "com.huawei.airlink": {
+      "Name": "无线投屏服务",
+      "Desc": "无线投屏（无线镜像）底层服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.aml": {
+      "Name": "AML 隐藏组件",
+      "Desc": "UAD：含电话/位置/短信权限的隐藏应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "建议停用"
+    },
+    "com.huawei.android.airsharing": {
+      "Name": "无线投屏",
+      "Desc": "多屏投屏服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.chr": {
+      "Name": "通话质量上报",
+      "Desc": "通话记录/质量数据收集上报",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.dsdscardmanager": {
+      "Name": "双卡管理",
+      "Desc": "SIM 双卡管理设置组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "双卡用户勿停"
+    },
+    "com.huawei.android.findmyphone": {
+      "Name": "查找设备",
+      "Desc": "远程定位、锁定、丢失保护",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后设备丢失无法远程定位；华为系同名遗留组件"
+    },
+    "com.huawei.android.floattasks": {
+      "Name": "悬浮球导航",
+      "Desc": "悬浮窗/悬浮导航球（Floating Dock）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.fmradio": {
+      "Name": "收音机",
+      "Desc": "FM 收音机（需插耳机作天线）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.hnaps": {
+      "Name": "智能分辨率",
+      "Desc": "智能分辨率调节服务（省电）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.hnupgradeguide": {
+      "Name": "升级引导",
+      "Desc": "系统升级后的功能引导页",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.hwaps": {
+      "Name": "智能分辨率(华为)",
+      "Desc": "智能分辨率调节服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.hwpay": {
+      "Name": "华为支付",
+      "Desc": "Huawei Pay 移动支付",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.instantonline": {
+      "Name": "在线服务组件",
+      "Desc": "运营商在线服务入口",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：移除无明显影响"
+    },
+    "com.huawei.android.instantshare": {
+      "Name": "荣耀分享",
+      "Desc": "蓝牙+Wi-Fi Direct 近场文件分享",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.internal.app": {
+      "Name": "系统分享组件",
+      "Desc": "系统分享面板底层组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：移除后部分应用分享崩溃；华为系同名遗留组件"
+    },
+    "com.huawei.android.karaoke": {
+      "Name": "卡拉OK模式",
+      "Desc": "K 歌音效功能",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.launcher": {
+      "Name": "荣耀桌面",
+      "Desc": "MagicOS 桌面启动器，管理图标、文件夹、负一屏与手势",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏；华为系同名遗留组件"
+    },
+    "com.huawei.android.launcher3": {
+      "Name": "荣耀桌面(备用)",
+      "Desc": "旧版桌面启动器包名",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏；华为系同名遗留组件"
+    },
+    "com.huawei.android.mirrorshare": {
+      "Name": "镜像分享",
+      "Desc": "Miracast 无线投屏（荣耀更名 MirrorShare）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.overlay.modules.modulemetadata": {
+      "Name": "模块元数据",
+      "Desc": "系统模块元信息 overlay",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：建议保留"
+    },
+    "com.huawei.android.projectmenu": {
+      "Name": "工程菜单",
+      "Desc": "隐藏工程模式（*#*#2846579#*#*），普通用户无用",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.pushagent": {
+      "Name": "华为推送",
+      "Desc": "HMS 推送服务代理",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后华为系应用无推送"
+    },
+    "com.huawei.android.remotecontroller": {
+      "Name": "智能遥控",
+      "Desc": "红外遥控家电",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.rftest": {
+      "Name": "射频测试",
+      "Desc": "MT 射频测试站",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.thememanager": {
+      "Name": "主题(华为)",
+      "Desc": "主题/壁纸/AOD 表盘（华为遗留）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.tips": {
+      "Name": "使用技巧(华为)",
+      "Desc": "功能引导通知",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.totemweather": {
+      "Name": "天气组件",
+      "Desc": "天气数据与桌面天气插件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后桌面天气插件失效；华为系同名遗留组件"
+    },
+    "com.huawei.android.totemweatherapp": {
+      "Name": "天气应用(华为)",
+      "Desc": "华为天气应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.totemweatherwidget": {
+      "Name": "天气插件(华为)",
+      "Desc": "桌面天气小部件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.android.wfdft": {
+      "Name": "Wi-Fi Direct 诊断",
+      "Desc": "Wi-Fi 直连诊断测试组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.android.wfdirect": {
+      "Name": "Wi-Fi Direct",
+      "Desc": "Wi-Fi 直连功能",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.androidx": {
+      "Name": "多媒体辅助组件",
+      "Desc": "UAD：疑似多媒体相关，无明确功能",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "建议禁用观察"
+    },
+    "com.huawei.aod": {
+      "Name": "息屏显示",
+      "Desc": "AOD 息屏时钟与通知",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.appassistant": {
+      "Name": "应用助手",
+      "Desc": "应用侧边栏与小工具",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.appmarket": {
+      "Name": "应用市场(华为)",
+      "Desc": "华为应用市场 AppGallery",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "荣耀机型遗留"
+    },
+    "com.huawei.appmarket.service": {
+      "Name": "应用市场服务组件",
+      "Desc": "应用市场推送与静默安装服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.ar.measure": {
+      "Name": "AR 测量",
+      "Desc": "测量长度、面积、体积",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.arengine.service": {
+      "Name": "AR 引擎",
+      "Desc": "增强现实服务底座",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.assetsync": {
+      "Name": "云同步资产服务",
+      "Desc": "荣耀云空间数据同步底层",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后云同步失效；华为系同名遗留组件"
+    },
+    "com.huawei.assetsyncservice": {
+      "Name": "云同步安全服务",
+      "Desc": "配合安全服务完成云同步加密",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.assistant": {
+      "Name": "YOYO 建议",
+      "Desc": "智慧助手场景建议与服务直达卡片",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.audioaccessorymanager": {
+      "Name": "音频配件管理",
+      "Desc": "耳机/音箱配件管理（FreeBuds 相关）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.autoinstallapkfrommcc": {
+      "Name": "运营商自动安装",
+      "Desc": "按运营商 MCC 自动安装应用的组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.awareness": {
+      "Name": "情境感知",
+      "Desc": "时间/位置/行为情境感知能力服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.bd": {
+      "Name": "用户体验分析",
+      "Desc": "应用使用情况分析上报（开机自启）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：分析类组件，可移除"
+    },
+    "com.huawei.behaviorauth": {
+      "Name": "行为认证",
+      "Desc": "用户行为可信验证与安全增强",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.betaclub": {
+      "Name": "Beta 体验团",
+      "Desc": "内测日志收集与反馈",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.bluetooth": {
+      "Name": "蓝牙联系人传输",
+      "Desc": "通过蓝牙导入联系人的组件，蓝牙本体不受影响",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：移除后蓝牙仍正常；华为系同名遗留组件"
+    },
+    "com.huawei.browser": {
+      "Name": "荣耀浏览器",
+      "Desc": "系统自带浏览器，网页浏览与下载",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后请确保有第三方浏览器可用；华为系同名遗留组件"
+    },
+    "com.huawei.browserhomepage": {
+      "Name": "浏览器主页组件",
+      "Desc": "浏览器主页与导航页数据组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.ca": {
+      "Name": "CA 组件",
+      "Desc": "UAD：疑似日志/后门类隐藏应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "建议停用"
+    },
+    "com.huawei.calculator": {
+      "Name": "计算器",
+      "Desc": "基础与科学计算",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.calendar": {
+      "Name": "日历",
+      "Desc": "日程管理与提醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.camera": {
+      "Name": "相机",
+      "Desc": "系统相机，拍照录像核心",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法拍照；华为系同名遗留组件"
+    },
+    "com.huawei.camerakit.impl": {
+      "Name": "相机 SDK",
+      "Desc": "相机能力 SDK（测试代码）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.cardemulation": {
+      "Name": "NFC 服务",
+      "Desc": "NFC 卡模拟底层服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.cloud": {
+      "Name": "云空间",
+      "Desc": "荣耀云同步：图库、联系人、备份",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后云备份不可用；华为系同名遗留组件"
+    },
+    "com.huawei.coauthservice": {
+      "Name": "认证服务",
+      "Desc": "应用锁、锁屏密码、指纹人脸协同认证，手动安装 APK 也依赖",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "影响应用锁与指纹；华为系同名遗留组件"
+    },
+    "com.huawei.compass": {
+      "Name": "指南针",
+      "Desc": "磁场方向与水平仪",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.contacts": {
+      "Name": "联系人",
+      "Desc": "通讯录管理",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后通讯录无法使用；华为系同名遗留组件"
+    },
+    "com.huawei.contacts.sync": {
+      "Name": "联系人云同步",
+      "Desc": "通讯录与荣耀账号的同步适配器",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.contactscamcard": {
+      "Name": "名片识别",
+      "Desc": "CamCard 名片扫描（遗留）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.controlcenter": {
+      "Name": "智慧协同中心",
+      "Desc": "多屏协同/无线投屏控制",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：停用可精简控制中心"
+    },
+    "com.huawei.cryptosms.service": {
+      "Name": "加密短信服务",
+      "Desc": "国密加密短信组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.ddmp": {
+      "Name": "通话框架数据组件",
+      "Desc": "通话相关数据管理，拨号盘依赖",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "UAD 社区实测：禁用后通话应用异常；华为系同名遗留组件"
+    },
+    "com.huawei.def": {
+      "Name": "设备互联框架",
+      "Desc": "互联设备公钥与状态交换",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.deskclock": {
+      "Name": "时钟",
+      "Desc": "闹钟、世界时钟、秒表、计时器",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "依赖闹钟请勿停用；华为系同名遗留组件"
+    },
+    "com.huawei.desktop.explorer": {
+      "Name": "电脑模式文件服务",
+      "Desc": "PC 模式文件管理服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.desktop.systemui": {
+      "Name": "电脑模式界面",
+      "Desc": "PC 模式切换与截屏服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：含较多追踪"
+    },
+    "com.huawei.detectrepair": {
+      "Name": "智能诊断",
+      "Desc": "故障自检与修复（已停更类组件）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.deviceauth": {
+      "Name": "设备认证",
+      "Desc": "可信设备认证密钥管理",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.devicegroupmanage": {
+      "Name": "设备组管理",
+      "Desc": "多设备分组管理（无界面）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.devicemanager": {
+      "Name": "设备管理",
+      "Desc": "荣耀账号关联的设备管理与激活服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "CSDN 资料：账号设备管理依赖；华为系同名遗留组件"
+    },
+    "com.huawei.distributed.kms": {
+      "Name": "分布式密钥",
+      "Desc": "跨设备密钥管理与账号认证",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.distributedpasteboard": {
+      "Name": "超级中转站",
+      "Desc": "跨设备剪贴板与拖拽",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.dmsdp": {
+      "Name": "多设备虚拟化",
+      "Desc": "跨设备能力虚拟化（超级终端底层）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "不用多设备协同可停"
+    },
+    "com.huawei.drivermode": {
+      "Name": "驾驶模式",
+      "Desc": "车载驾驶场景聚合",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.dtmfanalyzer": {
+      "Name": "DTMF 分析",
+      "Desc": "双音多频分析（媒体/驾驶相关）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.easygo": {
+      "Name": "EasyGo 服务",
+      "Desc": "UAD：无权限无界面，疑开发者通道",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.email": {
+      "Name": "电子邮件",
+      "Desc": "IMAP / POP3 / Exchange 邮件客户端",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.entitlement": {
+      "Name": "业务授权服务",
+      "Desc": "短信/蓝牙/热点等业务开通授权",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "部分机型影响短信功能"
+    },
+    "com.huawei.face": {
+      "Name": "人脸识别",
+      "Desc": "3D / 2D 人脸录入与解锁服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后人脸解锁失效；华为系同名遗留组件"
+    },
+    "com.huawei.fans": {
+      "Name": "花粉俱乐部",
+      "Desc": "华为官方社区应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.fastapp": {
+      "Name": "快应用中心",
+      "Desc": "免安装快应用引擎与分发",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.featurelayer.sharedfeature.map": {
+      "Name": "地图能力组件",
+      "Desc": "日历/图库内嵌地图（高德数据）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：建议禁用而非卸载"
+    },
+    "com.huawei.feedback": {
+      "Name": "服务与反馈",
+      "Desc": "会员服务、自助诊断、维修预约",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.fido.uafclient": {
+      "Name": "FIDO 认证客户端",
+      "Desc": "免密码生物认证标准客户端",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "影响免密登录/支付验证；华为系同名遗留组件"
+    },
+    "com.huawei.filemanager": {
+      "Name": "文件管理",
+      "Desc": "本地文件浏览、清理、分类管理",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.findmyphone": {
+      "Name": "查找设备",
+      "Desc": "设备定位、远程锁定与丢失保护",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后设备丢失无法远程定位；华为系同名遗留组件"
+    },
+    "com.huawei.fingerprint": {
+      "Name": "指纹服务",
+      "Desc": "指纹录入、识别与解锁服务（FIDO 供体）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后指纹解锁失效；华为系同名遗留组件"
+    },
+    "com.huawei.firstbootinfo": {
+      "Name": "城市信息服务",
+      "Desc": "首次启动获取城市/更新检查",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.gallery": {
+      "Name": "图库",
+      "Desc": "相册照片管理与云端同步入口",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后拍照无法查看，建议保留；华为系同名遗留组件"
+    },
+    "com.huawei.game.kitserver": {
+      "Name": "游戏服务框架",
+      "Desc": "游戏工具箱服务端：悬浮窗、按键映射、防误触",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.gameassistant": {
+      "Name": "游戏助手",
+      "Desc": "游戏免打扰、录屏、性能模式悬浮窗",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.gamebox": {
+      "Name": "游戏中心",
+      "Desc": "华为游戏中心应用商店",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.gamecenter.overlay": {
+      "Name": "游戏中心浮层",
+      "Desc": "游戏中心悬浮菜单/浮层组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.geofence": {
+      "Name": "地理围栏",
+      "Desc": "进出区域触发服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.globalwrite": {
+      "Name": "全局书写组件",
+      "Desc": "全局手写/批注相关组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "社区归属存在争议，操作前请自行确认；华为系同名遗留组件"
+    },
+    "com.huawei.handoff": {
+      "Name": "跨设备接续",
+      "Desc": "手机-平板-PC 任务接力与剪贴板接续",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.harmonyos.foundation": {
+      "Name": "鸿蒙基础框架",
+      "Desc": "系统基础框架（含通话 In-Call 服务）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：禁用勿卸载，卸载影响通话并拖慢系统"
+    },
+    "com.huawei.health": {
+      "Name": "运动健康",
+      "Desc": "计步与运动健康管理（含穿戴连接）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用手环手表请保留；华为系同名遗留组件"
+    },
+    "com.huawei.hff": {
+      "Name": "HFF 组件",
+      "Desc": "UAD：无实际代码的空壳",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hiaction": {
+      "Name": "AI 场景动作",
+      "Desc": "AI 场景化动作服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hiai": {
+      "Name": "AI 引擎",
+      "Desc": "华为 AI 计算引擎",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hiassistantoversea": {
+      "Name": "语音助手(海外)",
+      "Desc": "海外版语音助手",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hicar": {
+      "Name": "车机互联",
+      "Desc": "HiCar 手机-车机互联",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hicard": {
+      "Name": "服务卡片",
+      "Desc": "卡片式服务推荐",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hicloud": {
+      "Name": "华为云空间",
+      "Desc": "华为云同步（图库/联系人/备份）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "遗留组件，用荣耀云可停"
+    },
+    "com.huawei.hidisk": {
+      "Name": "文件管理(华为2)",
+      "Desc": "华为文件管理应用",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hifolder": {
+      "Name": "云文件夹",
+      "Desc": "云端目录同步服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hilink.framework": {
+      "Name": "智联框架",
+      "Desc": "智能家居场景框架",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.himovie": {
+      "Name": "华为视频",
+      "Desc": "视频播放器（华为遗留）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.himovie.overseas": {
+      "Name": "华为视频(海外)",
+      "Desc": "海外版视频应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.himovie.partner1": {
+      "Name": "视频合作组件1",
+      "Desc": "无实际代码的合作壳应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.himovie.partner2": {
+      "Name": "视频合作组件2",
+      "Desc": "无实际代码的合作壳应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hiskytone": {
+      "Name": "畅连通话",
+      "Desc": "荣耀设备间高清音视频通话",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hisuite": {
+      "Name": "手机助手",
+      "Desc": "连接 PC 端 HiSuite 备份刷机",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hitouch": {
+      "Name": "智感支付",
+      "Desc": "拍照识物/智感支付",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hiview": {
+      "Name": "日志与图片属性组件",
+      "Desc": "崩溃日志收集 + 图库照片属性查看（ISO/曝光等）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：含较多权限与日志上报；华为系同名遗留组件"
+    },
+    "com.huawei.hiviewpush": {
+      "Name": "日志推送组件",
+      "Desc": "诊断日志推送上报组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hiviewtunnel": {
+      "Name": "图片属性隧道组件",
+      "Desc": "图库照片 EXIF 属性展示的数据通道",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hms5gkit.agentservice": {
+      "Name": "5G 套件服务",
+      "Desc": "5G 能力套件代理（调试代码为主）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hnasm": {
+      "Name": "FIDO ASM 模块",
+      "Desc": "FIDO 免密认证的认证器专用模块（UAF ASM）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hncloud": {
+      "Name": "云空间组件",
+      "Desc": "荣耀云空间相关服务组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "影响云备份/查找设备；华为系同名遗留组件"
+    },
+    "com.huawei.hndockbar": {
+      "Name": "多任务 Dock 栏",
+      "Desc": "多窗口侧边 Dock 栏",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hnmusicplayer": {
+      "Name": "荣耀音乐",
+      "Desc": "荣耀音乐播放器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hnpanpayservice": {
+      "Name": "刷卡支付服务",
+      "Desc": "NFC 刷卡/支付相关服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hnstartupguide": {
+      "Name": "开机引导",
+      "Desc": "首次开机设置向导，之后无用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.honorclub.android": {
+      "Name": "荣耀俱乐部(华为包)",
+      "Desc": "荣耀社区（遗留包名）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hotalk2placeholder": {
+      "Name": "5G消息占位组件",
+      "Desc": "RCS 5G 消息占位/兼容组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hsf": {
+      "Name": "华为服务框架",
+      "Desc": "HMS 服务框架（安装/删除/使用统计权限）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：华为用户实测可移除"
+    },
+    "com.huawei.hwasm": {
+      "Name": "FIDO ASM 模块",
+      "Desc": "FIDO 认证器专用模块",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwddmp": {
+      "Name": "通话框架数据服务",
+      "Desc": "通话/拨号底层数据组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "UAD 实测：卸载即破坏通话，禁用也不建议"
+    },
+    "com.huawei.hwdetectrepair": {
+      "Name": "智能诊断(华为)",
+      "Desc": "故障自检修复（已停更）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwdiagnosis": {
+      "Name": "系统诊断",
+      "Desc": "诊断日志收集上报",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwdockbar": {
+      "Name": "多任务 Dock",
+      "Desc": "多窗口侧边栏",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwesimservice": {
+      "Name": "eSIM 服务",
+      "Desc": "eSIM 卡管理",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "用 eSIM 勿停"
+    },
+    "com.huawei.hwid": {
+      "Name": "华为账号 HMS",
+      "Desc": "华为移动服务核心（账号/推送/支付底座）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "荣耀机多为遗留；依赖 HMS 的应用会失效"
+    },
+    "com.huawei.hwireader": {
+      "Name": "华为阅读",
+      "Desc": "阅读应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwpolicyservice": {
+      "Name": "策略服务",
+      "Desc": "系统策略与日志调试组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwread.dz": {
+      "Name": "阅读(华为)",
+      "Desc": "华为阅读（含广告追踪）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwsearch": {
+      "Name": "智慧搜索组件",
+      "Desc": "全局搜索小部件与热搜",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.hwstartupguide": {
+      "Name": "开机引导(华为)",
+      "Desc": "首次开机设置向导",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwusbearphoneupdate": {
+      "Name": "耳机固件更新",
+      "Desc": "USB 数字耳机固件升级",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.hwvoipservice": {
+      "Name": "畅连通话 VoIP",
+      "Desc": "荣耀畅连音视频通话底层",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "不用畅连可停用；华为系同名遗留组件"
+    },
+    "com.huawei.hwvplayer.youku": {
+      "Name": "优酷播放组件",
+      "Desc": "优酷定制播放器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.iaware": {
+      "Name": "应用调度优化",
+      "Desc": "智能调度前台应用优先级，保障流畅",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：移除后滑动等场景可能轻微卡顿；华为系同名遗留组件"
+    },
+    "com.huawei.iconnect": {
+      "Name": "互联组件",
+      "Desc": "连接 PC 时提示安装助手的隐藏服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.id": {
+      "Name": "荣耀账号",
+      "Desc": "荣耀帐号登录、云空间、查找设备的账号底座",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后账号与云服务失效；华为系同名遗留组件"
+    },
+    "com.huawei.ihealth": {
+      "Name": "运动识别服务",
+      "Desc": "翻转停止闹钟等动作识别",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.imedia.dolby": {
+      "Name": "杜比全景声",
+      "Desc": "杜比音效自动优化",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "用杜比音效勿停"
+    },
+    "com.huawei.imedia.sws": {
+      "Name": "音效引擎",
+      "Desc": "Histen 音效 3D 环绕声设置项",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后音效设置失效，重启后首播可能有声响异常；华为系同名遗留组件"
+    },
+    "com.huawei.imonitor": {
+      "Name": "异常监控",
+      "Desc": "应用启动异常检测与安全模式",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.ims": {
+      "Name": "VoLTE 通话服务",
+      "Desc": "VoLTE 高清通话底层（IP 多媒体子系统）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后 SIM 卡通话失效；华为系同名遗留组件"
+    },
+    "com.huawei.indexsearch": {
+      "Name": "索引搜索",
+      "Desc": "应用索引搜索服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.indexsearch.observer": {
+      "Name": "索引观察者",
+      "Desc": "索引搜索辅助",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.indiacalendar": {
+      "Name": "印度日历",
+      "Desc": "华为印度日历",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.intelligent": {
+      "Name": "智慧推荐",
+      "Desc": "购物与内容推荐组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.internetaudioservice": {
+      "Name": "智能耳机控制",
+      "Desc": "耳机入耳检测与控制",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.keychain": {
+      "Name": "密钥链",
+      "Desc": "系统证书与密钥安全存储",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用影响 Wi-Fi/VPN 证书；华为系同名遗留组件"
+    },
+    "com.huawei.kobackup": {
+      "Name": "手机备份",
+      "Desc": "系统自带整机备份恢复应用",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "换机/备份依赖；华为系同名遗留组件"
+    },
+    "com.huawei.languagedownloader": {
+      "Name": "语言包下载",
+      "Desc": "系统语言切换时下载语言包",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.launcher": {
+      "Name": "荣耀桌面",
+      "Desc": "MagicOS 桌面启动器（旧版本包名）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后桌面黑屏；华为系同名遗留组件"
+    },
+    "com.huawei.lbs": {
+      "Name": "荣耀位置服务",
+      "Desc": "系统级位置服务框架，定位依赖",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后地图/天气等定位失效；华为系同名遗留组件"
+    },
+    "com.huawei.lens": {
+      "Name": "智慧镜头",
+      "Desc": "相机内 AI 识物/扫码/翻译入口",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.linktowindowsservice": {
+      "Name": "连接 Windows",
+      "Desc": "与 Windows 电脑跨设备协同（Link to Windows）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.linkturboservice": {
+      "Name": "多设备协同",
+      "Desc": "手机与平板 / PC 协同互联服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用多屏协同可停用；华为系同名遗留组件"
+    },
+    "com.huawei.lives": {
+      "Name": "生活服务",
+      "Desc": "华为认证生活服务聚合",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.livewallpaper.artflower": {
+      "Name": "动态壁纸·艺花",
+      "Desc": "动态壁纸包",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.livewallpaper.flowersbloom": {
+      "Name": "动态壁纸·花开",
+      "Desc": "动态壁纸包",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.livewallpaper.mountaincloud": {
+      "Name": "动态壁纸·山云",
+      "Desc": "动态壁纸包",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.livewallpaper.naturalgarden": {
+      "Name": "动态壁纸·花园",
+      "Desc": "动态壁纸包",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.livewallpaper.paradise": {
+      "Name": "动态壁纸·乐园",
+      "Desc": "动态壁纸包",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.livewallpaper.ripplestone": {
+      "Name": "动态壁纸·涟漪",
+      "Desc": "动态壁纸包",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.localBackup": {
+      "Name": "本地备份",
+      "Desc": "本地备份组件（存储/联系人/短信权限）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.magazine": {
+      "Name": "杂志锁屏",
+      "Desc": "锁屏杂志壁纸订阅与下载",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.magicservice": {
+      "Name": "MagicOS 服务",
+      "Desc": "MagicOS 智慧服务框架",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "部分系统功能依赖，谨慎停用；华为系同名遗留组件"
+    },
+    "com.huawei.manufacture.wificonnect": {
+      "Name": "Wi-Fi 连接",
+      "Desc": "Wi-Fi 连接管理",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：连接可能依赖"
+    },
+    "com.huawei.maps.app": {
+      "Name": "Petal 地图",
+      "Desc": "华为地图导航",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.market": {
+      "Name": "荣耀应用市场",
+      "Desc": "官方应用商店，应用下载与更新",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法从商店安装应用；华为系同名遗留组件"
+    },
+    "com.huawei.mediacontroller": {
+      "Name": "媒体控制中心",
+      "Desc": "控制中心媒体播放卡片",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：停用后快捷媒体控制失效；华为系同名遗留组件"
+    },
+    "com.huawei.meetime": {
+      "Name": "畅连通话",
+      "Desc": "华为畅连音视频通话应用",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "荣耀机型多为遗留"
+    },
+    "com.huawei.memberservice": {
+      "Name": "我的荣耀",
+      "Desc": "会员中心与服务商城",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.messaging": {
+      "Name": "信息",
+      "Desc": "短信 / 彩信收发，验证码短信依赖此组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法收验证码；华为系同名遗留组件"
+    },
+    "com.huawei.mirror": {
+      "Name": "华为 Mirror",
+      "Desc": "车机镜像应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.mirrorlink": {
+      "Name": "MirrorLink",
+      "Desc": "车机互联（MirrorLink 标准）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.mmiautotest": {
+      "Name": "自动化产测",
+      "Desc": "产线自动化硬件测试",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.mmitest": {
+      "Name": "工厂硬件测试",
+      "Desc": "产线硬件测试程序（MMI），日常无用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.mms": {
+      "Name": "信息",
+      "Desc": "短信 / 彩信收发，验证码依赖此组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法收验证码；华为系同名遗留组件"
+    },
+    "com.huawei.motionservice": {
+      "Name": "手势与动作服务",
+      "Desc": "抬起亮屏、翻转静音等体感手势",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.msdp": {
+      "Name": "多模传感平台",
+      "Desc": "设备姿态/运动/空间感知传感融合",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "使用位置与体感权限"
+    },
+    "com.huawei.multimedia.audioengine": {
+      "Name": "音频引擎",
+      "Desc": "音频效果 SDK 组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.multimedia.hivideoplayengine": {
+      "Name": "视频引擎",
+      "Desc": "视频播放加速 SDK",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.music": {
+      "Name": "音乐",
+      "Desc": "荣耀音乐播放器与在线曲库",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.mycenter": {
+      "Name": "会员中心(华为)",
+      "Desc": "会员权益与服务商城",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：权限极多"
+    },
+    "com.huawei.nb.service": {
+      "Name": "附近设备发现",
+      "Desc": "GPS 附近设备发现服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.nearby": {
+      "Name": "附近设备分享",
+      "Desc": "近距离发现与分享传输（荣耀分享依赖）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.notepad": {
+      "Name": "备忘录",
+      "Desc": "笔记与待办速记",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.numberidentity": {
+      "Name": "号码识别",
+      "Desc": "来电号码识别与骚扰标记（国内可用）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.ohos.collaborationcenter": {
+      "Name": "协同中心(壳)",
+      "Desc": "跨设备协同配置壳组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.ohos.famanager": {
+      "Name": "服务中心",
+      "Desc": "原子化服务卡片中心",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：含较多追踪"
+    },
+    "com.huawei.ohos.hiwindow": {
+      "Name": "窗口组件",
+      "Desc": "窗口加载/动画与投屏界面",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "移除失去加载动画"
+    },
+    "com.huawei.ohos.inputmethod": {
+      "Name": "华为输入法",
+      "Desc": "华为默认输入法（遗留）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用前必须有其他输入法"
+    },
+    "com.huawei.ohos.security.privacycenter": {
+      "Name": "隐私中心(壳)",
+      "Desc": "隐私中心界面壳组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：建议禁用而非卸载"
+    },
+    "com.huawei.omacp": {
+      "Name": "运营商参数配置",
+      "Desc": "通过短信下发 APN/运营商参数配置",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用可能影响上网参数自动配置；华为系同名遗留组件"
+    },
+    "com.huawei.onehopsvcclient": {
+      "Name": "碰一传客户端",
+      "Desc": "一碰传/标签服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.onehopsvchost": {
+      "Name": "碰一传宿主",
+      "Desc": "隐藏码触发硬件服务的宿主",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.ouc": {
+      "Name": "系统更新",
+      "Desc": "OTA 系统更新客户端",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法在线升级系统；华为系同名遗留组件"
+    },
+    "com.huawei.parentalcontrol": {
+      "Name": "屏幕使用时间",
+      "Desc": "家长控制与应用限额",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.parentcontrol": {
+      "Name": "屏幕使用时间",
+      "Desc": "家长控制与应用限额",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：部分系统拒绝停用，失败属正常；华为系同名遗留组件"
+    },
+    "com.huawei.pcassistant": {
+      "Name": "PC 助手",
+      "Desc": "手机连接荣耀电脑的协同服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.pegasus": {
+      "Name": "图库搜索",
+      "Desc": "图库智能搜索与场景分类引擎",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.pengine": {
+      "Name": "智慧识屏引擎",
+      "Desc": "屏幕内容智能分析（识物/购物推荐）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.permissioncontroller.overlay": {
+      "Name": "权限界面资源包",
+      "Desc": "权限控制界面/弹窗的 overlay 资源",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "建议保留，避免界面资源缺失；华为系同名遗留组件"
+    },
+    "com.huawei.phone": {
+      "Name": "电话",
+      "Desc": "拨号与通话核心组件",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法接打电话；华为系同名遗留组件"
+    },
+    "com.huawei.phoneservice": {
+      "Name": "电话服务组件",
+      "Desc": "通话相关后台组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "可能影响通话功能，谨慎；华为系同名遗留组件"
+    },
+    "com.huawei.photos": {
+      "Name": "华为图库",
+      "Desc": "图库应用（华为遗留）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.powergenie": {
+      "Name": "后台耗电管控",
+      "Desc": "EMUI/MagicOS 后台应用查杀（PowerGenie）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：强杀后台，移除可能更省心；华为系同名遗留组件"
+    },
+    "com.huawei.printservice": {
+      "Name": "打印服务",
+      "Desc": "无线打印框架",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.privatespace": {
+      "Name": "隐私空间",
+      "Desc": "独立加密的隐藏空间",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.profile": {
+      "Name": "账号配置服务",
+      "Desc": "华为账号配置与分析组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：依赖 HMS"
+    },
+    "com.huawei.quicksearchbox": {
+      "Name": "全局搜索",
+      "Desc": "桌面下拉搜索与应用内搜索聚合",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.radio": {
+      "Name": "收音机",
+      "Desc": "FM 收音机（需插耳机天线）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.rcsserviceapplication": {
+      "Name": "5G消息 RCS",
+      "Desc": "运营商富媒体消息服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.recsys": {
+      "Name": "智荐系统",
+      "Desc": "个性化推荐服务（智能助手卡片）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.regservice": {
+      "Name": "网络注册服务",
+      "Desc": "蜂窝网络业务注册",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：非必需"
+    },
+    "com.huawei.remotepassword": {
+      "Name": "远程密码服务",
+      "Desc": "远程密码相关服务组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.report": {
+      "Name": "问题反馈",
+      "Desc": "用户反馈与日志上报",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "系统保护，disable 返回失败属正常；华为系同名遗留组件"
+    },
+    "com.huawei.ridemode": {
+      "Name": "驾驶模式",
+      "Desc": "骑行导航模式（用网页地图追踪）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.runningtestii": {
+      "Name": "整机测试",
+      "Desc": "音频/相机/视频播放硬件测试",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.sarlevel": {
+      "Name": "SAR 等级查询",
+      "Desc": "手机电磁辐射比吸收率信息页",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.scanner": {
+      "Name": "智慧扫描",
+      "Desc": "文档扫描与 OCR 识别",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.scenepack": {
+      "Name": "旅行助手",
+      "Desc": "旅行贴士与语音导览",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.screenrecorder": {
+      "Name": "屏幕录制",
+      "Desc": "录屏服务与悬浮控制",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.screenshot": {
+      "Name": "截屏服务",
+      "Desc": "按键/指关节截屏组件",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后无法截屏；华为系同名遗留组件"
+    },
+    "com.huawei.search": {
+      "Name": "智慧搜索(华为)",
+      "Desc": "全局搜索（下滑触发）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.searchservice": {
+      "Name": "全局搜索服务",
+      "Desc": "桌面下滑全局搜索的后端服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.secime": {
+      "Name": "安全键盘",
+      "Desc": "系统安全输入键盘",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.security": {
+      "Name": "安全服务",
+      "Desc": "系统安全中心，支付保护、权限管理底层服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用可能导致支付与解锁异常；华为系同名遗留组件"
+    },
+    "com.huawei.security.privacycenter": {
+      "Name": "隐私中心",
+      "Desc": "图片敏感信息保护等隐私功能",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.securitymgr": {
+      "Name": "隐私空间管理",
+      "Desc": "隐藏加密空间入口",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.securitypluginbase": {
+      "Name": "安全插件基座",
+      "Desc": "安全插件框架底层（反病毒等）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.securityserver": {
+      "Name": "安全服务",
+      "Desc": "系统安全底层服务，人脸解锁依赖",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：部分机型移除后黑屏，谨慎；华为系同名遗留组件"
+    },
+    "com.huawei.settings": {
+      "Name": "设置",
+      "Desc": "系统设置应用，全部系统配置入口",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用后无法进入设置；华为系同名遗留组件"
+    },
+    "com.huawei.simcontacts": {
+      "Name": "SIM 卡联系人",
+      "Desc": "读取 SIM 卡存储的联系人",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.skytone": {
+      "Name": "天际通(数据)",
+      "Desc": "境外流量数据服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.smartcontroller": {
+      "Name": "智灵 / 智能遥控",
+      "Desc": "红外遥控家电",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.smarthome": {
+      "Name": "智慧生活",
+      "Desc": "智能家居设备管理（AI Life）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.smartlocation": {
+      "Name": "室内定位",
+      "Desc": "室内位置服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD：含位置追踪"
+    },
+    "com.huawei.smartshot": {
+      "Name": "智能截屏",
+      "Desc": "智能截屏与局部截屏",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：截屏功能依赖；华为系同名遗留组件"
+    },
+    "com.huawei.sos": {
+      "Name": "SOS 紧急求助",
+      "Desc": "紧急呼叫与求助",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "建议保留"
+    },
+    "com.huawei.soundrecorder": {
+      "Name": "录音机",
+      "Desc": "语音录音与通话录音",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.spaceservice": {
+      "Name": "地理围栏服务",
+      "Desc": "基于位置的场景触发",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.stb": {
+      "Name": "系统传输",
+      "Desc": "系统数据传输组件（换机克隆底层）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.stk": {
+      "Name": "SIM 卡应用",
+      "Desc": "SIM 卡工具箱菜单（运营商增值服务）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.stylus.floatmenu": {
+      "Name": "手写笔悬浮菜单",
+      "Desc": "M-Pen 悬浮菜单与 AI Lens",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.suggestion": {
+      "Name": "智慧推荐",
+      "Desc": "场景化推荐与广告卡片",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "停用可减少推荐内容；华为系同名遗留组件"
+    },
+    "com.huawei.synergy": {
+      "Name": "云协同服务",
+      "Desc": "荣耀云/网络协同 B2B 组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.systemappsupdater": {
+      "Name": "系统应用更新",
+      "Desc": "系统内置应用的更新服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后内置应用不再更新；华为系同名遗留组件"
+    },
+    "com.huawei.systemdebug": {
+      "Name": "系统调试",
+      "Desc": "系统调试组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.systemmanager": {
+      "Name": "手机管家",
+      "Desc": "清理加速、骚扰拦截、权限管理、病毒查杀",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用后安全与清理功能失效；华为系同名遗留组件"
+    },
+    "com.huawei.systemserver": {
+      "Name": "系统服务",
+      "Desc": "MagicOS 系统服务宿主进程",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用直接导致系统崩溃；华为系同名遗留组件"
+    },
+    "com.huawei.systemui": {
+      "Name": "系统界面",
+      "Desc": "状态栏、通知中心、控制中心、导航栏的宿主进程",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "禁用直接黑屏；华为系同名遗留组件"
+    },
+    "com.huawei.talkback": {
+      "Name": "屏幕朗读",
+      "Desc": "无障碍屏幕朗读服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "视障用户请保留；华为系同名遗留组件"
+    },
+    "com.huawei.thememanager": {
+      "Name": "主题",
+      "Desc": "主题、壁纸、AOD 表盘管理",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后无法换主题，已用主题不受影响；华为系同名遗留组件"
+    },
+    "com.huawei.tips": {
+      "Name": "使用技巧",
+      "Desc": "新手引导与玩机技巧推送",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.tipsove": {
+      "Name": "技巧服务",
+      "Desc": "HiCar/AI Life 等技巧引导",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.tmecustomize": {
+      "Name": "运营商定制",
+      "Desc": "隐藏运营商配置",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.trafficmanager": {
+      "Name": "流量管理",
+      "Desc": "流量统计与超额提醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.trustcircle": {
+      "Name": "可信圈认证",
+      "Desc": "多设备互信认证服务",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "与荣耀账号配套；华为系同名遗留组件"
+    },
+    "com.huawei.trustedthingsauth": {
+      "Name": "IoT 设备认证",
+      "Desc": "蓝牙/IoT 设备认证",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.trustspace": {
+      "Name": "支付保护中心",
+      "Desc": "支付安全隔离空间",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.upnpkgservice": {
+      "Name": "应用市场服务",
+      "Desc": "应用市场后台更新与推荐服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.vassistant": {
+      "Name": "YOYO 语音",
+      "Desc": "语音助手与语音唤醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.vdrive": {
+      "Name": "驾驶模式服务",
+      "Desc": "驾驶场景语音服务",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.video": {
+      "Name": "视频",
+      "Desc": "荣耀视频播放器",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.voiceassistant": {
+      "Name": "YOYO 语音",
+      "Desc": "语音助手与语音唤醒",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后无法语音唤醒；华为系同名遗留组件"
+    },
+    "com.huawei.vrservice": {
+      "Name": "VR 服务",
+      "Desc": "华为 VR 服务组件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.wallet": {
+      "Name": "钱包",
+      "Desc": "NFC 门禁卡、银行卡、交通卡",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "使用 NFC 交通卡请保留；华为系同名遗留组件"
+    },
+    "com.huawei.wallet.sdk.walletsdk": {
+      "Name": "钱包 SDK",
+      "Desc": "钱包能力 SDK",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.watch.sync": {
+      "Name": "手表同步",
+      "Desc": "华为手表数据同步",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.waudio": {
+      "Name": "Wi-Fi 音箱",
+      "Desc": "WLAN 音箱播放控制",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.huawei.weather": {
+      "Name": "天气",
+      "Desc": "天气预报与桌面天气卡片数据源",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "停用后桌面天气插件失效；华为系同名遗留组件"
+    },
+    "com.huawei.welinknow": {
+      "Name": "Link Now",
+      "Desc": "荣耀会议/协作应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "华为系同名遗留组件"
+    },
+    "com.huawei.wifieapsimplmn": {
+      "Name": "Wi-Fi 认证组件",
+      "Desc": "EAP-SIM/AKA 企业与运营商 Wi-Fi 认证",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "UAD：部分场景 Wi-Fi 可能异常；华为系同名遗留组件"
+    },
+    "com.huawei.wifiprobqeservice": {
+      "Name": "Wi-Fi 诊断",
+      "Desc": "Wi-Fi 问题诊断服务",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "com.iflytek.inputmethod.honor": {
+      "Name": "讯飞输入法荣耀版",
+      "Desc": "部分批次的默认输入法",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "停用前必须有其他输入法"
+    },
+    "com.ironsource.appcloud.oobe.huawei": {
+      "Name": "应用推广",
+      "Desc": "IronSource 捆绑推广应用",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "UAD：建议移除"
+    },
+    "com.tencent.qqlivehuawei": {
+      "Name": "腾讯视频定制版",
+      "Desc": "华为定制腾讯视频壳",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    },
+    "huawei.android.widget": {
+      "Name": "华为小组件",
+      "Desc": "UAD：疑似空壳，移除不影响小部件",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": ""
+    }
+  }
+}
