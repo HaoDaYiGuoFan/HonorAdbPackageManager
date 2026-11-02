@@ -71,6 +71,27 @@ public class PackageItem : INotifyPropertyChanged
         set { if (_remark != value) { _remark = value; Raise(nameof(Remark)); } }
     }
 
+    /// <summary>知识库条目名（HonorPackageDb.json 的 Name；未收录为空）</summary>
+    public string KbName
+    {
+        get => _kbName;
+        set { if (_kbName != value) { _kbName = value; Raise(nameof(KbName)); Raise(nameof(KbDisplay)); } }
+    }
+    private string _kbName = string.Empty;
+
+    /// <summary>知识库条目描述（HonorPackageDb.json 的 Desc；未收录为空）</summary>
+    public string KbDescription
+    {
+        get => _kbDescription;
+        set { if (_kbDescription != value) { _kbDescription = value; Raise(nameof(KbDescription)); } }
+    }
+    private string _kbDescription = string.Empty;
+
+    /// <summary>知识库列显示文本：Name + 换行 + Desc（未收录显示「未收录」）</summary>
+    public string KbDisplay =>
+        string.IsNullOrEmpty(KbName)
+            ? "未收录"
+            : (string.IsNullOrEmpty(KbDescription) ? KbName : KbName + Environment.NewLine + KbDescription);
     /// <summary>未知包 = 知识库未收录（操作时强制二次确认）</summary>
     public bool IsUnknown { get; set; }
 

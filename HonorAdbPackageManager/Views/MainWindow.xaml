@@ -338,13 +338,52 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
+                            <DataGridTemplateColumn Header="知识库条目" Width="230" SortMemberPath="KbName">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding KbName}"
+                                                       FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{StaticResource TextPrimary}"
+                                                       TextTrimming="CharacterEllipsis">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding KbName}" Value="">
+                                                                <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                                                                <Setter Property="FontStyle" Value="Italic"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding KbDescription}"
+                                                       FontSize="11"
+                                                       Foreground="{StaticResource TextSecondary}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       ToolTip="{Binding KbDescription}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding KbDescription}" Value="">
+                                                                <Setter Property="Text" Value="未收录"/>
+                                                                <Setter Property="FontStyle" Value="Italic"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="功能说明" Width="*" CanUserSort="False">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Description}"
+                                        <TextBlock Text="{Binding Remark}"
                                                    FontSize="12" TextTrimming="CharacterEllipsis"
                                                    Foreground="{StaticResource TextSecondary}"
-                                                   ToolTip="{Binding Description}"/>
+                                                   ToolTip="{Binding Remark}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

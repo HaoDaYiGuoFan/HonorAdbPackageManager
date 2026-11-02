@@ -187,11 +187,13 @@ public class AdbService
             if (!line.StartsWith("package:", StringComparison.Ordinal)) continue;
 
             // -f 输出: package:/data/app/xx/base.apk=com.foo  或  package:com.foo
+            // 注意：Android 13+ 路径含 base64 目录名（~~abc==/pkg-xyz==/base.apk），
+            // 必须用最后一个 '=' 分割，否则包名会被路径中的 '==' 截断污染。
             var body = line["package:".Length..];
             string apkPath = string.Empty;
             string name = body;
 
-            var eq = body.IndexOf('=');
+            var eq = body.LastIndexOf('=');
             if (eq > 0)
             {
                 apkPath = body[..eq];

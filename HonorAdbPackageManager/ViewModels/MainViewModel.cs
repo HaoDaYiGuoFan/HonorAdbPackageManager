@@ -434,6 +434,8 @@ public class MainViewModel : ViewModelBase
             item.AppLabel = kb.Name;
             item.Description = kb.Desc;
             item.Remark = kb.Remark;
+            item.KbName = kb.Name;
+            item.KbDescription = kb.Desc;
             item.UninstallRisk = ParseRisk(kb.Risk);
             item.PackageType = isSystem
                 ? (item.UninstallRisk == Models.RiskLevel.Forbidden
