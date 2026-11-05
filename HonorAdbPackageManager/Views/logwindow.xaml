@@ -6,7 +6,7 @@
         Icon="/Assets/logo-256.png"
         Height="560"
         Width="900"
-        Background="{StaticResource CardBackBrush}"
+        Background="{StaticResource AeroWindowBrush}"
         FontFamily="Consolas, Microsoft YaHei UI"
         FontSize="12.5">
     <Grid Margin="12">
@@ -31,7 +31,8 @@
             </StackPanel>
         </Grid>
 
-        <Border Grid.Row="1" Background="#0D14181F" CornerRadius="8" Padding="10">
+        <Border Grid.Row="1" Background="{StaticResource ConsoleGlassBrush}" CornerRadius="10"
+                BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" Padding="10">
             <TextBox x:Name="LogTextBox"
                      IsReadOnly="True"
                      TextWrapping="NoWrap"
@@ -40,7 +41,7 @@
                      HorizontalScrollBarVisibility="Auto"
                      Background="Transparent"
                      BorderThickness="0"
-                     Foreground="{StaticResource TextPrimary}"/>
+                     Foreground="{StaticResource ConsoleTextBrush}"/>
         </Border>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">

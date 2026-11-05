@@ -28,14 +28,15 @@ public partial class ToolboxView : UserControl
         {
             var card = new Border
             {
-                Background = Brushes.White,
-                CornerRadius = new CornerRadius(10),
+                Background = FindResource("GlassCardBrush") as Brush ?? Brushes.White,
+                BorderBrush = FindResource("GlassBorderBrush") as Brush,
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(12),
                 Margin = new Thickness(0, 0, 10, 10),
-                Padding = new Thickness(1),
+                Padding = new Thickness(0),
                 Width = 320,
                 VerticalAlignment = VerticalAlignment.Top,
             };
-            card.Effect = FindResource("CardShadow") as System.Windows.Media.Effects.Effect;
 
             var stack = new StackPanel();
 
@@ -43,7 +44,7 @@ public partial class ToolboxView : UserControl
             var header = new Border
             {
                 Background = cat.HeaderBrush,
-                CornerRadius = new CornerRadius(9, 9, 0, 0),
+                CornerRadius = new CornerRadius(11, 11, 0, 0),
                 Padding = new Thickness(0, 8, 0, 8),
             };
             header.Child = new TextBlock
@@ -73,7 +74,7 @@ public partial class ToolboxView : UserControl
     {
         var row = new Border
         {
-            BorderBrush = new SolidColorBrush(Color.FromRgb(0xEE, 0xF0, 0xF3)),
+            BorderBrush = FindResource("BorderBrush") as Brush,
             BorderThickness = new Thickness(0, 0, 0, 1),
             Padding = new Thickness(10, 7, 10, 7),
         };
@@ -87,7 +88,7 @@ public partial class ToolboxView : UserControl
             Text = item.Name,
             FontSize = 13,
             FontWeight = FontWeights.SemiBold,
-            Foreground = new SolidColorBrush(Color.FromRgb(0x19, 0x19, 0x19)),
+            Foreground = FindResource("TextPrimary") as Brush,
         };
         var statusText = new TextBlock { FontSize = 11, Margin = new Thickness(0, 1, 0, 0) };
         statusText.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding("StatusText") { Source = item });

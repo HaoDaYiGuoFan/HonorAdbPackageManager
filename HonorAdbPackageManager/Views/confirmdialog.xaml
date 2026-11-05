@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         WindowStyle="ToolWindow"
         Topmost="True"
-        Background="{StaticResource CardBackBrush}"
+        Background="{StaticResource AeroWindowBrush}"
         FontFamily="Microsoft YaHei UI"
         FontSize="13">
     <StackPanel Margin="20,18">

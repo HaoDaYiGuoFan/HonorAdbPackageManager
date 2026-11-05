@@ -7,7 +7,7 @@
         Height="300"
         Width="560"
         ResizeMode="CanMinimize"
-        Background="{StaticResource WindowBackBrush}"
+        Background="{StaticResource AeroWindowBrush}"
         FontFamily="Microsoft YaHei UI"
         FontSize="13">
     <Grid Margin="24,20">

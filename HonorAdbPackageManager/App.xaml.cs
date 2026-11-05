@@ -16,6 +16,9 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // 全局窗口玻璃材质（Mica / Acrylic + 安全回退）
+        AeroEffects.Register();
+
         // 全局异常兜底
         DispatcherUnhandledException += (s, args) =>
         {

@@ -18,15 +18,20 @@ public class SystemTweaksViewModel : ViewModelBase
         Animations.Add(new AnimItem("动画程序时长缩放", "animator_duration_scale", "应用内动画时长（时钟指针、涟漪等）", "建议 1.5，关动画设 0", "1"));
 
         // ── 状态栏图标精简复选框 ──
-        StatusBarIcons.Add(new IconToggle("NFC 图标", "icon_nfc", true));
-        StatusBarIcons.Add(new IconToggle("定位图标", "icon_location", true));
-        StatusBarIcons.Add(new IconToggle("省电模式图标", "icon_battery_saver", true));
-        StatusBarIcons.Add(new IconToggle("闹钟图标", "icon_alarm_clock", true));
-        StatusBarIcons.Add(new IconToggle("HD 高清通话", "icon_hd", true));
-        StatusBarIcons.Add(new IconToggle("电池百分比", "status_bar_show_battery_percent", false, isBatteryPercent: true));
-        StatusBarIcons.Add(new IconToggle("护眼模式图标", "icon_eyecare", true));
-        StatusBarIcons.Add(new IconToggle("网速指示器", "show_network_speed", true));
-        StatusBarIcons.Add(new IconToggle("双卡信号图标", "icon_signal_2", true));
+        // 词条名与私有键均按荣耀 MagicOS 实测结果填写：
+        // secure/icon_blacklist 里是 powersavingmode / eyes_protect 等厂商词条，
+        // 实时网速由 system/show_network_speed_enabled 控制（show_network_speed 无效）。
+        StatusBarIcons.Add(new IconToggle("NFC 图标", "nfc", true, "global/icon_nfc"));
+        StatusBarIcons.Add(new IconToggle("定位图标", "location", true, "global/icon_location"));
+        StatusBarIcons.Add(new IconToggle("省电模式图标", "powersavingmode", true, "global/icon_battery_saver"));
+        StatusBarIcons.Add(new IconToggle("闹钟图标", "alarm_clock", true, "global/icon_alarm_clock"));
+        StatusBarIcons.Add(new IconToggle("HD 高清通话", "volte", true, "global/icon_hd"));
+        StatusBarIcons.Add(new IconToggle("电池百分比", "", false,
+            "system/battery_percent_switch", "system/battery_percent_switch_in"));
+        StatusBarIcons.Add(new IconToggle("护眼模式图标", "eyes_protect", true, "global/icon_eyecare"));
+        StatusBarIcons.Add(new IconToggle("网速指示器", "", true,
+            "system/show_network_speed_enabled", "system/show_network_speed"));
+        StatusBarIcons.Add(new IconToggle("双卡信号图标", "", true, "global/icon_signal_2"));
 
         // ── 快捷开关 ──
         QuickToggles.Add(new QuickToggle("保持唤醒（充电时不息屏）", "stay_on_while_plugged_in", "global", "充电时屏幕常亮，调试方便", "0"));
@@ -92,7 +97,7 @@ public class SystemTweaksViewModel : ViewModelBase
 
     // ────────── 亮屏时间 ──────────
 
-    private string _screenTimeoutMinutes = "30";
+    private string _screenTimeoutMinutes = "5";
     public string ScreenTimeoutMinutes
     {
         get => _screenTimeoutMinutes;
@@ -196,6 +201,11 @@ public class SystemTweaksViewModel : ViewModelBase
         private set { if (_statusBarStatus != value) { _statusBarStatus = value; Raise(); } }
     }
 
+    /// <summary>解析 icon_blacklist 的逗号分隔词条</summary>
+    private static HashSet<string> IconBlacklistTokens(string csv) =>
+        new(csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
+            StringComparer.OrdinalIgnoreCase);
+
     private async Task ApplyStatusBarAsync()
     {
         var serial = _main.Device?.Serial;
@@ -211,47 +221,90 @@ public class SystemTweaksViewModel : ViewModelBase
         var lines = changed.Select(i => $"  • {i.DisplayName}: {(i.IsChecked ? "显示" : "隐藏")}").ToList();
         var confirm = MsgBox.Show(
             "将修改以下状态栏图标显示：\n\n" + string.Join(Environment.NewLine, lines) +
-            "\n\n修改立即生效。确认执行吗？",
+            "\n\n图标隐藏通过系统 icon_blacklist 写入，支持时立即生效；厂商定制 SystemUI 可能不响应。\n\n确认执行吗？",
             "状态栏精简", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
         if (confirm != MessageBoxResult.Yes) return;
 
-        int ok = 0;
+        // 先读现有黑名单，保留系统默认隐藏的其它图标，避免整体覆盖
+        var current = await App.SystemSettings.GetAsync(serial, "secure", "icon_blacklist");
+        if (!current.Ok)
+        {
+            StatusBarStatus = $"读取 icon_blacklist 失败：{current.Error}";
+            return;
+        }
+        var tokens = IconBlacklistTokens(current.Value);
+        bool blacklistDirty = false;
+        foreach (var i in changed.Where(i => !string.IsNullOrEmpty(i.BlacklistToken)))
+        {
+            blacklistDirty |= i.IsChecked
+                ? tokens.Remove(i.BlacklistToken)
+                : tokens.Add(i.BlacklistToken);
+        }
+
+        var errors = new List<string>();
+        int privateOk = 0;
         foreach (var i in changed)
         {
-            string space = i.IsBatteryPercent ? "system" : "global";
-            string value = i.IsBatteryPercent
-                ? (i.IsChecked ? "2" : "0")   // battery percent: 2=显示在图标内
-                : (i.IsChecked ? "1" : "0");
-            var r = await App.SystemSettings.PutAsync(serial, space, i.Key, value);
-            if (r.Ok) { ok++; i.Commit(); }
-            else StatusBarStatus = $"「{i.DisplayName}」写入失败：{r.Error}";
+            var value = i.IsChecked ? i.OnValue : i.OffValue;
+            foreach (var (space, key) in i.PrivateKeys)
+            {
+                var r = await App.SystemSettings.PutAsync(serial, space, key, value);
+                if (r.Ok) privateOk++;
+                else errors.Add($"「{i.DisplayName}」{space}/{key}：{r.Error}");
+            }
         }
-        StatusBarStatus = ok == changed.Count
-            ? $"✓ {ok} 项状态栏设置已生效"
-            : $"部分成功：{ok}/{changed.Count}";
+
+        var csv = string.Join(",", tokens.OrderBy(t => t, StringComparer.OrdinalIgnoreCase));
+        bool blacklistOk = true;
+        if (blacklistDirty)
+        {
+            var r = await App.SystemSettings.PutIconBlacklistAsync(serial, csv);
+            blacklistOk = r.Ok;
+            if (!r.Ok) errors.Add($"icon_blacklist {r.Error}");
+        }
+
+        if (blacklistOk && errors.Count == 0)
+        {
+            foreach (var i in changed) i.Commit();
+            StatusBarStatus = $"✓ 已写入 {changed.Count} 项（黑名单：{(string.IsNullOrEmpty(csv) ? "空" : csv)}；私有键成功 {privateOk} 个）；若状态栏无变化，说明该 ROM 未响应此设置";
+        }
+        else
+        {
+            StatusBarStatus = $"部分失败：{string.Join("；", errors.Take(2))}";
+        }
+        App.Log.Info($"状态栏写入：变更 {changed.Count} 项，黑名单 {(blacklistOk ? "成功" : "失败")}，私有键成功 {privateOk} 个");
     }
 
-    /// <summary>还原默认状态栏显示（全部图标显示 + 电池百分比显示）</summary>
+    /// <summary>还原默认状态栏显示：移除本工具管理的黑名单词条 + 私有键置为显示</summary>
     private async Task RestoreStatusBarAsync()
     {
         var serial = _main.Device?.Serial;
         if (serial is null) return;
         var confirm = MsgBox.Show(
-            "将还原全部状态栏图标为默认显示状态（NFC/定位/省电/闹钟/HD/护眼/网速/双卡信号显示，电池百分比显示）。\n\n确认执行吗？",
+            "将还原全部状态栏图标为默认显示状态（清空本工具管理的 icon_blacklist 词条，并把厂商开关置为显示）。\n\n确认执行吗？",
             "还原状态栏", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
         if (confirm != MessageBoxResult.Yes) return;
 
-        int ok = 0;
-        foreach (var i in StatusBarIcons)
+        var current = await App.SystemSettings.GetAsync(serial, "secure", "icon_blacklist");
+        if (!current.Ok)
         {
-            string space = i.IsBatteryPercent ? "system" : "global";
-            string value = i.IsBatteryPercent ? "2" : "1";
-            var r = await App.SystemSettings.PutAsync(serial, space, i.Key, value);
-            if (r.Ok) { ok++; i.IsChecked = true; i.Commit(); }
+            StatusBarStatus = $"读取 icon_blacklist 失败：{current.Error}（已取消还原，避免误清空）";
+            return;
         }
-        StatusBarStatus = ok == StatusBarIcons.Count
-            ? $"✓ 已还原全部 {ok} 项状态栏默认显示"
-            : $"部分成功：{ok}/{StatusBarIcons.Count}";
+        var tokens = IconBlacklistTokens(current.Value);
+        foreach (var i in StatusBarIcons.Where(i => !string.IsNullOrEmpty(i.BlacklistToken)))
+            tokens.Remove(i.BlacklistToken);
+
+        var csv = string.Join(",", tokens.OrderBy(t => t, StringComparer.OrdinalIgnoreCase));
+        var r = await App.SystemSettings.PutIconBlacklistAsync(serial, csv);
+        foreach (var i in StatusBarIcons)
+            foreach (var (space, key) in i.PrivateKeys)
+                await App.SystemSettings.PutAsync(serial, space, key, i.OnValue);
+
+        foreach (var i in StatusBarIcons) { i.IsChecked = true; i.Commit(); }
+        StatusBarStatus = r.Ok
+            ? $"✓ 已还原（黑名单：{(string.IsNullOrEmpty(csv) ? "空" : csv)}）；如无变化说明该 ROM 未响应"
+            : $"还原失败：{r.Error}";
     }
 
     // ────────── 快捷开关 ──────────
@@ -269,28 +322,37 @@ public class SystemTweaksViewModel : ViewModelBase
 
     private async Task ToggleQuickAsync(QuickToggle? t)
     {
-        if (t?.ReadOnly == true)
+        if (t is null) return;
+        if (t.ReadOnly)
         {
             MsgBox.Show("该项为基础调试开关，请在系统设置中操作（关闭 ADB 调试会导致本工具断连）。", "只读项",
                 MessageBoxButton.OK, MessageBoxImage.Information);
+            t.Rollback();
             return;
         }
-        var serial = _main.Device?.Serial;
-        if (serial is null || t is null) return;
 
-        var newState = t.IsChecked ? "0" : "1";
-        var action = t.IsChecked ? "关闭" : "开启";
+        var serial = _main.Device?.Serial;
+        if (serial is null)
+        {
+            t.Rollback();
+            QuickStatus = "设备未连接，无法写入。";
+            return;
+        }
+
+        // CheckBox 的 IsChecked 在 Command 执行前已切换，直接以新勾选状态为目标值
+        var target = t.IsChecked ? "1" : "0";
+        var action = t.IsChecked ? "开启" : "关闭";
         var confirm = MsgBox.Show(
             $"将{action}「{t.DisplayName}」。\n\n说明：{t.Description}\n\n确认执行吗？",
             t.DisplayName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
         if (confirm != MessageBoxResult.Yes) { t.Rollback(); return; }
 
-        var r = await App.SystemSettings.PutAsync(serial, t.Space, t.Key, newState);
+        var r = await App.SystemSettings.PutAsync(serial, t.Space, t.Key, target);
         if (r.Ok)
         {
-            t.IsChecked = !t.IsChecked;
             t.Commit();
-            QuickStatus = $"✓ 「{t.DisplayName}」已{action}";
+            QuickStatus = $"✓ 「{t.DisplayName}」已{action}（{t.Space}/{t.Key}={target}）";
+            App.Log.Info($"开发者开关：{t.DisplayName} → {target}");
         }
         else
         {
@@ -378,14 +440,32 @@ public class SystemTweaksViewModel : ViewModelBase
             if (timeout.Ok && int.TryParse(timeout.Value, out var msVal))
                 TimeoutStatus = $"当前：{msVal / 60000.0:0.#} 分钟";
 
+            // 状态栏图标真实状态：黑名单里出现的词条表示该图标被隐藏
+            var blacklist = await App.SystemSettings.GetAsync(serial, "secure", "icon_blacklist");
+            var hidden = IconBlacklistTokens(blacklist.Value);
+            foreach (var i in StatusBarIcons)
+            {
+                if (!string.IsNullOrEmpty(i.BlacklistToken))
+                    i.IsChecked = !hidden.Contains(i.BlacklistToken);
+                else if (i.PrivateKeys.Count > 0)
+                {
+                    // 以第一个私有键作为该项的主状态来源
+                    var (space, key) = i.PrivateKeys[0];
+                    var v = await App.SystemSettings.GetAsync(serial, space, key);
+                    if (v.Ok && !string.IsNullOrEmpty(v.Value))
+                        i.IsChecked = v.Value != "0";
+                }
+                i.Commit();
+            }
+
             // 快捷开关当前状态
             foreach (var q in QuickToggles.Where(x => !x.ReadOnly))
             {
                 var r = await App.SystemSettings.GetAsync(serial, q.Space, q.Key);
                 if (r.Ok)
                 {
-                    var on = r.Value == "1";
-                    q.IsChecked = on;
+                    // stay_on_while_plugged_in 是位掩码，任意非 0 都视为开启
+                    q.IsChecked = !string.IsNullOrEmpty(r.Value) && r.Value != "0";
                     q.Commit();
                 }
             }
@@ -447,21 +527,38 @@ public class AnimItem : ViewModelBase
     }
 }
 
-/// <summary>状态栏图标切换项</summary>
+/// <summary>状态栏图标切换项（icon_blacklist 词条 + 厂商私有键，支持多键写入）</summary>
 public class IconToggle : ViewModelBase
 {
     private bool _isChecked;
     private bool _committed;
 
     public string DisplayName { get; }
-    public string Key { get; }
-    public bool IsBatteryPercent { get; }
+    /// <summary>secure/icon_blacklist 中的图标词条；为空表示该项无标准词条</summary>
+    public string BlacklistToken { get; }
+    /// <summary>厂商私有键列表（"space/key"）；第一项作为状态读取主键</summary>
+    public IReadOnlyList<(string Space, string Key)> PrivateKeys { get; }
+    public string OnValue => "1";
+    public string OffValue => "0";
 
-    public IconToggle(string name, string key, bool defaultOn, bool isBatteryPercent = false)
+    public string Note => !string.IsNullOrEmpty(BlacklistToken)
+        ? $"通过系统 icon_blacklist 的「{BlacklistToken}」词条控制"
+        : PrivateKeys.Count > 0
+            ? $"通过厂商设置键 {PrivateKeys[0].Space}/{PrivateKeys[0].Key} 控制"
+            : "该项依赖厂商 ROM 的私有设置键，部分机型可能不生效";
+
+    public IconToggle(string name, string blacklistToken, bool defaultOn, params string[] privateKeys)
     {
         DisplayName = name;
-        Key = key;
-        IsBatteryPercent = isBatteryPercent;
+        BlacklistToken = blacklistToken;
+        PrivateKeys = privateKeys
+            .Where(s => !string.IsNullOrWhiteSpace(s) && s.Contains('/'))
+            .Select(s =>
+            {
+                var idx = s.IndexOf('/');
+                return (Space: s[..idx], Key: s[(idx + 1)..]);
+            })
+            .ToList();
         _isChecked = defaultOn;
         _committed = defaultOn;
     }

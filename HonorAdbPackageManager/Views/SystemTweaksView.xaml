@@ -11,7 +11,8 @@
         </Grid.RowDefinitions>
 
         <!-- 设备信息条 -->
-        <Border x:Name="InfoBar" Grid.Row="0" Background="{StaticResource InfoLightBrush}" CornerRadius="10"
+        <Border x:Name="InfoBar" Grid.Row="0" Background="{StaticResource AeroToolbarGlass}" CornerRadius="12"
+                BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1"
                 Padding="14,10" Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal">
                 <Button Content="读取设备信息" Command="{Binding ReadAllCommand}"
@@ -27,7 +28,7 @@
             <StackPanel>
 
                 <!-- ============ 动画调节卡 ============ -->
-                <Border x:Name="AnimCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                <Border x:Name="AnimCard" Background="{StaticResource GlassCardBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16,12" Margin="0,0,0,14">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="🎬" FontSize="15" VerticalAlignment="Center"/>
@@ -41,7 +42,7 @@
                         <ItemsControl ItemsSource="{Binding Animations}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="#EEF0F3" BorderThickness="0,0,0,1" Padding="0,8">
+                                    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,8">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
@@ -87,7 +88,7 @@
                 </Border>
 
                 <!-- ============ 屏幕与显示卡 ============ -->
-                <Border x:Name="DisplayCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                <Border x:Name="DisplayCard" Background="{StaticResource GlassCardBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16,12" Margin="0,0,0,14">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <TextBlock Text="🖥" FontSize="15" VerticalAlignment="Center"/>
@@ -99,13 +100,13 @@
                         </StackPanel>
 
                         <!-- 亮屏时间 -->
-                        <Border BorderBrush="#EEF0F3" BorderThickness="0,0,0,1" Padding="0,8">
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,8">
                             <StackPanel>
                                 <TextBlock Text="亮屏时间（分钟）" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock Text="屏幕自动熄灭前的等待时长；Android 原生上限约 30 分钟，输入超过 30 时部分机型仍生效（修改 system.screen_off_timeout）"
+                                <TextBlock Text="屏幕自动熄灭前的等待时长；默认 5 分钟，可设置 5 ~ 600 分钟（通过 adb 修改 system.screen_off_timeout）"
                                            FontSize="11.5" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBox Text="{Binding ScreenTimeoutMinutes, UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox Text="{Binding ScreenTimeoutMinutes, UpdateSourceTrigger=PropertyChanged, FallbackValue=5}"
                                              Width="80" Height="30" VerticalContentAlignment="Center"
                                              Padding="6,0" FontSize="13"/>
                                     <Button Content="应用亮屏时间" Command="{Binding ApplyScreenTimeoutCommand}"
@@ -117,7 +118,7 @@
                         </Border>
 
                         <!-- 刷新率 -->
-                        <Border BorderBrush="#EEF0F3" BorderThickness="0,0,0,1" Padding="0,8">
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,8">
                             <StackPanel>
                                 <TextBlock Text="屏幕刷新率范围（Hz）" FontSize="13" FontWeight="SemiBold"/>
                                 <TextBlock Text="设置系统动态刷新率上下限；方案：90/120 智能均衡 · 60/60 锁定省电 · 120/120 全程流畅。荣耀部分机型由 MagicOS 接管，写入可能被忽略"
@@ -139,13 +140,13 @@
                 </Border>
 
                 <!-- ============ 状态栏精简卡 ============ -->
-                <Border x:Name="StatusBarCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                <Border x:Name="StatusBarCard" Background="{StaticResource GlassCardBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16,12" Margin="0,0,0,14">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="📊" FontSize="15" VerticalAlignment="Center"/>
                             <TextBlock Text=" 状态栏图标精简" FontSize="14.5" FontWeight="Bold"
                                        VerticalAlignment="Center" Margin="6,0,0,0"/>
-                            <TextBlock Text="勾选 = 显示图标；取消勾选 = 隐藏。修改后点【执行】生效"
+                            <TextBlock Text="勾选 = 显示图标；取消勾选 = 隐藏。图标隐藏写入系统 icon_blacklist，支持时立即生效；部分厂商 ROM 可能不响应"
                                        FontSize="11.5" VerticalAlignment="Center" Margin="8,0,0,0"
                                        Foreground="{StaticResource TextSecondary}"/>
                         </StackPanel>
@@ -161,7 +162,8 @@
                                     <DataTemplate>
                                         <Border Width="190" Padding="0,4">
                                             <CheckBox IsChecked="{Binding IsChecked}"
-                                                      Content="{Binding DisplayName}" FontSize="12.5"/>
+                                                      Content="{Binding DisplayName}" FontSize="12.5"
+                                                      ToolTip="{Binding Note}"/>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -180,7 +182,7 @@
                 </Border>
 
                 <!-- ============ 快捷开关卡 ============ -->
-                <Border x:Name="QuickCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                <Border x:Name="QuickCard" Background="{StaticResource GlassCardBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16,12" Margin="0,0,0,14">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock Text="⚡" FontSize="15" VerticalAlignment="Center"/>
@@ -202,6 +204,9 @@
                                     <DataTemplate>
                                         <Border Width="280" Padding="0,4">
                                             <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding DisplayName}"
+                                                      Command="{Binding DataContext.ToggleQuickCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      CommandParameter="{Binding}"
                                                       FontSize="12.5" ToolTip="{Binding Description}"/>
                                         </Border>
                                     </DataTemplate>

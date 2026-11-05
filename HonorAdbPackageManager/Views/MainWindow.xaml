@@ -10,10 +10,10 @@
         Width="1280"
         MinHeight="640"
         MinWidth="1000"
-        Background="{StaticResource WindowBackBrush}"
+        Background="{StaticResource AeroWindowBrush}"
         FontFamily="Microsoft YaHei UI"
         FontSize="13"
-        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextFormattingMode="Display"
         UseLayoutRounding="True">
     <Window.Resources>
         <conv:EnumDisplayConverter x:Key="EnumDisplay"/>
@@ -32,8 +32,26 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <!-- Aero 玻璃背景：浅蓝渐变 + 柔和光斑 + 顶部高光（不含文字，可安全模糊） -->
+        <Grid Grid.Row="0" Grid.RowSpan="5" IsHitTestVisible="False" ClipToBounds="True">
+            <Border Background="{StaticResource AeroGlowBrush}"/>
+            <Ellipse Width="460" Height="320" Fill="#66BFE7FF"
+                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-130,-150,0,0">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="80"/>
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="400" Height="280" Fill="#559FDBFF"
+                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-110,-130">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="80"/>
+                </Ellipse.Effect>
+            </Ellipse>
+            <Border Height="2" VerticalAlignment="Top" Background="#CCFFFFFF"/>
+        </Grid>
         <!-- ============ 常驻红色提示 ============ -->
-        <Border Grid.Row="0" Background="{StaticResource DangerLightBrush}" Padding="16,7">
+        <Border Grid.Row="0" Background="{StaticResource AeroDangerGlass}" Padding="16,8"
+                BorderBrush="#66F5B5AA" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal">
                 <Ellipse Width="9" Height="9" Fill="{StaticResource DangerBrush}"
                          VerticalAlignment="Center" Margin="0,0,9,0"/>
@@ -43,8 +61,8 @@
             </StackPanel>
         </Border>
         <!-- ============ 顶部工具栏 ============ -->
-        <Border Grid.Row="1" Background="{StaticResource CardBackBrush}"
-                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"
+        <Border Grid.Row="1" Background="{StaticResource AeroToolbarGlass}"
+                BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="0,0,0,1"
                 Padding="14,10">
             <StackPanel Orientation="Horizontal">
                 <Button Command="{Binding RefreshDeviceCommand}" Content="刷新设备"
@@ -62,8 +80,8 @@
                 <Button Command="{Binding ShowLogCommand}" Content="执行日志"
                         Style="{StaticResource GhostButton}" Margin="8,0,0,0"/>
                 <Border Width="1" Height="22" Background="{StaticResource BorderBrush}" Margin="14,0"/>
-                <Border Background="{StaticResource WindowBackBrush}"
-                        CornerRadius="6" Width="260" Height="32">
+                <Border Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1"
+                        CornerRadius="9" Width="260" Height="34">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -73,14 +91,14 @@
                                    Margin="10,0,0,0" VerticalAlignment="Center"
                                    Foreground="{StaticResource TextSecondary}"/>
                         <TextBox Grid.Column="1" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                                 BorderThickness="0" Background="Transparent"
+                                 BorderThickness="0" Background="Transparent" Padding="0"
                                  VerticalContentAlignment="Center" Margin="6,0,10,0"
                                  FontSize="13" CaretBrush="{StaticResource AccentBrush}"/>
                     </Grid>
                 </Border>
                 <ComboBox ItemsSource="{Binding TypeFilterOptions}"
                           SelectedItem="{Binding TypeFilter}"
-                          Width="140" Height="32" Margin="8,0,0,0"
+                          Width="140" Height="34" Margin="8,0,0,0"
                           VerticalContentAlignment="Center" FontSize="13"/>
             </StackPanel>
         </Border>
@@ -113,7 +131,7 @@
                         <TextBlock Text="{Binding AdbProbeText}" FontSize="11"
                                    Foreground="{StaticResource TextSecondary}"
                                    TextWrapping="Wrap" Margin="0,4,0,12"/>
-                        <Border Background="{StaticResource WindowBackBrush}" CornerRadius="8"
+                        <Border Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" CornerRadius="8"
                                 Padding="12,10" Margin="0,0,0,12">
                             <StackPanel Orientation="Horizontal">
                                 <Ellipse Width="10" Height="10" Margin="0,0,8,0">
@@ -190,7 +208,7 @@
                             </Border>
                         </UniformGrid>
                         <TextBlock Text="会话操作记录" FontSize="14" FontWeight="Bold" Margin="0,4,0,8"/>
-                        <Border Background="{StaticResource WindowBackBrush}" CornerRadius="8" Padding="10,8">
+                        <Border Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10,8">
                             <StackPanel>
                                 <TextBlock FontSize="12" Foreground="{StaticResource TextSecondary}"
                                            Text="{Binding SessionActionCount, StringFormat=本次会话已执行 {0} 次操作}"/>
@@ -580,7 +598,7 @@
                                Foreground="{StaticResource DangerBrush}"
                                Text="{Binding DetailCriticalWarning}"/>
                 </StackPanel>
-                <Border Grid.Column="2" Background="{StaticResource WindowBackBrush}"
+                <Border Grid.Column="2" Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1"
                         CornerRadius="8" Padding="12,9">
                     <StackPanel>
                         <TextBlock Text="操作历史（本次会话）" FontSize="12.5" FontWeight="Bold"/>
@@ -598,8 +616,8 @@
             </Grid>
         </Border>
         <!-- ============ 状态栏 ============ -->
-        <Border Grid.Row="4" Background="{StaticResource CardBackBrush}"
-                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0"
+        <Border Grid.Row="4" Background="{StaticResource AeroToolbarGlass}"
+                BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="0,1,0,0"
                 Padding="14,6">
             <Grid>
                 <StackPanel Orientation="Horizontal">
@@ -614,16 +632,24 @@
                            Text="仅自用 · 操作前建议备份手机 · 不做系统限制绕过"/>
             </Grid>
         </Border>
-        <!-- 全屏遮罩（加载中） -->
-        <Border Grid.Row="0" Grid.RowSpan="5" Background="#66FFFFFF"
+        <!-- 全屏遮罩（加载中）：半透明玻璃 + 磨砂卡片 -->
+        <Border Grid.Row="0" Grid.RowSpan="5" Background="#99DCEBFF"
                 Visibility="{Binding IsLoadingPackages, Converter={StaticResource BoolToVis}}">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <ProgressBar Width="260" Height="8" Maximum="{Binding ProgressTotal, Mode=OneWay}"
-                             Value="{Binding ProgressDone, Mode=OneWay}"/>
-                <TextBlock Text="{Binding ProgressText}" Margin="0,10,0,0"
-                           HorizontalAlignment="Center" FontSize="13"
-                           Foreground="{StaticResource TextPrimary}"/>
-            </StackPanel>
+            <Border Width="360" Padding="26,22" VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Background="{StaticResource GlassCardBrush}"
+                    BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1"
+                    CornerRadius="16">
+                <StackPanel>
+                    <TextBlock Text="正在读取设备应用包" FontSize="14" FontWeight="SemiBold"
+                               HorizontalAlignment="Center" Foreground="{StaticResource AccentBrush}"/>
+                    <ProgressBar Width="300" Height="8" Margin="0,16,0,0"
+                                 Maximum="{Binding ProgressTotal, Mode=OneWay}"
+                                 Value="{Binding ProgressDone, Mode=OneWay}"/>
+                    <TextBlock Text="{Binding ProgressText}" Margin="0,12,0,0"
+                               HorizontalAlignment="Center" FontSize="12.5" TextWrapping="Wrap"
+                               Foreground="{StaticResource TextSecondary}"/>
+                </StackPanel>
+            </Border>
         </Border>
     </Grid>
 </Window>

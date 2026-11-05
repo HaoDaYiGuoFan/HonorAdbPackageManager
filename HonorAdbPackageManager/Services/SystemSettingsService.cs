@@ -42,6 +42,21 @@ public class SystemSettingsService
         return new SettingsResult { Ok = true, Value = value };
     }
 
+    /// <summary>
+    /// 写入 AOSP 状态栏图标黑名单（secure/icon_blacklist，逗号分隔的图标名）。
+    /// 这是 SystemUI 真正监听的键；清空时须传 ""，否则 settings put 会因缺少参数失败。
+    /// </summary>
+    public async Task<SettingsResult> PutIconBlacklistAsync(string serial, string csv)
+    {
+        var arg = string.IsNullOrEmpty(csv) ? "\"\"" : csv;
+        var r = await _adb.ShellAsync(serial, $"settings put secure icon_blacklist {arg}", 10000);
+        if (!r.Ok) return new SettingsResult { Ok = false, Error = r.StdErr.Trim() };
+        var check = await GetAsync(serial, "secure", "icon_blacklist");
+        if (check.Value != csv)
+            return new SettingsResult { Ok = false, Error = $"写入后回读不一致（读到：{check.Value}）" };
+        return new SettingsResult { Ok = true, Value = csv };
+    }
+
     /// <summary>getprop 只读属性</summary>
     public async Task<string> GetPropAsync(string serial, string prop)
     {
