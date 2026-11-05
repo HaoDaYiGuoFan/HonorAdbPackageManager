@@ -14,6 +14,7 @@ public partial class DeviceChooserDialog : Window
     public DeviceChooserDialog(IList<DeviceInfo> devices)
     {
         InitializeComponent();
+        EnsureOwner();
         _devices = devices;
 
         var list = new List<DeviceItem>();
@@ -36,7 +37,7 @@ public partial class DeviceChooserDialog : Window
     {
         if (DeviceList.SelectedIndex < 0 || DeviceList.SelectedIndex >= _devices.Count)
         {
-            MessageBox.Show("请先选择一台设备。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            MsgBox.Show("请先选择一台设备。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
         Chosen = _devices[DeviceList.SelectedIndex];
@@ -44,4 +45,15 @@ public partial class DeviceChooserDialog : Window
     }
 
     private void Cancel_Click(object sender, RoutedEventArgs e) => DialogResult = false;
-}
+
+    /// <summary>无 Owner 时自动附加当前活动窗口，保证 CenterOwner 居中生效</summary>
+    private void EnsureOwner()
+    {
+        if (Owner is null)
+        {
+            Owner = Application.Current.Windows.OfType<Window>()
+                .FirstOrDefault(w => w.IsActive && w != this)
+                ?? Application.Current.MainWindow;
+            if (Owner == this) Owner = null;
+        }
+    }}

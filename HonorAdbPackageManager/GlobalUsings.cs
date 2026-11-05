@@ -15,3 +15,4 @@ global using System.Windows.Input;
 global using System.Windows.Media;
 global using HonorAdbPackageManager.Models;
 global using HonorAdbPackageManager.Services;
+global using HonorAdbPackageManager.Views;

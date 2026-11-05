@@ -78,12 +78,12 @@ public partial class LogWindow : Window
         try
         {
             var file = App.Log.Export();
-            MessageBox.Show($"日志已导出：\n{file}", "导出成功",
+            MsgBox.Show($"日志已导出：\n{file}", "导出成功",
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"导出失败：{ex.Message}", "导出失败",
+            MsgBox.Show($"导出失败：{ex.Message}", "导出失败",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }

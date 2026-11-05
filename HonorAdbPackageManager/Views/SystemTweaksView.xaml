@@ -1,0 +1,224 @@
+<UserControl x:Class="HonorAdbPackageManager.Views.SystemTweaksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 设备信息条 -->
+        <Border x:Name="InfoBar" Grid.Row="0" Background="{StaticResource InfoLightBrush}" CornerRadius="10"
+                Padding="14,10" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="读取设备信息" Command="{Binding ReadAllCommand}"
+                        Style="{StaticResource PrimaryButton}" Padding="14,6"/>
+                <TextBlock Text="{Binding AospVersion}" Margin="14,0,0,0"
+                           FontSize="12.5" VerticalAlignment="Center"
+                           Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer x:Name="CardsScroll" Grid.Row="1" VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+
+                <!-- ============ 动画调节卡 ============ -->
+                <Border x:Name="AnimCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="🎬" FontSize="15" VerticalAlignment="Center"/>
+                            <TextBlock Text=" 动画缩放调节" FontSize="14.5" FontWeight="Bold"
+                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
+                            <TextBlock Text="（修改立即生效，无需重启）" FontSize="11.5"
+                                       VerticalAlignment="Center" Margin="8,0,0,0"
+                                       Foreground="{StaticResource TextSecondary}"/>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding Animations}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#EEF0F3" BorderThickness="0,0,0,1" Padding="0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding DisplayName}" FontSize="13" FontWeight="SemiBold"/>
+                                                <TextBlock FontSize="11.5" Margin="0,2,0,0"
+                                                           Foreground="{StaticResource TextSecondary}"
+                                                           Text="{Binding Description}"/>
+                                                <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                                    <TextBlock FontSize="11" Foreground="{StaticResource WarnBrush}"
+                                                               Text="{Binding Suggestion}"/>
+                                                    <TextBlock FontSize="11" Margin="10,0,0,0"
+                                                               Foreground="{StaticResource TextSecondary}"
+                                                               Text="{Binding SystemDisplay}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <ComboBox Grid.Column="1" Width="110" Height="30" SelectedValuePath="Tag"
+                                                      VerticalContentAlignment="Center"
+                                                      SelectedValue="{Binding CurrentValue}">
+                                                <ComboBoxItem Content="0（关闭）" Tag="0"/>
+                                                <ComboBoxItem Content="0.5" Tag="0.5"/>
+                                                <ComboBoxItem Content="1（系统默认）" Tag="1"/>
+                                                <ComboBoxItem Content="1.5（推荐）" Tag="1.5"/>
+                                                <ComboBoxItem Content="2" Tag="2"/>
+                                                <ComboBoxItem Content="5（慢动作）" Tag="5"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button Content="应用动画设置" Command="{Binding ApplyAnimationsCommand}"
+                                    Style="{StaticResource PrimaryButton}" Padding="14,6"/>
+                            <TextBlock Text="{Binding AnimStatus}" Margin="12,0,0,0"
+                                       FontSize="12" VerticalAlignment="Center"
+                                       Foreground="{StaticResource SafeBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============ 屏幕与显示卡 ============ -->
+                <Border x:Name="DisplayCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="🖥" FontSize="15" VerticalAlignment="Center"/>
+                            <TextBlock Text=" 屏幕与显示" FontSize="14.5" FontWeight="Bold"
+                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
+                            <TextBlock Text="{Binding Resolution}" FontSize="11.5"
+                                       VerticalAlignment="Center" Margin="10,0,0,0"
+                                       Foreground="{StaticResource TextSecondary}"/>
+                        </StackPanel>
+
+                        <!-- 亮屏时间 -->
+                        <Border BorderBrush="#EEF0F3" BorderThickness="0,0,0,1" Padding="0,8">
+                            <StackPanel>
+                                <TextBlock Text="亮屏时间（分钟）" FontSize="13" FontWeight="SemiBold"/>
+                                <TextBlock Text="屏幕自动熄灭前的等待时长；Android 原生上限约 30 分钟，输入超过 30 时部分机型仍生效（修改 system.screen_off_timeout）"
+                                           FontSize="11.5" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBox Text="{Binding ScreenTimeoutMinutes, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="80" Height="30" VerticalContentAlignment="Center"
+                                             Padding="6,0" FontSize="13"/>
+                                    <Button Content="应用亮屏时间" Command="{Binding ApplyScreenTimeoutCommand}"
+                                            Style="{StaticResource PrimaryButton}" Margin="10,0,0,0" Padding="12,5"/>
+                                    <TextBlock Text="{Binding TimeoutStatus}" Margin="12,0,0,0" FontSize="12"
+                                               VerticalAlignment="Center" Foreground="{StaticResource SafeBrush}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- 刷新率 -->
+                        <Border BorderBrush="#EEF0F3" BorderThickness="0,0,0,1" Padding="0,8">
+                            <StackPanel>
+                                <TextBlock Text="屏幕刷新率范围（Hz）" FontSize="13" FontWeight="SemiBold"/>
+                                <TextBlock Text="设置系统动态刷新率上下限；方案：90/120 智能均衡 · 60/60 锁定省电 · 120/120 全程流畅。荣耀部分机型由 MagicOS 接管，写入可能被忽略"
+                                           FontSize="11.5" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBox Text="{Binding RefreshRateMin, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="70" Height="30" VerticalContentAlignment="Center" Padding="6,0" FontSize="13"/>
+                                    <TextBlock Text="  ~  " FontSize="13" VerticalAlignment="Center"/>
+                                    <TextBox Text="{Binding RefreshRateMax, UpdateSourceTrigger=PropertyChanged}"
+                                             Width="70" Height="30" VerticalContentAlignment="Center" Padding="6,0" FontSize="13"/>
+                                    <Button Content="应用刷新率" Command="{Binding ApplyRefreshRateCommand}"
+                                            Style="{StaticResource PrimaryButton}" Margin="10,0,0,0" Padding="12,5"/>
+                                    <TextBlock Text="{Binding RefreshStatus}" Margin="12,0,0,0" FontSize="12"
+                                               VerticalAlignment="Center" Foreground="{StaticResource SafeBrush}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============ 状态栏精简卡 ============ -->
+                <Border x:Name="StatusBarCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="📊" FontSize="15" VerticalAlignment="Center"/>
+                            <TextBlock Text=" 状态栏图标精简" FontSize="14.5" FontWeight="Bold"
+                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
+                            <TextBlock Text="勾选 = 显示图标；取消勾选 = 隐藏。修改后点【执行】生效"
+                                       FontSize="11.5" VerticalAlignment="Center" Margin="8,0,0,0"
+                                       Foreground="{StaticResource TextSecondary}"/>
+                        </StackPanel>
+
+                        <WrapPanel>
+                            <ItemsControl ItemsSource="{Binding StatusBarIcons}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="190" Padding="0,4">
+                                            <CheckBox IsChecked="{Binding IsChecked}"
+                                                      Content="{Binding DisplayName}" FontSize="12.5"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </WrapPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button Content="执行（应用勾选）" Command="{Binding ApplyStatusBarCommand}"
+                                    Style="{StaticResource PrimaryButton}" Padding="14,6"/>
+                            <Button Content="还原（默认显示）" Command="{Binding RestoreStatusBarCommand}"
+                                    Style="{StaticResource GhostButton}" Margin="10,0,0,0" Padding="14,6"/>
+                            <TextBlock Text="{Binding StatusBarStatus}" Margin="12,0,0,0" FontSize="12"
+                                       VerticalAlignment="Center" Foreground="{StaticResource SafeBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============ 快捷开关卡 ============ -->
+                <Border x:Name="QuickCard" Background="White" CornerRadius="10" Padding="16,12" Margin="0,0,0,10">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="⚡" FontSize="15" VerticalAlignment="Center"/>
+                            <TextBlock Text=" 开发者快捷开关" FontSize="14.5" FontWeight="Bold"
+                                       VerticalAlignment="Center" Margin="6,0,0,0"/>
+                            <TextBlock Text="勾选即请求开启，取消即请求关闭（每次弹确认）"
+                                       FontSize="11.5" VerticalAlignment="Center" Margin="8,0,0,0"
+                                       Foreground="{StaticResource TextSecondary}"/>
+                        </StackPanel>
+
+                        <WrapPanel>
+                            <ItemsControl ItemsSource="{Binding QuickToggles}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="280" Padding="0,4">
+                                            <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding DisplayName}"
+                                                      FontSize="12.5" ToolTip="{Binding Description}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </WrapPanel>
+
+                        <TextBlock Text="{Binding QuickStatus}" Margin="0,8,0,0" FontSize="12"
+                                   Foreground="{StaticResource SafeBrush}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- 底部说明 -->
+                <TextBlock FontSize="11.5" Foreground="{StaticResource TextSecondary}"
+                           TextWrapping="Wrap" Margin="4,0,0,10"
+                           Text="以上修改通过 adb shell settings 命令写入系统设置，部分项目荣耀 MagicOS 可能接管或限制；写入前均弹确认框，写入后立即回读验证。所有修改重启手机后仍保留，可通过对应『还原』或系统设置恢复。"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

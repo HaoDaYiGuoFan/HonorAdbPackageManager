@@ -287,3 +287,7 @@ E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Rel
 E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Release\net10.0-windows10.0.19041.0\win-x64\HonorAdbPackageManager.genruntimeconfig.cache
 E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Release\net10.0-windows10.0.19041.0\win-x64\ref\HonorAdbPackageManager.dll
 E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Release\net10.0-windows10.0.19041.0\win-x64\HonorAdbPackageManager.sourcelink.json
+E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Release\net10.0-windows10.0.19041.0\win-x64\Views\ToolboxView.baml
+E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Release\net10.0-windows10.0.19041.0\win-x64\Views\ToolboxView.g.cs
+E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Release\net10.0-windows10.0.19041.0\win-x64\Views\SystemTweaksView.baml
+E:\PrivateProjects\Private\HonorAdbPackageManager\HonorAdbPackageManager\obj\Release\net10.0-windows10.0.19041.0\win-x64\Views\SystemTweaksView.g.cs

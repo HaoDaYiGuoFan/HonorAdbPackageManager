@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 
 namespace HonorAdbPackageManager;
 
@@ -9,6 +9,8 @@ public partial class App : Application
     public static Services.AdbService Adb { get; private set; } = null!;
     public static Services.KnowledgeService Knowledge { get; private set; } = null!;
     public static Services.IconCacheService Icons { get; private set; } = null!;
+    public static Services.SettingsService Settings { get; private set; } = null!;
+    public static Services.SystemSettingsService SystemSettings { get; private set; } = null!;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -36,7 +38,9 @@ public partial class App : Application
         Knowledge = new Services.KnowledgeService(Log);
         Knowledge.Load();
 
+        Settings = new Services.SettingsService();
         Adb = new Services.AdbService(Log);
+        SystemSettings = new Services.SystemSettingsService(Adb);
         Icons = new Services.IconCacheService(Log);
 
         if (!Services.ExeLocator.IsAvailable)

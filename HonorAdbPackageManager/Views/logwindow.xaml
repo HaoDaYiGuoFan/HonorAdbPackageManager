@@ -1,6 +1,8 @@
 <Window x:Class="HonorAdbPackageManager.Views.LogWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ADB 执行日志"
+        WindowStartupLocation="CenterOwner"
         Icon="/Assets/logo-256.png"
         Height="560"
         Width="900"

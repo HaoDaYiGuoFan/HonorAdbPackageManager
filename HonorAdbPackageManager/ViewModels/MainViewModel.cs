@@ -21,6 +21,12 @@ public class MainViewModel : ViewModelBase
     public RelayCommand ShowLogCommand { get; }
     public RelayCommand OpenCacheFolderCommand { get; }
     public RelayCommand PackageActionCommand { get; }
+
+    /// <summary>快速工具箱（仿鸿蒙工具箱选项卡）</summary>
+    public ViewModels.ToolboxViewModel Toolbox { get; }
+
+    /// <summary>动画调节 + 功能选项卡</summary>
+    public ViewModels.SystemTweaksViewModel Tweaks { get; }
     public RelayCommand RestoreHintCommand { get; }
     public RelayCommand ClearSearchCommand { get; }
 
@@ -40,6 +46,8 @@ public class MainViewModel : ViewModelBase
         PackageActionCommand = new(async p => await ExecutePackageActionAsync(p as PackageItem));
         RestoreHintCommand = new(_ => ShowRestoreHint(_ as PackageItem));
         ClearSearchCommand = new(_ => SearchText = string.Empty);
+        Toolbox = new ToolboxViewModel(this);
+        Tweaks = new SystemTweaksViewModel(this);
     }
 
     // ================= 设备状态 =================
@@ -274,7 +282,7 @@ public class MainViewModel : ViewModelBase
         if (!Services.ExeLocator.IsAvailable)
         {
             AdbProbeText = Services.ExeLocator.LastProbe;
-            MessageBox.Show("未找到 adb.exe，请将其放入程序目录 adb\\ 文件夹。",
+            MsgBox.Show("未找到 adb.exe，请将其放入程序目录 adb\\ 文件夹。",
                 "缺少 ADB", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -290,7 +298,7 @@ public class MainViewModel : ViewModelBase
             {
                 Device = null;
                 _log.Info("未检测到设备。请：1) 插上 USB；2) 手机打开 USB 调试；3) 在手机上允许 RSA 调试授权弹窗。");
-                MessageBox.Show("未检测到设备。\n\n请检查：\n1. 手机已插 USB 线\n2. 已开启开发者选项与 USB 调试\n3. 手机弹出的『允许 USB 调试』已点允许",
+                MsgBox.Show("未检测到设备。\n\n请检查：\n1. 手机已插 USB 线\n2. 已开启开发者选项与 USB 调试\n3. 手机弹出的『允许 USB 调试』已点允许",
                     "无设备", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
@@ -319,7 +327,7 @@ public class MainViewModel : ViewModelBase
         {
             Device = d;
             _log.Error("设备未授权：请在手机上允许 USB 调试授权后重新刷新。");
-            MessageBox.Show("设备已连接但未授权。\n\n请在手机屏幕上点击『允许 USB 调试』后再点【刷新设备】。",
+            MsgBox.Show("设备已连接但未授权。\n\n请在手机屏幕上点击『允许 USB 调试』后再点【刷新设备】。",
                 "待授权", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -342,7 +350,7 @@ public class MainViewModel : ViewModelBase
     {
         if (Device is null || !Device.IsOnline)
         {
-            MessageBox.Show("请先连接设备。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            MsgBox.Show("请先连接设备。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 
@@ -392,13 +400,14 @@ public class MainViewModel : ViewModelBase
             await Task.WhenAll(tasks);
             RefreshCounts();
             ApplyFilter();
+            Toolbox.RebindAll();
             ProgressText = $"加载完成：{Items.Count} 个包";
             _log.Info($"包列表加载完成：{Items.Count} 个（未知 {UnknownCount} / 核心禁止 {Items.Count(i => i.PackageType == Models.PackageType.SystemCritical)}）");
         }
         catch (Exception ex)
         {
             _log.Error($"拉取包列表失败：{ex.Message}");
-            MessageBox.Show($"拉取包列表失败：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            MsgBox.Show($"拉取包列表失败：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
@@ -468,19 +477,23 @@ public class MainViewModel : ViewModelBase
 
     // ================= 流程3/4：卸载/停用/还原 =================
 
+    /// <summary>公开操作入口（快速工具箱复用：内部包含禁止拦截与双重确认）</summary>
+    public async Task ExecutePackageActionPublicAsync(PackageItem item) =>
+        await ExecutePackageActionAsync(item);
+
     private async Task ExecutePackageActionAsync(PackageItem? item)
     {
         if (item is null) return;
         if (Device is null || !Device.IsOnline)
         {
-            MessageBox.Show("设备未连接。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MsgBox.Show("设备未连接。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         // 禁止操作拦截
         if (!item.CanUninstall)
         {
-            MessageBox.Show("该组件为系统核心，禁用会导致设备异常，已拦截操作。",
+            MsgBox.Show("该组件为系统核心，禁用会导致设备异常，已拦截操作。",
                 "禁止操作", MessageBoxButton.OK, MessageBoxImage.Stop);
             return;
         }
@@ -494,7 +507,7 @@ public class MainViewModel : ViewModelBase
                 await DoEnable(item);
                 break;
             case Models.PackageStatus.Uninstalled:
-                MessageBox.Show("第三方应用已彻底卸载，无法通过 ADB 还原；\n请使用『备份选中 APK』或本地 APK 重新安装。",
+                MsgBox.Show("第三方应用已彻底卸载，无法通过 ADB 还原；\n请使用『备份选中 APK』或本地 APK 重新安装。",
                     "无法还原", MessageBoxButton.OK, MessageBoxImage.Information);
                 break;
         }
@@ -522,7 +535,7 @@ public class MainViewModel : ViewModelBase
         var finalHint = isThird
             ? $"最后确认：真的要卸载『{item.AppLabel}』吗？\n\n卸载后需要原 APK 才能恢复。"
             : $"最后确认：真的要停用『{item.AppLabel}』吗？\n\n停用后可随时一键还原。";
-        if (MessageBox.Show(finalHint, "最终确认", MessageBoxButton.YesNo, MessageBoxImage.Question,
+        if (MsgBox.Show(finalHint, "最终确认", MessageBoxButton.YesNo, MessageBoxImage.Question,
                 MessageBoxResult.No) != MessageBoxResult.Yes) return;
 
         IsBusy = true;
@@ -552,7 +565,7 @@ public class MainViewModel : ViewModelBase
                     _log.Info($"[{item.PackageName}] 停用成功");
                 }
                 SessionActionCount++;
-                MessageBox.Show($"『{item.AppLabel}』{(isThird ? "卸载" : "停用")}成功。",
+                MsgBox.Show($"『{item.AppLabel}』{(isThird ? "卸载" : "停用")}成功。",
                     "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -560,7 +573,7 @@ public class MainViewModel : ViewModelBase
                 var reason = DescribeFailure(r);
                 item.AddHistory($"{(isThird ? "卸载" : "停用")}失败：{reason}");
                 _log.Error($"[{item.PackageName}] {(isThird ? "卸载" : "停用")}失败：{reason}");
-                MessageBox.Show(
+                MsgBox.Show(
                     $"『{item.AppLabel}』{(isThird ? "卸载" : "停用")}失败。\n\n可能原因：{reason}\n\n详见日志窗口。",
                     "操作失败", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -574,7 +587,7 @@ public class MainViewModel : ViewModelBase
     /// <summary>还原启用（流程4分支A）</summary>
     private async Task DoEnable(PackageItem item)
     {
-        if (MessageBox.Show($"确认还原启用『{item.AppLabel}』吗？",
+        if (MsgBox.Show($"确认还原启用『{item.AppLabel}』吗？",
                 "还原确认", MessageBoxButton.YesNo, MessageBoxImage.Question,
                 MessageBoxResult.No) != MessageBoxResult.Yes) return;
 
@@ -593,14 +606,14 @@ public class MainViewModel : ViewModelBase
                 item.AddHistory("还原启用成功 (pm enable)");
                 SessionActionCount++;
                 _log.Info($"[{item.PackageName}] 还原启用成功");
-                MessageBox.Show($"『{item.AppLabel}』已还原启用。", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                MsgBox.Show($"『{item.AppLabel}』已还原启用。", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
                 var reason = DescribeFailure(r);
                 item.AddHistory($"还原失败：{reason}");
                 _log.Error($"[{item.PackageName}] 还原失败：{reason}");
-                MessageBox.Show($"『{item.AppLabel}』还原失败。\n\n可能原因：{reason}", "操作失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                MsgBox.Show($"『{item.AppLabel}』还原失败。\n\n可能原因：{reason}", "操作失败", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         finally
@@ -631,12 +644,12 @@ public class MainViewModel : ViewModelBase
         var item = SelectedItem;
         if (item is null)
         {
-            MessageBox.Show("请先在列表中选择一个应用。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            MsgBox.Show("请先在列表中选择一个应用。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
         if (string.IsNullOrEmpty(item.SourceApkPath) || !item.SourceApkPath.EndsWith(".apk", StringComparison.OrdinalIgnoreCase))
         {
-            MessageBox.Show("该包没有可备份的 APK 路径（可能是拆分 APK 或无权限读取）。",
+            MsgBox.Show("该包没有可备份的 APK 路径（可能是拆分 APK 或无权限读取）。",
                 "无法备份", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -653,12 +666,12 @@ public class MainViewModel : ViewModelBase
                 item.AddHistory($"APK 已备份到 {backupDir}");
                 SessionActionCount++;
                 _log.Info($"[{item.PackageName}] APK 备份完成：{backupDir}");
-                MessageBox.Show($"备份完成！\n\n目录：{backupDir}", "备份成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                MsgBox.Show($"备份完成！\n\n目录：{backupDir}", "备份成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
                 _log.Error($"[{item.PackageName}] 备份失败：{r.Combined.Trim()}");
-                MessageBox.Show($"备份失败：\n{r.Combined.Trim()}", "备份失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                MsgBox.Show($"备份失败：\n{r.Combined.Trim()}", "备份失败", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         finally
@@ -674,7 +687,8 @@ public class MainViewModel : ViewModelBase
     {
         var dlg = new Views.InputDialog(
             "连接无线 ADB",
-            "输入手机 IP:端口（如 192.168.1.100:5555）。\n手机需先在开发者选项中开启『无线调试』并处于同一 Wi-Fi。")
+            "输入手机 IP:端口（如 192.168.1.100:5555）。\n手机需先在开发者选项中开启『无线调试』并处于同一 Wi-Fi。",
+            App.Settings.LastWirelessAddress)
         { Owner = Application.Current.MainWindow };
         if (dlg.ShowDialog() != true) return;
         var addr = dlg.InputText?.Trim();
@@ -685,15 +699,18 @@ public class MainViewModel : ViewModelBase
         {
             var r = await App.Adb.ConnectAsync(addr);
             var ok = r.StdOut.Contains("connected", StringComparison.OrdinalIgnoreCase);
+            App.Settings.LastWirelessAddress = addr;
+            App.Settings.Save();
+
             if (ok)
             {
-                _log.Info($"无线连接成功：{addr}");
+                _log.Info($"无线连接成功：{addr}（已记住地址）");
                 await RefreshDeviceAsync();
             }
             else
             {
                 _log.Error($"无线连接失败：{r.Combined.Trim()}");
-                MessageBox.Show($"连接失败：\n{r.Combined.Trim()}", "无线 ADB", MessageBoxButton.OK, MessageBoxImage.Error);
+                MsgBox.Show($"连接失败：\n{r.Combined.Trim()}", "无线 ADB", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         finally
@@ -729,12 +746,12 @@ public class MainViewModel : ViewModelBase
         try
         {
             App.Knowledge.Import(dlg.FileName);
-            MessageBox.Show($"知识库导入成功，当前共 {App.Knowledge.Count} 条。\n重新拉取包列表后生效。",
+            MsgBox.Show($"知识库导入成功，当前共 {App.Knowledge.Count} 条。\n重新拉取包列表后生效。",
                 "导入成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"导入失败：{ex.Message}", "导入失败", MessageBoxButton.OK, MessageBoxImage.Error);
+            MsgBox.Show($"导入失败：{ex.Message}", "导入失败", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -744,11 +761,11 @@ public class MainViewModel : ViewModelBase
         {
             var file = _log.Export();
             _log.Info($"日志已导出：{file}");
-            MessageBox.Show($"日志已导出：\n{file}", "导出成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            MsgBox.Show($"日志已导出：\n{file}", "导出成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"导出失败：{ex.Message}", "导出失败", MessageBoxButton.OK, MessageBoxImage.Error);
+            MsgBox.Show($"导出失败：{ex.Message}", "导出失败", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -757,7 +774,7 @@ public class MainViewModel : ViewModelBase
     {
         if (item is null) return;
         var msg = $"『{item.AppLabel}』是第三方应用，已彻底卸载。\n\nADB 无法直接恢复，需要原 APK 文件重新安装（adb install）。\n\n如之前做过备份，请将 APK 放到任意目录后用以下命令安装：\nadb install 路径\\{item.PackageName}.apk";
-        MessageBox.Show(msg, "需要 APK 重新安装", MessageBoxButton.OK, MessageBoxImage.Information);
+        MsgBox.Show(msg, "需要 APK 重新安装", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private void OpenFolder(string path)

@@ -1,6 +1,8 @@
 <Window x:Class="HonorAdbPackageManager.Views.DevicePickerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="荣耀 ADB 应用包管理工具"
+        WindowStartupLocation="CenterScreen"
         Icon="/Assets/logo-256.png"
         Height="300"
         Width="560"
@@ -36,6 +38,8 @@
                    Text="正在检测 ADB 与设备…"/>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="WirelessHelpButton" Content="无线 ADB 模式" Style="{StaticResource GhostButton}"
+                    Width="120" Click="WirelessHelp_Click"/>
             <Button Content="重新检测" Style="{StaticResource GhostButton}"
                     Width="96" Click="Refresh_Click"/>
             <Button x:Name="EnterButton" Content="进入主界面" Style="{StaticResource PrimaryButton}"

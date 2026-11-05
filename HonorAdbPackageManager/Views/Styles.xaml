@@ -25,6 +25,17 @@
 
     <SolidColorBrush x:Key="BorderBrush" Color="#E5E6EB"/>
 
+    <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFFFFF" Offset="0"/>
+        <GradientStop Color="#F7F9FC" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#3370FF" Offset="0"/>
+        <GradientStop Color="#0A59F7" Offset="1"/>
+    </LinearGradientBrush>
+    <DropShadowEffect x:Key="CardShadow" Color="#22000000" BlurRadius="14" ShadowDepth="2" Direction="270" Opacity="0.14"/>
+    <DropShadowEffect x:Key="BtnShadow" Color="#330A59F7" BlurRadius="8" ShadowDepth="1" Direction="270" Opacity="0.35"/>
+
     <!-- ===== 通用小控件 ===== -->
     <Style x:Key="BaseButton" TargetType="Button">
         <Setter Property="FontSize" Value="13"/>
@@ -58,8 +69,9 @@
     </Style>
 
     <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
-        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Background" Value="{StaticResource PrimaryGradient}"/>
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Effect" Value="{StaticResource BtnShadow}"/>
     </Style>
 
     <Style x:Key="GhostButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
