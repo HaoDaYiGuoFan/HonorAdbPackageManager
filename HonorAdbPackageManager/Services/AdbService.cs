@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace HonorAdbPackageManager.Services;
 
@@ -163,6 +163,61 @@ public class AdbService
     /// <summary>无线连接 adb connect ip:port</summary>
     public Task<AdbResult> ConnectAsync(string hostPort) =>
         RunAsync($"connect {hostPort}", 15000);
+
+    /// <summary>
+    /// 无线配对 adb pair ip:port code。
+    /// Android 11+ 无线调试首次使用必须先配对：手机端「无线调试 → 使用配对码配对设备」
+    /// 弹窗显示一次性配对端口与 6 位码；成功后密钥落盘 %USERPROFILE%\.adbkey，
+    /// 之后 connect 自动认证，无需重复配对。
+    /// </summary>
+    public Task<AdbResult> PairAsync(string hostPort, string code) =>
+        RunAsync($"pair {hostPort} {code}", 20000);
+
+    /// <summary>电脑端是否已存在 ADB 密钥（从未配对过的机器必然没有）</summary>
+    public static bool HasAdbKey =>
+        File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".adbkey"));
+
+    /// <summary>
+    /// 连接失败智能诊断：区分「网络不可达」「端口通但 TLS 握手被拒（未配对/密钥失效）」，
+    /// 返回面向用户的可操作提示。
+    /// </summary>
+    public static string DiagnoseConnectFailure(string hostPort, AdbResult result)
+    {
+        var output = result.Combined;
+
+        var tcpReachable = Task.Run(async () =>
+        {
+            try
+            {
+                var parts = hostPort.Split(':');
+                if (parts.Length != 2 || !int.TryParse(parts[1], out var port)) return false;
+                using var client = new System.Net.Sockets.TcpClient();
+                var connectTask = client.ConnectAsync(parts[0], port);
+                var done = await Task.WhenAny(connectTask, Task.Delay(3000));
+                return done == connectTask && client.Connected;
+            }
+            catch { return false; }
+        }).GetAwaiter().GetResult();
+
+        if (!tcpReachable)
+        {
+            return $"无法建立 TCP 连接到 {hostPort}。请检查：\n" +
+                   "① 手机与电脑是否在同一 Wi-Fi（同一网段）；\n" +
+                   "② 手机『无线调试』页面显示的 IP:端口 与输入是否一致（端口每次开关会变）；\n" +
+                   "③ 路由器是否开启了 AP 隔离（可尝试关闭后重试）。";
+        }
+
+        if (!HasAdbKey)
+        {
+            return "TCP 端口可达，但 ADB 握手被设备拒绝：这台电脑从未与手机完成过『配对』。\n" +
+                   "请重新连接一次，工具将引导你完成配对（手机端：无线调试 → 使用配对码配对设备）。";
+        }
+
+        return "TCP 端口可达，但 ADB 握手被设备拒绝。可能原因：\n" +
+               "① 手机端撤销过调试授权或密钥失效 → 重新配对一次即可；\n" +
+               "② 无线调试开关刚被切换，端口已变 → 回手机页面确认新端口；\n" +
+               "③ 详细输出：" + (string.IsNullOrWhiteSpace(output) ? "无" : output.Trim());
+    }
 
     /// <summary>断开无线连接</summary>
     public Task<AdbResult> DisconnectAsync(string? hostPort = null) =>

@@ -1,15 +1,23 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace HonorAdbPackageManager.Views;
 
 /// <summary>
 /// 全局日志窗口：实时显示 ADB 命令与输出，可导出 TXT。
 /// 单例复用（重复点击工具栏按钮只打开已有窗口）。
+/// 高频日志防卡顿：250ms 窗口内批量合并追加 + 缓冲上限保护，
+/// 避免拉取 400+ 包时上万次 AppendText 把 UI 线程打满（未响应）。
 /// </summary>
 public partial class LogWindow : Window
 {
     private static LogWindow? _instance;
+
+    /// <summary>待刷新缓冲（UI 线程写入）</summary>
+    private readonly System.Text.StringBuilder _pending = new();
+    private DispatcherTimer? _flushTimer;
+    private const int MaxPendingChars = 200_000;
 
     public static void ShowOrActivate()
     {
@@ -27,51 +35,69 @@ public partial class LogWindow : Window
         InitializeComponent();
         RefreshAll();
         App.Log.EntryAdded += OnEntryAdded;
-        Closed += (_, _) => App.Log.EntryAdded -= OnEntryAdded;
+        Closed += (_, _) =>
+        {
+            App.Log.EntryAdded -= OnEntryAdded;
+            _flushTimer?.Stop();
+        };
     }
 
     private void OnEntryAdded(LogEntry entry)
     {
-        // 日志产生线程 != UI 线程，切回 UI 追加
+        // 日志产生线程 != UI 线程，切回 UI 线程写入缓冲；定时器统一刷新
         Dispatcher.BeginInvoke(() =>
         {
-            LogTextBox.AppendText(entry.ToLine() + Environment.NewLine);
+            _pending.AppendLine(entry.ToLine());
+            if (_pending.Length > MaxPendingChars)
+            {
+                // 缓冲异常膨胀保护：丢弃最旧的
+                _pending.Remove(0, _pending.Length - MaxPendingChars / 2);
+                _pending.Insert(0, "…(日志刷入过快，中间部分已省略)…" + Environment.NewLine);
+            }
+
+            _flushTimer ??= CreateFlushTimer();
+            _flushTimer.Start(); // 250ms 后首次/再次触发
+        });
+    }
+
+    private DispatcherTimer CreateFlushTimer()
+    {
+        var t = new DispatcherTimer(DispatcherPriority.Background) { Interval = TimeSpan.FromMilliseconds(250) };
+        t.Tick += (_, _) =>
+        {
+            t.Stop();
+            if (_pending.Length == 0) return;
+
+            var chunk = _pending.ToString();
+            _pending.Clear();
+
+            LogTextBox.AppendText(chunk);
+            TrimIfNeeded();
             if (AutoScrollCheck.IsChecked == true)
                 LogTextBox.ScrollToEnd();
-        });
+        };
+        return t;
+    }
+
+    /// <summary>显示框上限 40 万字符：超出裁掉最旧一半，防止长会话内存/渲染膨胀</summary>
+    private void TrimIfNeeded()
+    {
+        if (LogTextBox.Text.Length <= 400_000) return;
+        var keep = LogTextBox.Text[200_000..];
+        LogTextBox.Text = "…(较早日志已省略，导出 TXT 仍含完整内容)…" + Environment.NewLine + keep;
     }
 
     private void RefreshAll()
     {
-        var sb = new System.Text.StringBuilder();
-        foreach (var e in EnumerateLogs())
-            sb.AppendLine(e.ToLine());
-        LogTextBox.Text = sb.ToString();
+        LogTextBox.Text = App.Log.ExportToText();
         LogTextBox.ScrollToEnd();
     }
 
-    private static IEnumerable<LogEntry> EnumerateLogs()
+    private void Clear_Click(object sender, RoutedEventArgs e)
     {
-        // LogService 内部队列不直接暴露；导出方法复用其完整快照
-        var tmp = Path.GetTempFileName();
-        try
-        {
-            // 直接复用 Export 的快照逻辑：这里通过反射/复制实现会过度设计，
-            // 简化处理：调用 Export 写入临时目录，再读回显示。
-            // 但 Export 会写 Logs 目录——为避免副作用，这里改为重放事件缓存。
-            // LogService 同时缓存了最近 5000 条，通过 ExportFileOnly 获取文本。
-            var text = App.Log.ExportToText();
-            foreach (var line in text.Split('\n'))
-                yield return new LogEntry { Message = line.TrimEnd('\r') };
-        }
-        finally
-        {
-            try { File.Delete(tmp); } catch { }
-        }
-    }
-
-    private void Clear_Click(object sender, RoutedEventArgs e) =>
+        _pending.Clear();
         LogTextBox.Clear();
+    }
 
     private void Export_Click(object sender, RoutedEventArgs e)
     {

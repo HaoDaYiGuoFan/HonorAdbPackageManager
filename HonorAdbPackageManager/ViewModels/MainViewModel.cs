@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using HonorAdbPackageManager.Commands;
 
 namespace HonorAdbPackageManager.ViewModels;
@@ -699,23 +699,77 @@ public class MainViewModel : ViewModelBase
         {
             var r = await App.Adb.ConnectAsync(addr);
             var ok = r.StdOut.Contains("connected", StringComparison.OrdinalIgnoreCase);
-            App.Settings.LastWirelessAddress = addr;
-            App.Settings.Save();
 
             if (ok)
             {
+                App.Settings.LastWirelessAddress = addr;
+                App.Settings.Save();
                 _log.Info($"无线连接成功：{addr}（已记住地址）");
                 await RefreshDeviceAsync();
             }
             else
             {
                 _log.Error($"无线连接失败：{r.Combined.Trim()}");
-                MsgBox.Show($"连接失败：\n{r.Combined.Trim()}", "无线 ADB", MessageBoxButton.OK, MessageBoxImage.Error);
+                var diag = Services.AdbService.DiagnoseConnectFailure(addr, r);
+                if (diag.Contains("配对"))
+                {
+                    var answer = MsgBox.Show(
+                        diag + "\n\n现在进行配对吗？（手机端请先打开「无线调试 → 使用配对码配对设备」弹窗）",
+                        "需要配对", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+                    if (answer == MessageBoxResult.Yes)
+                        await PairAndReconnectAsync(addr);
+                }
+                else
+                {
+                    MsgBox.Show(diag, "无线 ADB", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
         finally
         {
             IsBusy = false;
+        }
+    }
+
+    /// <summary>
+    /// 配对流程：弹窗收集手机「配对码配对」页显示的一次性端口与 6 位码，
+    /// adb pair 成功后自动用原地址重连。
+    /// </summary>
+    private async Task PairAndReconnectAsync(string connectAddr)
+    {
+        while (true)
+        {
+            var dlg = new Views.PairingDialog(App.Settings.LastWirelessAddress.Split(':').FirstOrDefault() + ":");
+            dlg.Owner = Application.Current.MainWindow;
+            if (dlg.ShowDialog() != true) return;
+
+            var pr = await App.Adb.PairAsync(dlg.PairAddress, dlg.PairCode);
+            var pairOk = pr.Combined.Contains("Successfully paired", StringComparison.OrdinalIgnoreCase)
+                         || pr.Ok && pr.Combined.Contains("paired", StringComparison.OrdinalIgnoreCase);
+
+            if (!pairOk)
+            {
+                MsgBox.Show($"配对失败：\n{pr.Combined.Trim()}\n\n常见原因：\n① 配对端口填成了主页面端口（配对端口在『使用配对码配对设备』弹窗里，每次打开都不同）；\n② 配对码已超时刷新 → 关闭手机弹窗重开一次；\n③ 手机弹窗已关闭 → 需重新打开后再试。",
+                    "配对失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                continue;
+            }
+
+            _log.Info($"配对成功：{dlg.PairAddress}");
+            var cr = await App.Adb.ConnectAsync(connectAddr);
+            if (cr.StdOut.Contains("connected", StringComparison.OrdinalIgnoreCase))
+            {
+                App.Settings.LastWirelessAddress = connectAddr;
+                App.Settings.Save();
+                _log.Info($"无线连接成功：{connectAddr}（配对后自动重连）");
+                await RefreshDeviceAsync();
+            }
+            else
+            {
+                var diag = Services.AdbService.DiagnoseConnectFailure(connectAddr, cr);
+                MsgBox.Show($"配对已成功，但连接 {connectAddr} 仍失败：\n{cr.Combined.Trim()}\n\n{diag}",
+                    "无线 ADB", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            return;
         }
     }
 

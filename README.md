@@ -1,4 +1,4 @@
-# 荣耀 ADB 应用包管理工具（HonorAdbPackageManager）
+﻿# 荣耀 ADB 应用包管理工具（HonorAdbPackageManager）
 
 ![.NET 10](https://img.shields.io/badge/.NET-10.0-blueviolet) ![WPF](https://img.shields.io/badge/UI-WPF%20%7C%20MVVM-blue) ![Platform](https://img.shields.io/badge/OS-Windows%2010%2F11%20x64-success) ![ADB](https://img.shields.io/badge/ADB-platform--tools%2037.0.1-orange) ![Knowledge](https://img.shields.io/badge/知识库-1139%20条-informational)
 
@@ -28,7 +28,7 @@
 
 ## 🖼️ 主界面一览（应用管理）
 
-![主界面](screenshots/主页新.png)
+![主界面](screenshots/主界面.png)
 
 - **顶部工具栏**：刷新设备 / 无线 ADB / 断开连接 / 拉取全部应用包 / 备份 APK / 导入知识库 / 执行日志 / 实时搜索 + 类型筛选
 - **双选项卡**：「📋 应用管理」完整列表 + 「🧰 快速工具箱」分类快捷操作
@@ -44,6 +44,8 @@
 第二个选项卡提供分类卡片式快捷操作，所有停用/卸载/还原**均走双重确认**（勾选「我已知晓风险」→ 最终确认弹窗）：
 
 ![快速工具箱](screenshots/快速工具箱.png)
+
+![读取包](screenshots/读取包.png)
 
 | 分类卡片 | 内容 |
 | --- | --- |
@@ -71,6 +73,10 @@
 停用后的包状态变为「已停用」，按钮切换为【还原启用】，点击后二次确认即可通过 `pm enable` 恢复。选中任意条目，底部详情面板会显示该包的版本、APK 路径与本次会话的操作历史。
 
 ![还原包状态](screenshots/还原包状态.png)
+
+停用后列表状态变为「已停用」，操作列切换为【还原启用】：
+
+![已停用列表](screenshots/主界面2.png)
 
 ---
 

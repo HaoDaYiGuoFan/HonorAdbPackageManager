@@ -19,9 +19,14 @@ public class LogService
     public void Output(string msg) => Add(LogLevel.Output, msg);
     public void Error(string msg) => Add(LogLevel.Error, msg);
 
+    /// <summary>单条日志最大长度：dumpsys 等大输出截断，避免 UI 与内存被刷爆</summary>
+    private const int MaxEntryLength = 4000;
+
     private void Add(LogLevel level, string msg)
     {
         if (string.IsNullOrEmpty(msg)) return;
+        if (msg.Length > MaxEntryLength)
+            msg = msg[..MaxEntryLength] + $"\n…(输出过长，已截断 {msg.Length - MaxEntryLength} 字符)";
         var entry = new LogEntry { Level = level, Message = msg };
         _entries.Enqueue(entry);
         while (_entries.Count > MaxEntries && _entries.TryDequeue(out _))
