@@ -7974,6 +7974,195 @@
       "Risk": "低风险",
       "CanDisable": true,
       "Remark": "用 VoWiFi 勿停"
+    },
+    "com.hihonor.android.clone": {
+      "Name": "手机克隆",
+      "Desc": "荣耀官方换机迁移工具：旧手机数据（联系人/照片/应用）一键克隆到新机",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "Magic7/600 系新机内置；换完机可停用"
+    },
+    "com.hihonor.edulauncher": {
+      "Name": "教育桌面（荣耀教育）",
+      "Desc": "荣耀学生模式/教育桌面启动器：面向学生的分屏学习桌面与应用管控",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用学生模式可停用"
+    },
+    "com.hihonor.printassistant": {
+      "Name": "打印助手（荣耀打印）",
+      "Desc": "荣耀打印机配套服务：发现局域网荣耀打印机、打印任务中转",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用荣耀打印机可停用"
+    },
+    "cn.honor.qinxuan": {
+      "Name": "荣耀亲选",
+      "Desc": "荣耀官方商城应用：荣耀/优选配件与 IoT 商品购买、以旧换新、售后服务入口",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "新机预置（HonorChoice）；不逛商城可停用"
+    },
+    "com.honor.reader": {
+      "Name": "荣耀阅读",
+      "Desc": "荣耀官方阅读应用：网络文学/出版书城，含阅读器内核与书城推荐",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "新机预置；不看小说可停用，注意 com.honor.reader.overlay 同步处理"
+    },
+    "com.honor.reader.overlay": {
+      "Name": "荣耀阅读主题层",
+      "Desc": "荣耀阅读的 RRO 运行时资源覆盖层（主题/区域定制）",
+      "Risk": "安全",
+      "CanDisable": true,
+      "Remark": "随荣耀阅读一起停用"
+    },
+    "android": {
+      "Name": "Android 系统框架（框架核心）",
+      "Desc": "AOSP 系统最底层容器包：框架资源、核心服务寄主，停用等于系统崩溃",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "绝对不可动"
+    },
+    "android.ext.services": {
+      "Name": "Android 扩展服务（APEX）",
+      "Desc": "AOSP mainline 扩展服务模块（APEX）：网络建议、共享库等系统级服务",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "系统 APEX 组件"
+    },
+    "android.ext.shared": {
+      "Name": "Android 扩展共享库（APEX）",
+      "Desc": "AOSP mainline 扩展共享库（APEX）：供系统服务与应用共享的 mainline 代码",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "系统 APEX 组件"
+    },
+    "org.codeaurora.ims": {
+      "Name": "高通 IMS 服务",
+      "Desc": "高通平台 IMS（IP 多媒体子系统）服务：VoLTE/VoNR 通话注册与信令",
+      "Risk": "高风险",
+      "CanDisable": false,
+      "Remark": "停用后无法打电话（VoLTE 全断）"
+    },
+    "vendor.qti.imsdatachannel": {
+      "Name": "高通 IMS 数据通道",
+      "Desc": "高通 IMS Data Channel（数据通道）持久服务：通话中数据通道（5G DC）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "PERSISTENT 持久进程，勿动"
+    },
+    "vendor.qti.iwlan": {
+      "Name": "高通 IWLAN 服务",
+      "Desc": "高通 IWLAN（Wi-Fi 通话）服务：VoWiFi 隧道与 ePDG 连接管理",
+      "Risk": "高风险",
+      "CanDisable": false,
+      "Remark": "用 Wi-Fi 通话勿停"
+    },
+    "vendor.qti.hardware.cacert.server": {
+      "Name": "高通 CA 证书服务",
+      "Desc": "高通 cacert server（PERSISTENT）：运营商 PKI/证书与安全鉴权底层",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "PERSISTENT 持久进程，勿动"
+    },
+    "cmb.pb": {
+      "Name": "招商银行",
+      "Desc": "招商银行手机银行 App（一网通）：账户查询、转账、掌上生活",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "第三方金融，用户自装"
+    },
+    "cn.com.shbank.mper": {
+      "Name": "上海银行",
+      "Desc": "上海银行手机银行 App：账户/理财/生活缴费",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "第三方金融"
+    },
+    "cn.gov.tax.its": {
+      "Name": "个人所得税",
+      "Desc": "国家税务总局个人所得税务 App：个税查询、专项附加扣除、年度汇算",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "官方政务应用"
+    },
+    "tv.danmaku.bili": {
+      "Name": "哔哩哔哩",
+      "Desc": "哔哩哔哩（B 站）视频客户端：弹幕视频、直播、番剧",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "第三方应用"
+    },
+    "com.xunlei.downloadprovider": {
+      "Name": "迅雷",
+      "Desc": "迅雷下载 App：磁力/种子/高速下载与云盘",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "第三方应用"
+    },
+    "io.legado.app.release": {
+      "Name": "阅读·开源版（Legado）",
+      "Desc": "开源网络文学阅读器 Legado（阅读 3.0 正式版）：自定义书源、本地 TXT/EPUB",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "开源第三方"
+    },
+    "io.legado.app.refgd": {
+      "Name": "阅读·GKD 变体",
+      "Desc": "Legado 阅读的 GKD 改版变体包（社区修改版）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "第三方变体"
+    },
+    "li.songe.gkd": {
+      "Name": "GKD（跳过广告）",
+      "Desc": "开源自动跳过开屏广告/自动点击工具 GKD，基于无障碍订阅规则",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "开源效率工具"
+    },
+    "li.songe.gkdx": {
+      "Name": "GKD 新版变体",
+      "Desc": "GKD 的新包名变体（gkdx，应用内升级后的新包）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "与 li.songe.gkd 二选一保留"
+    },
+    "com.microsoft.appmanager": {
+      "Name": "Microsoft365 管理器（Link to Windows）",
+      "Desc": "微软手机连接（Link to Windows）服务进程：与 Windows 电脑配对投屏/通知/文件互传",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用跨设备可停用"
+    },
+    "mobi.w3studio.apps.android.shsmy.phone": {
+      "Name": "什么值得买（手机版）",
+      "Desc": "什么值得买 SMZDM 购物决策社区 App：优惠信息、晒单评测",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "第三方购物"
+    },
+    "com.content.magnetsearch": {
+      "Name": "磁力搜索（磁力搜索引擎）",
+      "Desc": "磁力链接搜索/资源聚合类应用",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "第三方工具，留意隐私与版权风险"
+    },
+    "com.rainbow.magnet_app": {
+      "Name": "彩虹磁力（磁力播放）",
+      "Desc": "磁力链接搜索与在线播放类应用（彩虹磁力）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "第三方工具，留意隐私与版权风险"
+    },
+    "androidhnext": {
+      "Name": "AndroidHNext 组件",
+      "Desc": "系统 hidl/compat 兼容组件（android.hnext 变体包名），底层框架依赖",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "系统底层，勿动"
     }
   }
 }
