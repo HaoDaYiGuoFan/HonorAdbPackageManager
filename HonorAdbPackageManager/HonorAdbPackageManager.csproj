@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -13,7 +13,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <Version>1.0.0</Version>
+    <Version>1.4.0</Version>
     <ProductName>Honor ADB Package Manager</ProductName>
     <Authors>HonorAdbPackageManager</Authors>
     <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>

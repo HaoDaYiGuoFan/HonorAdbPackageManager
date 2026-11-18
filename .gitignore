@@ -1,0 +1,26 @@
+﻿# ===== 构建输出 =====
+[Bb]in/
+[Oo]bj/
+[Bb]in/[Dd]ebug/
+[Bb]in/[Rr]elease/
+
+# ===== 发布/打包产物（可再生，不入库） =====
+publish/
+publish_sc/
+publish_new/
+release_stage*/
+HonorAdbPackageManager-dist/
+*.zip
+
+# ===== IDE / 用户配置 =====
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ===== 日志/临时/备份 =====
+*.log
+*.tmp
+*.bak-*
+*.bak
