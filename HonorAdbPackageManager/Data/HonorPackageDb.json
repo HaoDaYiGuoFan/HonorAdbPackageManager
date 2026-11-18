@@ -1,4 +1,4 @@
-{
+﻿{
   "SchemaVersion": "5",
   "UpdatedAt": "2026-11-02",
   "Packages": {
@@ -6877,8 +6877,8 @@
       "Remark": ""
     },
     "com.larus.nova": {
-      "Name": "某音海外/Larus Nova",
-      "Desc": "内容平台组件",
+      "Name": "豆包",
+      "Desc": "字节跳动 AI 助手（豆包 App）：AI 对话问答、写作与翻译、拍照识图答题、语音通话与智能体助手",
       "Risk": "安全",
       "CanDisable": true,
       "Remark": ""
