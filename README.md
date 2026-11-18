@@ -85,7 +85,7 @@
 | 特性 | 说明 |
 | --- | --- |
 | 📦 全量包读取 | `pm list packages -f / -s / -3 / -d` 四路合并 + `dumpsys` 4 线程并发解析，400+ 包约 30 秒 |
-| 🧠 内置知识库 | **1139 条**中文说明：荣耀 `com.hihonor.*` 351 条、华为遗留 `com.huawei.*` 296 条、AOSP/GMS 163 条、第三方应用 251 条（国内主流 + 国际 Top100） |
+| 🧠 内置知识库 | **1166 条**中文说明：荣耀 `com.hihonor.*` 351 条、华为遗留 `com.huawei.*` 296 条、AOSP/GMS 163 条、第三方应用 251 条（国内主流 + 国际 Top100） |
 | 🏷️ 三类包分级 | 第三方（可卸载）/ 系统可停用（disable-user）/ 核心系统（禁止操作，按钮灰化） |
 | 🚦 四级风险标记 | 安全 / 低风险 / 高风险 / 禁止操作，色块徽章一眼可辨 |
 | ❓ 未知应用保护 | 知识库未收录的包标记「未知应用」，操作前强制高危二次确认 |
@@ -159,7 +159,7 @@ HonorAdbPackageManager/
 
 ## 📚 知识库
 
-内置 `Data/HonorPackageDb.json`，当前 **1139 条**：
+内置 `Data/HonorPackageDb.json`，当前 **1166 条**：
 
 - **数据来源**：[UAD-NG (Universal Android Debloater)](https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation) 社区包数据库（huawei→hihonor 命名映射）、CSDN《MagicOS 内置应用注释》、荣耀社区公开资料，人工翻译整理为中文
 - **真机实测**：荣耀 Magic5 Pro（MagicOS 11）412 个包 **100% 匹配显示**
