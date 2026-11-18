@@ -24,3 +24,11 @@ HonorAdbPackageManager-dist/
 *.tmp
 *.bak-*
 *.bak
+# ===== 源码目录内的编译/发布残留（某次构建误输出到项目根，均已可再生） =====
+HonorAdbPackageManager/HonorAdbPackageManager/*.dll
+HonorAdbPackageManager/HonorAdbPackageManager/*.exe
+HonorAdbPackageManager/HonorAdbPackageManager/*.pdb
+HonorAdbPackageManager/HonorAdbPackageManager/*.deps.json
+HonorAdbPackageManager/HonorAdbPackageManager/*.runtimeconfig.json
+HonorAdbPackageManager/HonorAdbPackageManager/HonorPackageDb.json
+HonorAdbPackageManager/HonorAdbPackageManager/zh-Hans/
