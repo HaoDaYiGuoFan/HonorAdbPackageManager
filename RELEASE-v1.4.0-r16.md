@@ -14,10 +14,10 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| `HonorAdbPackageManager-v1.4.0-r16.zip` (67.25 MB) | 自包含发行包：内置 .NET 10 运行时 + ADB 37.0.1 + 知识库 1139 条，**解压即用，目标机无需安装任何依赖** |
+| `HonorAdbPackageManager-v1.4.0-r16.zip` (67.25 MB) | 自包含发行包：内置 .NET 10 运行时 + ADB 37.0.1 + 知识库 1166 条，**解压即用，目标机无需安装任何依赖** |
 
-- **大小**：70,516,646 字节（67.25 MB），253 个条目
-- **SHA256**：`DDE64F390FD8944E37065031203B1255CD5930DE989B7EBD2AD2816FC6016D25`
+- **大小**：70,518,620 字节（67.25 MB），253 个条目
+- **SHA256**：`5068803616799F97A5CF26C619DA4C32C89F2572A96423649DAB854F044C9A5B`
 
 ```powershell
 Get-FileHash .\HonorAdbPackageManager-v1.4.0-r16.zip -Algorithm SHA256
