@@ -8163,6 +8163,90 @@
       "Risk": "禁止操作",
       "CanDisable": false,
       "Remark": "系统底层，勿动"
+    },
+    "com.hihonor.android.hsf": {
+      "Name": "荣耀服务框架",
+      "Desc": "荣耀基础服务框架（HSF）：应用商店/云服务/推送等荣耀服务的基础支撑，持有装卸包权限",
+      "Risk": "高风险",
+      "CanDisable": false,
+      "Remark": "停用会影响应用市场与云服务；UAD 标 Recommended 但真机慎动"
+    },
+    "com.hihonor.android.hwouc": {
+      "Name": "系统更新（OTA 老路径）",
+      "Desc": "OTA 升级服务（老包名路径，部分机型与 com.hihonor.ouc 并存）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不想自动更新可停用；恢复用 pm enable"
+    },
+    "com.hihonor.android.hwupgradeguide": {
+      "Name": "升级引导",
+      "Desc": "应用市场首次启动的升级引导页/向导组件",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD 标 Recommended"
+    },
+    "com.hihonor.android.overlay.modules.modulemetadata": {
+      "Name": "模块元数据覆盖层",
+      "Desc": "RRO 覆盖层：记录设备上 mainline 模块清单的元数据",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "UAD 不建议动"
+    },
+    "com.hihonor.contentsensor": {
+      "Name": "内容感知（ContentSensor）",
+      "Desc": "内容感知组件：采集已装应用与使用情况用于内容推荐（社区反馈采集项较多）",
+      "Risk": "高风险",
+      "CanDisable": true,
+      "Remark": "注重隐私可停用；停用后部分推荐失效"
+    },
+    "com.hihonor.featurelayer.featureframework": {
+      "Name": "特性框架",
+      "Desc": "FeatureFramework：特性更新检查与特性开关下发",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD 标 Advanced"
+    },
+    "com.hihonor.hwblockchain": {
+      "Name": "区块链服务",
+      "Desc": "荣耀区块链相关服务（老机型遗留，新机多已移除）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD 标 Recommended，移除无明显影响"
+    },
+    "com.hihonor.HnMultiScreenShot": {
+      "Name": "滚动截屏（长截屏）",
+      "Desc": "滚动截屏/长截图功能组件（老包名大小写变体）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "不用长截屏可停用"
+    },
+    "com.hihonor.hwpanpayservice": {
+      "Name": "闪付服务（老）",
+      "Desc": "支付相关服务（老包名路径，与 com.hihonor.hnpanpayservice 并存的变体）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD 标 Recommended；用 Huawi/荣耀 Pay 勿停"
+    },
+    "com.hihonor.permissioncontroller": {
+      "Name": "权限控制器（老路径）",
+      "Desc": "运行时权限管理控制器（老包名路径，新机用 overlay 变体）",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "权限弹窗依赖此组件，勿停"
+    },
+    "com.hihonor.userguide": {
+      "Name": "用户手册",
+      "Desc": "说明书/用户指南应用（需 PDF 阅读器配合）",
+      "Risk": "低风险",
+      "CanDisable": true,
+      "Remark": "UAD 标 Recommended"
+    },
+    "com.hihonor.webview": {
+      "Name": "荣耀 WebView 内核",
+      "Desc": "荣耀定制 WebView（基于 Chromium）：为无内置浏览器的应用提供网页渲染",
+      "Risk": "禁止操作",
+      "CanDisable": false,
+      "Remark": "停用会导致大量应用网页白屏；系统会回退 AOSP WebView"
     }
   }
 }
