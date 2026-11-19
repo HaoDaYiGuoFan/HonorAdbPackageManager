@@ -62,7 +62,7 @@ Get-FileHash .\HonorAdbPackageManager-v1.4.0-r17.zip -Algorithm SHA256
 
 ### ⚡ 新增「全局锁定 120Hz」快捷设置
 
-「功能」页屏幕刷新率区块下新增一键项：**锁定全局 120Hz**（min_refresh_rate = peak_refresh_rate = 120，弹确认后写入并回读验证，写入成功自动同步上方范围输入框为 120/120）与**恢复智能调度**（settings delete 两个键，回到 90/120 智能均衡）。配套 SystemSettingsService.DeleteAsync（settings delete + 回读确认删除成功）。
+「功能」页屏幕刷新率区块下新增一键项：**锁定全局 120Hz**真机验证有效方案：写荣耀档位键 hw_screen_freq=1（secure 表）+ hw_screen_high_freq=120 + AOSP min/peak=120 双保险，写入后锁屏再点亮一次生效（硬件模式切换在显示重建时应用）；「恢复智能调度」写回 hw_screen_freq=0 并删除 AOSP 键，同一生效方式。配套 SystemSettingsService.DeleteAsync。
 
 ### 📚 知识库扩容：1139 → 1178 条
 
