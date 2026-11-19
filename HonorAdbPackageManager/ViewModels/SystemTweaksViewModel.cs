@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using HonorAdbPackageManager.Commands;
 
 namespace HonorAdbPackageManager.ViewModels;
@@ -43,6 +43,8 @@ public class SystemTweaksViewModel : ViewModelBase
         // ── 命令 ──
         ReadAllCommand = new RelayCommand(async _ => await ReadAllAsync(), _ => _main.IsDeviceOnline);
         ApplyAnimationsCommand = new RelayCommand(async _ => await ApplyAnimationsAsync(), _ => _main.IsDeviceOnline);
+        Lock120Command = new(async _ => await Lock120Async());
+        RestoreRefreshCommand = new(async _ => await RestoreRefreshAsync());
         ApplyRefreshRateCommand = new RelayCommand(async _ => await ApplyRefreshRateAsync(), _ => _main.IsDeviceOnline);
         ApplyScreenTimeoutCommand = new RelayCommand(async _ => await ApplyScreenTimeoutAsync(), _ => _main.IsDeviceOnline);
         ApplyStatusBarCommand = new RelayCommand(async _ => await ApplyStatusBarAsync(), _ => _main.IsDeviceOnline);
@@ -185,6 +187,75 @@ public class SystemTweaksViewModel : ViewModelBase
         RefreshStatus = r1.Ok && r2.Ok
             ? $"✓ 刷新率范围已设为 {min}~{max}Hz"
             : $"写入失败：{(!r1.Ok ? r1.Error : r2.Error)}（荣耀部分机型由 MagicOS 智能调度接管）";
+    }
+
+    /// <summary>全局锁定 120Hz：min=peak=120，一键全程高刷</summary>
+    public RelayCommand Lock120Command { get; }
+
+    /// <summary>恢复智能调度：清掉 min/peak 强制值</summary>
+    public RelayCommand RestoreRefreshCommand { get; }
+
+    private string _lock120Status = string.Empty;
+    public string Lock120Status
+    {
+        get => _lock120Status;
+        private set { if (_lock120Status != value) { _lock120Status = value; Raise(); } }
+    }
+
+    private async Task Lock120Async()
+    {
+        var serial = _main.Device?.Serial;
+        if (serial is null)
+        {
+            MsgBox.Show("设备未连接。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        var confirm = MsgBox.Show(
+            "将系统全局刷新率锁定为 120Hz（min_refresh_rate = peak_refresh_rate = 120）。\n\n" +
+            "效果：所有场景强制 120Hz，动画/滚动最流畅；代价是耗电增加。\n" +
+            "还原：点旁边的【恢复智能调度】，或手动设 90/120。\n\n确认执行吗？",
+            "全局锁定 120Hz", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+        if (confirm != MessageBoxResult.Yes) return;
+
+        var r1 = await App.SystemSettings.PutAsync(serial, "system", "min_refresh_rate", "120");
+        var r2 = await App.SystemSettings.PutAsync(serial, "system", "peak_refresh_rate", "120");
+        var ok = r1.Ok && r2.Ok;
+        Lock120Status = ok
+            ? "? 已全局锁定 120Hz"
+            : $"写入失败：{(!r1.Ok ? r1.Error : r2.Error)}";
+        if (ok)
+        {
+            RefreshRateMin = "120";
+            RefreshRateMax = "120";
+            RefreshStatus = "? 已全局锁定 120Hz（可用下方『恢复智能调度』还原）";
+        }
+    }
+
+    private async Task RestoreRefreshAsync()
+    {
+        var serial = _main.Device?.Serial;
+        if (serial is null)
+        {
+            MsgBox.Show("设备未连接。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        var confirm = MsgBox.Show(
+            "恢复系统智能刷新率调度（删除 min/peak_refresh_rate 强制值，回到 90/120 智能均衡）。\n\n确认执行吗？",
+            "恢复智能调度", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+        if (confirm != MessageBoxResult.Yes) return;
+
+        var d1 = await App.SystemSettings.DeleteAsync(serial, "system", "min_refresh_rate");
+        var d2 = await App.SystemSettings.DeleteAsync(serial, "system", "peak_refresh_rate");
+        var ok = d1.Ok && d2.Ok;
+        Lock120Status = ok ? "? 已恢复智能调度" : $"还原失败：{(!d1.Ok ? d1.Error : d2.Error)}";
+        if (ok)
+        {
+            RefreshRateMin = "90";
+            RefreshRateMax = "120";
+            RefreshStatus = "? 已恢复智能调度（90/120）";
+        }
     }
 
     // ────────── 状态栏图标精简 ──────────

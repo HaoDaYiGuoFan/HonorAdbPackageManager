@@ -1,4 +1,4 @@
-<UserControl x:Class="HonorAdbPackageManager.Views.SystemTweaksView"
+﻿<UserControl x:Class="HonorAdbPackageManager.Views.SystemTweaksView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
@@ -132,6 +132,23 @@
                                     <Button Content="应用刷新率" Command="{Binding ApplyRefreshRateCommand}"
                                             Style="{StaticResource PrimaryButton}" Margin="10,0,0,0" Padding="12,5"/>
                                     <TextBlock Text="{Binding RefreshStatus}" Margin="12,0,0,0" FontSize="12"
+                                               VerticalAlignment="Center" Foreground="{StaticResource SafeBrush}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- 全局锁定 120Hz 快捷项 -->
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                            <StackPanel>
+                                <TextBlock Text="全局锁定 120Hz" FontSize="13" FontWeight="SemiBold"/>
+                                <TextBlock Text="一键将 min/peak_refresh_rate 均写为 120，所有场景强制高刷（滚动、动画全程 120Hz）；耗电会增加。旁边的按钮可恢复系统智能调度"
+                                           FontSize="11.5" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <Button Content="锁定全局 120Hz" Command="{Binding Lock120Command}"
+                                            Style="{StaticResource PrimaryButton}" Padding="12,5"/>
+                                    <Button Content="恢复智能调度" Command="{Binding RestoreRefreshCommand}"
+                                            Style="{StaticResource GhostButton}" Margin="10,0,0,0" Padding="12,5"/>
+                                    <TextBlock Text="{Binding Lock120Status}" Margin="12,0,0,0" FontSize="12"
                                                VerticalAlignment="Center" Foreground="{StaticResource SafeBrush}" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </StackPanel>

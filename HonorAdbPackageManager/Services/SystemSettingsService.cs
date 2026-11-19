@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace HonorAdbPackageManager.Services;
 
@@ -40,6 +40,18 @@ public class SystemSettingsService
         if (check.Value != value)
             return new SettingsResult { Ok = false, Error = $"写入后回读不一致（读到：{check.Value}）——系统可能限制了该设置项" };
         return new SettingsResult { Ok = true, Value = value };
+    }
+
+    /// <summary>删除 settings 键（settings delete），用于还原智能调度等场景</summary>
+    public async Task<SettingsResult> DeleteAsync(string serial, string space, string key)
+    {
+        var r = await _adb.ShellAsync(serial, $"settings delete {space} {key}", 10000);
+        if (!r.Ok) return new SettingsResult { Ok = false, Error = r.StdErr.Trim() };
+        // 验证已删除：get 应返回不存在
+        var check = await GetAsync(serial, space, key);
+        if (!string.IsNullOrEmpty(check.Value))
+            return new SettingsResult { Ok = false, Error = $"删除后回读仍有值（{check.Value}）——系统可能限制了该设置项" };
+        return new SettingsResult { Ok = true };
     }
 
     /// <summary>
