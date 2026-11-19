@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace HonorAdbPackageManager.Views;
@@ -42,6 +42,6 @@ public partial class MainWindow : Window
 
         // 已带设备进入时自动拉取包列表（流程2）
         if (device is { IsOnline: true })
-            Loaded += async (_, _) => await _vm.LoadPackagesAsync();
+            Loaded += async (_, _) => await _vm.LoadPackagesAsync(minimizeWhileLoading: true);
     }
 }

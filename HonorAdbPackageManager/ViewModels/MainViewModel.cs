@@ -104,6 +104,8 @@ public class MainViewModel : ViewModelBase
                 _isLoadingPackages = value;
                 Raise();
                 Raise(nameof(IsBusy));
+                Raise(nameof(IsPackagesLoaded));
+                Raise(nameof(AllowNavigationWhileLoading));
                 LoadPackagesCommand.RaiseCanExecuteChanged();
             }
         }
@@ -126,6 +128,12 @@ public class MainViewModel : ViewModelBase
     }
 
     public bool IsIdle => !IsBusy;
+
+    /// <summary>应用管理 Tab 可用条件：包列表加载完成（或从未来过加载）</summary>
+    public bool IsPackagesLoaded => !IsLoadingPackages && ProgressDone >= ProgressTotal && ProgressTotal > 0;
+
+    /// <summary>快速工具箱/动画调节/功能 Tab 可用条件：非包加载期间（加载中禁用）</summary>
+    public bool AllowNavigationWhileLoading => !IsLoadingPackages;
 
     private int _progressDone;
     public int ProgressDone
@@ -346,7 +354,7 @@ public class MainViewModel : ViewModelBase
 
     // ================= 流程2：拉取应用包 =================
 
-    public async Task LoadPackagesAsync()
+    public async Task LoadPackagesAsync(bool minimizeWhileLoading = false)
     {
         if (Device is null || !Device.IsOnline)
         {
@@ -358,6 +366,18 @@ public class MainViewModel : ViewModelBase
         ProgressText = "正在获取包列表…";
         Items.Clear();
         RefreshCounts();
+
+        // 加载期收纳（仅自动拉包）：最小化到任务栏（不关闭），完成后自动恢复
+        if (minimizeWhileLoading)
+        {
+            try
+            {
+                var winLoad = Application.Current.Windows.OfType<Views.MainWindow>().FirstOrDefault();
+                if (winLoad is not null)
+                    winLoad.WindowState = WindowState.Minimized;
+            }
+            catch { /* 最小化失败不影响主流程 */ }
+        }
 
         try
         {
@@ -412,6 +432,18 @@ public class MainViewModel : ViewModelBase
         finally
         {
             IsLoadingPackages = false;
+            Raise(nameof(IsPackagesLoaded));
+            // 拉包结束（成功或失败）：若窗口处于最小化（加载期收纳到任务栏），自动恢复并前置
+            try
+            {
+                var win = Application.Current.Windows.OfType<Views.MainWindow>().FirstOrDefault();
+                if (win is not null && win.WindowState == WindowState.Minimized)
+                {
+                    win.WindowState = WindowState.Normal;
+                    win.Activate();
+                }
+            }
+            catch { /* 窗口恢复失败不影响主流程 */ }
         }
     }
 
