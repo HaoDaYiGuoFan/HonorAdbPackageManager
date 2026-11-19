@@ -221,14 +221,21 @@ public class SystemTweaksViewModel : ViewModelBase
         var r1 = await App.SystemSettings.PutAsync(serial, "system", "min_refresh_rate", "120");
         var r2 = await App.SystemSettings.PutAsync(serial, "system", "peak_refresh_rate", "120");
         var ok = r1.Ok && r2.Ok;
-        Lock120Status = ok
-            ? "? 已全局锁定 120Hz"
-            : $"写入失败：{(!r1.Ok ? r1.Error : r2.Error)}";
         if (ok)
         {
             RefreshRateMin = "120";
             RefreshRateMax = "120";
-            RefreshStatus = "? 已全局锁定 120Hz（可用下方『恢复智能调度』还原）";
+            RefreshStatus = "? 已全局锁定 120Hz（可用『恢复智能调度』还原）";
+            // 读取真实渲染帧率，让用户确认实际生效值（荣耀设置页档位高亮可能不更新，以此为准）
+            var raw = await App.SystemSettings.GetCurrentRefreshRateAsync(serial);
+            var m = System.Text.RegularExpressions.Regex.Match(raw, @"renderFrameRate\s+([\d.]+)");
+            Lock120Status = m.Success && float.TryParse(m.Groups[1].Value, out var fpsVal)
+                ? $"? 已全局锁定 120Hz（当前实际渲染：{Math.Round(fpsVal)}Hz；荣耀设置页档位显示可能不更新，以此为准）"
+                : "? 已全局锁定 120Hz（荣耀设置页档位显示可能不更新，可下拉通知栏观察流畅度）";
+        }
+        else
+        {
+            Lock120Status = $"写入失败：{(!r1.Ok ? r1.Error : r2.Error)}";
         }
     }
 
