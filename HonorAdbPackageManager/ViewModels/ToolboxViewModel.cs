@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using HonorAdbPackageManager.Commands;
 
 namespace HonorAdbPackageManager.ViewModels;
@@ -169,7 +169,14 @@ public class ToolboxViewModel : ViewModelBase
 
     private async Task DoActionAsync(ToolboxItem? item)
     {
-        if (item?.Bound is null) return;
+        if (item is null) return;
+        if (item.Bound is null)
+        {
+            if (_main.IsLoadingPackages)
+                MsgBox.Show("包列表正在加载中，请稍候再试（加载完成后此条目会自动绑定可用）。",
+                    "加载中", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         // 复用主列表操作：内部含禁止拦截 + 勾选确认 + 最终确认
         await _main.ExecutePackageActionPublicAsync(item.Bound);
         item.UpdateFromBound();
@@ -179,7 +186,14 @@ public class ToolboxViewModel : ViewModelBase
 
     private async Task DoRestoreAsync(ToolboxItem? item)
     {
-        if (item?.Bound is null) return;
+        if (item is null) return;
+        if (item.Bound is null)
+        {
+            if (_main.IsLoadingPackages)
+                MsgBox.Show("包列表正在加载中，请稍候再试（加载完成后此条目会自动绑定可用）。",
+                    "加载中", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
         await _main.ExecutePackageActionPublicAsync(item.Bound);
         item.UpdateFromBound();
         if (item.Bound.Status == PackageStatus.Enabled)
