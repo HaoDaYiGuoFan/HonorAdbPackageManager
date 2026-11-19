@@ -1,4 +1,4 @@
-# HonorAdbPackageManager v1.4.0-r17
+﻿# HonorAdbPackageManager v1.4.0-r17
 
 **免 ROOT 管理荣耀 MagicOS 手机的应用包** —— 读取全部应用包名，自动匹配内置中文知识库（名称/功能/风险），系统包一键停用还原、第三方包卸载、核心组件智能拦截、APK 一键备份；内置「快速工具箱」批量操作页与「动画调节 / 功能」快捷设置页。
 
@@ -16,8 +16,8 @@
 | --- | --- |
 | `HonorAdbPackageManager-v1.4.0-r17.zip` (71.77 MB) | 自包含发行包：内置 .NET 10 运行时 + ADB 37.0.1 + 知识库 1178 条，**解压即用，目标机无需安装任何依赖** |
 
-- **大小**：75,273,035 字节（71.77 MB），269 个条目
-- **SHA256**：`F382EC02A6BD807B4F5EAB3B35D998C99B07787B221E0AA1598398646F956AD0`
+- **大小**：75,350,212 字节（71.85 MB），269 个条目
+- **SHA256**：`45ADF0DE29A47069C7D062099E41D66BAE3EDD5B48458C8C7E50E6EA7A4CEA55`
 
 ```powershell
 Get-FileHash .\HonorAdbPackageManager-v1.4.0-r17.zip -Algorithm SHA256
