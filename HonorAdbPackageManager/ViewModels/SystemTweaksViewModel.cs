@@ -212,33 +212,32 @@ public class SystemTweaksViewModel : ViewModelBase
         }
 
         var confirm = MsgBox.Show(
-            "将系统全局刷新率锁定为 120Hz（min_refresh_rate = peak_refresh_rate = 120）。\n\n" +
-            "效果：所有场景强制 120Hz，动画/滚动最流畅；代价是耗电增加。\n" +
-            "还原：点旁边的【恢复智能调度】，或手动设 90/120。\n\n确认执行吗？",
+            "将系统全局锁定为 120Hz。\n\n写入内容：\n" +
+            "① 荣耀档位键 hw_screen_freq = 1（最高档）+ hw_screen_high_freq = 120\n" +
+            "② AOSP 键 min_refresh_rate = peak_refresh_rate = 120（双保险）\n\n" +
+            "生效方式：写入后需要【锁屏再点亮屏幕一次】（硬件模式切换只在显示重建时应用）。\n" +
+            "还原：点【恢复智能调度】。\n\n确认执行吗？",
             "全局锁定 120Hz", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
         if (confirm != MessageBoxResult.Yes) return;
 
-        var r1 = await App.SystemSettings.PutAsync(serial, "system", "min_refresh_rate", "120");
-        var r2 = await App.SystemSettings.PutAsync(serial, "system", "peak_refresh_rate", "120");
-        var ok = r1.Ok && r2.Ok;
+        var r1 = await App.SystemSettings.PutAsync(serial, "secure", "hw_screen_freq", "1");
+        var r2 = await App.SystemSettings.PutAsync(serial, "secure", "hw_screen_high_freq", "120");
+        var r3 = await App.SystemSettings.PutAsync(serial, "system", "min_refresh_rate", "120");
+        var r4 = await App.SystemSettings.PutAsync(serial, "system", "peak_refresh_rate", "120");
+        var ok = r1.Ok && r2.Ok && r3.Ok && r4.Ok;
+
         if (ok)
         {
             RefreshRateMin = "120";
             RefreshRateMax = "120";
-            RefreshStatus = "? 已全局锁定 120Hz（可用『恢复智能调度』还原）";
-            // 读取真实渲染帧率，让用户确认实际生效值（荣耀设置页档位高亮可能不更新，以此为准）
-            var raw = await App.SystemSettings.GetCurrentRefreshRateAsync(serial);
-            var m = System.Text.RegularExpressions.Regex.Match(raw, @"renderFrameRate\s+([\d.]+)");
-            Lock120Status = m.Success && float.TryParse(m.Groups[1].Value, out var fpsVal)
-                ? $"? 已全局锁定 120Hz（当前实际渲染：{Math.Round(fpsVal)}Hz；荣耀设置页档位显示可能不更新，以此为准）"
-                : "? 已全局锁定 120Hz（荣耀设置页档位显示可能不更新，可下拉通知栏观察流畅度）";
+            RefreshStatus = "? 已写入 120Hz 锁定（请锁屏一次并点亮生效）";
+            Lock120Status = "? 已写入：荣耀档位键 + AOSP 双保险 → 请锁屏再点亮屏幕一次生效";
         }
         else
         {
-            Lock120Status = $"写入失败：{(!r1.Ok ? r1.Error : r2.Error)}";
+            Lock120Status = $"写入失败：{(!r1.Ok ? r1.Error : !r2.Ok ? r2.Error : !r3.Ok ? r3.Error : r4.Error)}";
         }
     }
-
     private async Task RestoreRefreshAsync()
     {
         var serial = _main.Device?.Serial;
@@ -249,22 +248,30 @@ public class SystemTweaksViewModel : ViewModelBase
         }
 
         var confirm = MsgBox.Show(
-            "恢复系统智能刷新率调度（删除 min/peak_refresh_rate 强制值，回到 90/120 智能均衡）。\n\n确认执行吗？",
+            "恢复系统智能刷新率调度（回到荣耀默认档位）。\n\n写入内容：\n" +
+            "① 荣耀档位键 hw_screen_freq = 0（标准/智能档）\n" +
+            "② 删除 min/peak_refresh_rate 强制值\n\n" +
+            "生效方式：写入后需要【锁屏再点亮屏幕一次】。\n\n确认执行吗？",
             "恢复智能调度", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
         if (confirm != MessageBoxResult.Yes) return;
 
+        var r1 = await App.SystemSettings.PutAsync(serial, "secure", "hw_screen_freq", "0");
         var d1 = await App.SystemSettings.DeleteAsync(serial, "system", "min_refresh_rate");
         var d2 = await App.SystemSettings.DeleteAsync(serial, "system", "peak_refresh_rate");
-        var ok = d1.Ok && d2.Ok;
-        Lock120Status = ok ? "? 已恢复智能调度" : $"还原失败：{(!d1.Ok ? d1.Error : d2.Error)}";
+        var ok = r1.Ok && d1.Ok && d2.Ok;
+
         if (ok)
         {
             RefreshRateMin = "90";
             RefreshRateMax = "120";
-            RefreshStatus = "? 已恢复智能调度（90/120）";
+            RefreshStatus = "? 已恢复智能调度（请锁屏一次并点亮生效）";
+            Lock120Status = "? 已恢复荣耀默认档位 → 请锁屏再点亮屏幕一次生效";
+        }
+        else
+        {
+            Lock120Status = $"还原失败：{(!r1.Ok ? r1.Error : !d1.Ok ? d1.Error : d2.Error)}";
         }
     }
-
     // ────────── 状态栏图标精简 ──────────
 
     public ObservableCollection<IconToggle> StatusBarIcons { get; } = new();

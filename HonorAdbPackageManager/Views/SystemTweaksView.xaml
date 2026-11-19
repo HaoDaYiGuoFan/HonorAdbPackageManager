@@ -141,7 +141,7 @@
                         <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,8">
                             <StackPanel>
                                 <TextBlock Text="全局锁定 120Hz" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock Text="一键将 min/peak_refresh_rate 均写为 120 并回读验证，所有场景强制高刷。注意：MagicOS 设置页的档位高亮（智能/标准/中/高）可能仍显示原档位——以本工具显示的实际渲染帧率为准；旁边的按钮可恢复智能调度"
+                                <TextBlock Text="真机验证的有效方案：写荣耀档位键 hw_screen_freq=1（secure 表）+ AOSP min/peak=120 双保险。写入后需锁屏再点亮一次生效（硬件模式切换在显示重建时应用）。恢复智能调度走同一链路"
                                            FontSize="11.5" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <Button Content="锁定全局 120Hz" Command="{Binding Lock120Command}"
