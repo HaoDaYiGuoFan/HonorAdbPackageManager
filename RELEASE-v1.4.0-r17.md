@@ -1,4 +1,4 @@
-# HonorAdbPackageManager v1.4.0-r17
+﻿# HonorAdbPackageManager v1.4.0-r17
 
 **免 ROOT 管理荣耀 MagicOS 手机的应用包** —— 读取全部应用包名，自动匹配内置中文知识库（名称/功能/风险），系统包一键停用还原、第三方包卸载、核心组件智能拦截、APK 一键备份；内置「快速工具箱」批量操作页与「动画调节 / 功能」快捷设置页。
 
@@ -16,8 +16,8 @@
 | --- | --- |
 | `HonorAdbPackageManager-v1.4.0-r17.zip` (71.13 MB) | 自包含发行包：内置 .NET 10 运行时 + ADB 37.0.1 + 知识库 1178 条，**解压即用，目标机无需安装任何依赖** |
 
-- **大小**：74,581,930 字节（71.13 MB），269 个条目
-- **SHA256**：`C1177386C2EF5B05A34978CE049F4827F5105DF9DAB338C2CA5D4032FC06D2C6`
+- **大小**：74,589,547 字节（71.13 MB），269 个条目
+- **SHA256**：`D36A9A1E78EAAFE4D37799885491BFAFA990E05941B0BBF62D47AAF6193D4DE7`
 
 ```powershell
 Get-FileHash .\HonorAdbPackageManager-v1.4.0-r17.zip -Algorithm SHA256
@@ -59,6 +59,10 @@ Get-FileHash .\HonorAdbPackageManager-v1.4.0-r17.zip -Algorithm SHA256
 | 拉包防卡顿 | 单条日志截断 4000 字符（dumpsys 大输出）+ 250ms 批量合并刷新 + 显示框 40 万字符裁剪——拉取 400+ 包时日志窗口不再「未响应」；导出 TXT 仍含完整内容 |
 | 检测过程全量记录 | adb 路径、`adb devices -l` 命令与原始输出、每台设备状态、失败常见原因全部进日志 |
 | 启动页日志入口 | 启动页新增【查看日志】按钮，一键打开日志窗口导出 |
+
+### ⚡ 新增「全局锁定 120Hz」快捷设置
+
+「功能」页屏幕刷新率区块下新增一键项：**锁定全局 120Hz**（min_refresh_rate = peak_refresh_rate = 120，弹确认后写入并回读验证，写入成功自动同步上方范围输入框为 120/120）与**恢复智能调度**（settings delete 两个键，回到 90/120 智能均衡）。配套 SystemSettingsService.DeleteAsync（settings delete + 回读确认删除成功）。
 
 ### 📚 知识库扩容：1139 → 1178 条
 
