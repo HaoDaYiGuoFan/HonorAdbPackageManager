@@ -112,7 +112,7 @@
                             <TextBlock Text=" 应用管理" FontSize="13.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
                         </StackPanel>
                     </TabItem.Header>
-                    <Grid Margin="0,10,0,0">
+                    <Grid Margin="0,10,0,0" IsEnabled="{Binding IsPackagesLoaded}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
