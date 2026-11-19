@@ -509,7 +509,7 @@
         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem IsEnabled="{Binding AllowNavigationWhileLoading}">
+                <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE8EF;" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets"/>
@@ -518,7 +518,7 @@
                     </TabItem.Header>
                     <views:ToolboxView DataContext="{Binding Toolbox}" Margin="0,10,0,0"/>
                 </TabItem>
-                <TabItem IsEnabled="{Binding AllowNavigationWhileLoading}">
+                <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE786;" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets"/>
@@ -528,7 +528,7 @@
                     <views:SystemTweaksView Tag="AnimOnly" DataContext="{Binding Tweaks}" Margin="0,10,0,0"/>
                 </TabItem>
 
-                <TabItem IsEnabled="{Binding AllowNavigationWhileLoading}">
+                <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE945;" FontSize="14" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets"/>
