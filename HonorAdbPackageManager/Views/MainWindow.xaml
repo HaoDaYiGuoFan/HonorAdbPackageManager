@@ -620,28 +620,25 @@
                 BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="0,1,0,0"
                 Padding="14,6">
             <Grid>
-                <Grid>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding KnowledgeSourceText}" FontSize="11.5"
-                                   Foreground="{StaticResource TextSecondary}"/>
-                        <TextBlock Text="    |    " FontSize="11.5" Foreground="{StaticResource BorderBrush}"/>
-                        <TextBlock Text="{Binding FilterSummary}" FontSize="11.5"
-                                   Foreground="{StaticResource TextSecondary}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                                Visibility="{Binding IsLoadingPackages, Converter={StaticResource BoolToVis}}">
-                        <ProgressBar Width="180" Height="6" VerticalAlignment="Center"
-                                     Maximum="{Binding ProgressTotal, Mode=OneWay}"
-                                     Value="{Binding ProgressDone, Mode=OneWay}"/>
-                        <TextBlock Text="{Binding ProgressText}" Margin="10,0,0,0" FontSize="11.5"
-                                   VerticalAlignment="Center" Foreground="{StaticResource TextSecondary}"/>
-                    </StackPanel>
-                </Grid>
-                <TextBlock HorizontalAlignment="Right" FontSize="11.5"
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding KnowledgeSourceText}" FontSize="11.5"
+                               Foreground="{StaticResource TextSecondary}"/>
+                    <TextBlock Text="    |    " FontSize="11.5" Foreground="{StaticResource BorderBrush}"/>
+                    <TextBlock Text="{Binding FilterSummary}" FontSize="11.5"
+                               Foreground="{StaticResource TextSecondary}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                            Visibility="{Binding IsLoadingPackages, Converter={StaticResource BoolToVis}}">
+                    <ProgressBar Width="180" Height="6" VerticalAlignment="Center"
+                                 Maximum="{Binding ProgressTotal, Mode=OneWay}"
+                                 Value="{Binding ProgressDone, Mode=OneWay}"/>
+                    <TextBlock Text="{Binding ProgressText}" Margin="10,0,0,0" FontSize="11.5"
+                               VerticalAlignment="Center" Foreground="{StaticResource TextSecondary}"/>
+                </StackPanel>
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="11.5"
+                           Margin="0,0,300,0"
                            Foreground="{StaticResource TextSecondary}"
                            Text="仅自用 · 操作前建议备份手机 · 不做系统限制绕过"/>
             </Grid>
         </Border>
-        >
-    </Grid>
-</Window>
+    </Grid></Window>
