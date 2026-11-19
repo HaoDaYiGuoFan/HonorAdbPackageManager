@@ -61,16 +61,25 @@
                                                                Text="{Binding SystemDisplay}"/>
                                                 </StackPanel>
                                             </StackPanel>
-                                            <ComboBox Grid.Column="1" Width="110" Height="30" SelectedValuePath="Tag"
-                                                      VerticalContentAlignment="Center"
-                                                      SelectedValue="{Binding CurrentValue}">
-                                                <ComboBoxItem Content="0（关闭）" Tag="0"/>
-                                                <ComboBoxItem Content="0.5" Tag="0.5"/>
-                                                <ComboBoxItem Content="1（系统默认）" Tag="1"/>
-                                                <ComboBoxItem Content="1.5（推荐）" Tag="1.5"/>
-                                                <ComboBoxItem Content="2" Tag="2"/>
-                                                <ComboBoxItem Content="5（慢动作）" Tag="5"/>
-                                            </ComboBox>
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                <ComboBox Width="130" Height="30" SelectedValuePath="Tag"
+                                                          VerticalContentAlignment="Center"
+                                                          SelectedValue="{Binding CurrentValue}">
+                                                    <ComboBoxItem Content="0（关闭）" Tag="0"/>
+                                                    <ComboBoxItem Content="0.5" Tag="0.5"/>
+                                                    <ComboBoxItem Content="1（系统默认）" Tag="1"/>
+                                                    <ComboBoxItem Content="1.5（推荐）" Tag="1.5"/>
+                                                    <ComboBoxItem Content="2" Tag="2"/>
+                                                    <ComboBoxItem Content="5（慢动作）" Tag="5"/>
+                                                </ComboBox>
+                                                <TextBox Text="{Binding CustomText, UpdateSourceTrigger=PropertyChanged}"
+                                                         Width="72" Height="30" Margin="8,0,0,0"
+                                                         VerticalContentAlignment="Center" Padding="6,0" FontSize="13"
+                                                         ToolTip="自定义倍数：直接输入数字（如 0.7），应用时优先于左侧下拉框"/>
+                                                <TextBlock Text="x" FontSize="11.5" Margin="3,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="{StaticResource TextSecondary}"/>
+                                            </StackPanel>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

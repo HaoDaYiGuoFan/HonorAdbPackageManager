@@ -367,17 +367,7 @@ public class MainViewModel : ViewModelBase
         Items.Clear();
         RefreshCounts();
 
-        // 加载期收纳（仅自动拉包）：最小化到任务栏（不关闭），完成后自动恢复
-        if (minimizeWhileLoading)
-        {
-            try
-            {
-                var winLoad = Application.Current.Windows.OfType<Views.MainWindow>().FirstOrDefault();
-                if (winLoad is not null)
-                    winLoad.WindowState = WindowState.Minimized;
-            }
-            catch { /* 最小化失败不影响主流程 */ }
-        }
+
 
         try
         {
@@ -433,17 +423,6 @@ public class MainViewModel : ViewModelBase
         {
             IsLoadingPackages = false;
             Raise(nameof(IsPackagesLoaded));
-            // 拉包结束（成功或失败）：若窗口处于最小化（加载期收纳到任务栏），自动恢复并前置
-            try
-            {
-                var win = Application.Current.Windows.OfType<Views.MainWindow>().FirstOrDefault();
-                if (win is not null && win.WindowState == WindowState.Minimized)
-                {
-                    win.WindowState = WindowState.Normal;
-                    win.Activate();
-                }
-            }
-            catch { /* 窗口恢复失败不影响主流程 */ }
         }
     }
 

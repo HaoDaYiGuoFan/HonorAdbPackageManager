@@ -77,7 +77,32 @@ public class SystemTweaksViewModel : ViewModelBase
         var serial = _main.Device?.Serial;
         if (serial is null) return;
 
-        var lines = Animations.Select(a => $"  • {a.DisplayName}: {a.CurrentValue}").ToList();
+        // 校验自定义输入：数字合法性 + 过大提醒
+        var values = new List<(AnimItem Item, string Value)>();
+        foreach (var a in Animations)
+        {
+            var v = a.EffectiveValue;
+            if (!float.TryParse(v, System.Globalization.CultureInfo.InvariantCulture, out var f) || f < 0 || f > 10)
+            {
+                MsgBox.Show($"「{a.DisplayName}」的倍数无效：{v}\n\n需要 0 ~ 10 之间的数字（0 = 关闭动画）。", "输入有误",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            values.Add((a, v));
+        }
+
+        var oversized = values.Where(x => float.Parse(x.Value) > 5).ToList();
+        if (oversized.Count > 0)
+        {
+            var bigConfirm = MsgBox.Show(
+                "以下动画倍数设置得很大，动画播放会非常缓慢（慢动作效果），可能被误认为卡顿：\n\n" +
+                string.Join(Environment.NewLine, oversized.Select(x => $"  • {x.Item.DisplayName}: {x.Value}x")) +
+                "\n\n确定要继续吗？",
+                "倍数过大提醒", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            if (bigConfirm != MessageBoxResult.Yes) return;
+        }
+
+        var lines = values.Select(x => $"  • {x.Item.DisplayName}: {x.Value}").ToList();
         var confirm = MsgBox.Show(
             "将修改以下系统动画参数：\n\n" + string.Join(Environment.NewLine, lines) +
             "\n\n修改立即生效（无需重启）。确认执行吗？",
@@ -85,18 +110,17 @@ public class SystemTweaksViewModel : ViewModelBase
         if (confirm != MessageBoxResult.Yes) return;
 
         int ok = 0;
-        foreach (var a in Animations)
+        foreach (var (item, val) in values)
         {
-            var r = await App.SystemSettings.PutAsync(serial, "global", a.Key, a.CurrentValue);
-            if (r.Ok) ok++;
-            else AnimStatus = $"「{a.DisplayName}」写入失败：{r.Error}";
+            var r = await App.SystemSettings.PutAsync(serial, "global", item.Key, val);
+            if (r.Ok) { ok++; item.CustomText = string.Empty; }
+            else AnimStatus = $"「{item.DisplayName}」写入失败：{r.Error}";
         }
         AnimStatus = ok == Animations.Count
             ? $"✓ 全部 {ok} 项动画参数写入成功，立即生效"
             : $"部分成功：{ok}/{Animations.Count}（详见上一条错误）";
         App.Log.Info($"动画参数写入：{ok}/{Animations.Count}");
     }
-
     // ────────── 亮屏时间 ──────────
 
     private string _screenTimeoutMinutes = "5";
@@ -576,6 +600,22 @@ public class AnimItem : ViewModelBase
         get => _currentValue;
         set { if (_currentValue != value) { _currentValue = value; Raise(); } }
     }
+
+    /// <summary>自定义倍数输入（仅数字与小数点，非法字符输入即过滤）；非空时优先于下拉框</summary>
+    private string _customText = string.Empty;
+    public string CustomText
+    {
+        get => _customText;
+        set
+        {
+            var filtered = new string(value?.Where(c => char.IsDigit(c) || c == '.').ToArray());
+            if (_customText != filtered) { _customText = filtered; Raise(); }
+        }
+    }
+
+    /// <summary>最终生效值：自定义输入非空用自定义，否则用下拉框值</summary>
+    public string EffectiveValue =>
+        string.IsNullOrWhiteSpace(_customText) ? _currentValue : _customText;
 
     private string _systemValue = "";
     public string SystemValue
