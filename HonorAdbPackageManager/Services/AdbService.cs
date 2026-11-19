@@ -105,7 +105,7 @@ public class AdbService
     /// <summary>解析 adb devices 输出（跳过标题行与守护进程提示）</summary>
     public async Task<List<DeviceInfo>> ListDevicesAsync()
     {
-        var result = await RunAsync("devices -l", 10000, logCommand: false);
+        var result = await RunAsync("devices -l", 10000);
         var devices = new List<DeviceInfo>();
 
         foreach (var raw in result.StdOut.Split('\n'))

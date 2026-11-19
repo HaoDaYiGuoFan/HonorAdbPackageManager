@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 
 namespace HonorAdbPackageManager;
 
@@ -40,6 +40,7 @@ public partial class App : Application
 
         Knowledge = new Services.KnowledgeService(Log);
         Knowledge.Load();
+            Log.StartSessionFile();
 
         Settings = new Services.SettingsService();
         Adb = new Services.AdbService(Log);

@@ -28,12 +28,16 @@ public partial class DevicePickerWindow : Window
             return;
         }
 
+        App.Log.Info($"开始检测设备（adb 路径：{App.Adb.AdbPath}）…");
         var devices = await App.Adb.ListDevicesAsync();
+        App.Log.Info($"adb devices 结果：{devices.Count} 台（含离线/未授权）→ " +
+                     string.Join("；", devices.Select(d => $"{d.Serial} [{d.State}]")));
         var online = devices.Where(d => d.IsOnline || d.IsUnauthorized).ToList();
 
         if (online.Count == 0)
         {
-            StatusText.Text = "ADB 就绪，但未检测到设备。\n请插上 USB 线、打开 USB 调试，并在手机上允许 RSA 调试授权，然后点【重新检测】。";
+            StatusText.Text = "ADB 就绪，但未检测到设备。\n请插上 USB 线、打开 USB 调试，并在手机上允许 RSA 调试授权，然后点【重新检测】。\n如需反馈问题，请点【查看日志】导出日志文件一并附上。";
+            App.Log.Error("未检测到任何设备（USB/无线均无）——常见原因：驱动缺失、USB 调试未开、无线调试未开或端口不对");
             return;
         }
 
@@ -190,6 +194,8 @@ public partial class DevicePickerWindow : Window
     }
 
     private async void Refresh_Click(object sender, RoutedEventArgs e) => await ProbeAsync();
+
+    private void ViewLog_Click(object sender, RoutedEventArgs e) => LogWindow.ShowOrActivate();
 
     private void Enter_Click(object sender, RoutedEventArgs e)
     {
