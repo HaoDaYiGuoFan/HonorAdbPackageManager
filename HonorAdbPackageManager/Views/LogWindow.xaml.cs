@@ -19,6 +19,9 @@ public partial class LogWindow : Window
     private DispatcherTimer? _flushTimer;
     private const int MaxPendingChars = 200_000;
 
+    /// <summary>显示区行号计数（会话内连续递增；清空显示后从 1 重新开始）</summary>
+    private int _nextLine = 1;
+
     public static void ShowOrActivate()
     {
         if (_instance is { IsLoaded: true })
@@ -71,7 +74,7 @@ public partial class LogWindow : Window
             var chunk = _pending.ToString();
             _pending.Clear();
 
-            LogTextBox.AppendText(chunk);
+            LogTextBox.AppendText(FormatWithLineNumbers(chunk));
             TrimIfNeeded();
             if (AutoScrollCheck.IsChecked == true)
                 LogTextBox.ScrollToEnd();
@@ -79,17 +82,35 @@ public partial class LogWindow : Window
         return t;
     }
 
-    /// <summary>显示框上限 40 万字符：超出裁掉最旧一半，防止长会话内存/渲染膨胀</summary>
+    /// <summary>给整块日志文本的每个物理行加行号前缀（含 stdout 的多行输出与续行），行号连续递增</summary>
+    private string FormatWithLineNumbers(string chunk)
+    {
+        var sb = new System.Text.StringBuilder(chunk.Length + 64);
+        var lines = chunk.Split('\n');
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var line = lines[i].TrimEnd('\r');
+            // 末尾分隔符产生的空行跳过，不占行号
+            if (line.Length == 0 && i == lines.Length - 1) continue;
+            sb.Append(_nextLine++.ToString().PadLeft(5)).Append("  ").AppendLine(line);
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>显示框上限 40 万字符：超出裁掉最旧一半（落在行边界），防止长会话内存/渲染膨胀</summary>
     private void TrimIfNeeded()
     {
         if (LogTextBox.Text.Length <= 400_000) return;
-        var keep = LogTextBox.Text[200_000..];
-        LogTextBox.Text = "…(较早日志已省略，导出 TXT 仍含完整内容)…" + Environment.NewLine + keep;
+        var cut = LogTextBox.Text.Length - 200_000;
+        // 落到行边界再切，避免把行号前缀截成半行
+        while (cut < LogTextBox.Text.Length && LogTextBox.Text[cut] != '\n') cut++;
+        var keep = cut < LogTextBox.Text.Length ? LogTextBox.Text[(cut + 1)..] : string.Empty;
+        LogTextBox.Text = "…(较早日志已省略，行号仍连续递增；导出 TXT 仍含完整内容)…" + Environment.NewLine + keep;
     }
 
     private void RefreshAll()
     {
-        LogTextBox.Text = App.Log.ExportToText();
+        LogTextBox.Text = FormatWithLineNumbers(App.Log.ExportToText());
         LogTextBox.ScrollToEnd();
     }
 
@@ -97,6 +118,7 @@ public partial class LogWindow : Window
     {
         _pending.Clear();
         LogTextBox.Clear();
+        _nextLine = 1;
     }
 
     private void Export_Click(object sender, RoutedEventArgs e)

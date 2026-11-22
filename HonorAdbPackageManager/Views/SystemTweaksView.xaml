@@ -146,11 +146,34 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- 全局锁定 120Hz 快捷项 -->
-                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                        <!-- 全局锁定自定义档位（60/90/120） -->
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0" Padding="0,8">
+                            <StackPanel>
+                                <TextBlock Text="全局锁定自定义 Hz（60 / 90 / 120 三档）" FontSize="13" FontWeight="SemiBold"/>
+                                <TextBlock Text="真机实测的档位方案：写荣耀档位键 secure/hw_screen_freq（60→0 / 90→3 / 120→1，档位机制直接接管硬件显示模式并覆盖 AOSP 投票）+ AOSP min/peak=所选档位 双保险。写入后需锁屏再点亮一次生效"
+                                           FontSize="11.5" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <ComboBox Width="130" Height="30" SelectedValuePath="Tag"
+                                              VerticalContentAlignment="Center"
+                                              SelectedValue="{Binding LockHzSelection}">
+                                        <ComboBoxItem Content="60（省电）" Tag="60"/>
+                                        <ComboBoxItem Content="90（均衡）" Tag="90"/>
+                                        <ComboBoxItem Content="120（流畅）" Tag="120"/>
+                                    </ComboBox>
+                                    <Button Content="{Binding LockHzButtonText}" Command="{Binding LockHzCommand}"
+                                            Style="{StaticResource PrimaryButton}" Margin="10,0,0,0" Padding="12,5"/>
+                                    <TextBlock Text="{Binding LockHzStatus}" Margin="12,0,0,0" FontSize="12"
+                                               VerticalAlignment="Center" Foreground="{StaticResource SafeBrush}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- 全局锁定 120Hz 快捷项（r18 起隐藏：与上方「全局锁定自定义 Hz」120 档重复；代码保留，需要时移除 Visibility 即可恢复） -->
+                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,8"
+                                Visibility="Collapsed">
                             <StackPanel>
                                 <TextBlock Text="全局锁定 120Hz" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock Text="真机验证的有效方案：写荣耀档位键 hw_screen_freq=1（secure 表）+ AOSP min/peak=120 双保险。写入后需锁屏再点亮一次生效（硬件模式切换在显示重建时应用）。恢复智能调度走同一链路"
+                                <TextBlock Text="真机验证的 120Hz 方案：写荣耀档位键 hw_screen_freq=1（高档，secure 表）+ hw_screen_high_freq=120 + AOSP min/peak=120 双保险。写入后需锁屏再点亮一次生效（硬件模式切换在显示重建时应用）。恢复智能调度走同一链路（智能档=2）"
                                            FontSize="11.5" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <Button Content="锁定全局 120Hz" Command="{Binding Lock120Command}"

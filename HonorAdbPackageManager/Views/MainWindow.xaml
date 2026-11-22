@@ -81,7 +81,8 @@
                         Style="{StaticResource GhostButton}" Margin="8,0,0,0"/>
                 <Border Width="1" Height="22" Background="{StaticResource BorderBrush}" Margin="14,0"/>
                 <Border Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1"
-                        CornerRadius="9" Width="260" Height="34">
+                        CornerRadius="9" Width="260" Height="34"
+                        ToolTip="多种方式搜索：应用名称（QQ）/ 完整包名（com.tencent.mobileqq）/ 包名片段（mobileqq）/ 知识库描述与备注；空格分隔多关键词取交集；不区分大小写与全半角">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -94,6 +95,21 @@
                                  BorderThickness="0" Background="Transparent" Padding="0"
                                  VerticalContentAlignment="Center" Margin="6,0,10,0"
                                  FontSize="13" CaretBrush="{StaticResource AccentBrush}"/>
+                        <!-- 占位提示：输入非空时隐藏 -->
+                        <TextBlock Grid.Column="1" Text="搜索应用名称 / 包名，空格分隔多关键词"
+                                   IsHitTestVisible="False" Margin="6,0,10,0" VerticalAlignment="Center"
+                                   FontSize="12" Foreground="{StaticResource TextSecondary}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SearchText}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
                     </Grid>
                 </Border>
                 <ComboBox ItemsSource="{Binding TypeFilterOptions}"
@@ -229,8 +245,14 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Margin="2,0,2,8">
-                        <TextBlock Text="应用包列表" FontSize="15" FontWeight="Bold"
-                                   Foreground="{StaticResource TextPrimary}"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="应用包列表" FontSize="15" FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimary}"/>
+                            <CheckBox Content="隐藏已停用包" IsChecked="{Binding HideDisabled}"
+                                      VerticalAlignment="Center" Margin="16,0,0,0" FontSize="12.5"
+                                      Foreground="{StaticResource TextSecondary}"
+                                      ToolTip="勾选后列表不显示已停用的包；停用成功后该行即时消失，还原后重新出现"/>
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
                                     Visibility="{Binding IsLoadingPackages, Converter={StaticResource BoolToVis}}">
                             <ProgressBar Width="180" Height="6"

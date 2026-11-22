@@ -35,10 +35,10 @@
                 BorderBrush="{StaticResource GlassBorderBrush}" BorderThickness="1" Padding="10">
             <TextBox x:Name="LogTextBox"
                      IsReadOnly="True"
-                     TextWrapping="NoWrap"
+                     TextWrapping="Wrap"
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
-                     HorizontalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Disabled"
                      Background="Transparent"
                      BorderThickness="0"
                      Foreground="{StaticResource ConsoleTextBrush}"/>

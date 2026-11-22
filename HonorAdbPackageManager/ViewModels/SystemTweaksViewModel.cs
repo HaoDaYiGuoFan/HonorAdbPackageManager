@@ -44,6 +44,7 @@ public class SystemTweaksViewModel : ViewModelBase
         ReadAllCommand = new RelayCommand(async _ => await ReadAllAsync(), _ => _main.IsDeviceOnline);
         ApplyAnimationsCommand = new RelayCommand(async _ => await ApplyAnimationsAsync(), _ => _main.IsDeviceOnline);
         Lock120Command = new(async _ => await Lock120Async());
+        LockHzCommand = new(async _ => await LockHzAsync());
         RestoreRefreshCommand = new(async _ => await RestoreRefreshAsync());
         ApplyRefreshRateCommand = new RelayCommand(async _ => await ApplyRefreshRateAsync(), _ => _main.IsDeviceOnline);
         ApplyScreenTimeoutCommand = new RelayCommand(async _ => await ApplyScreenTimeoutAsync(), _ => _main.IsDeviceOnline);
@@ -213,11 +214,33 @@ public class SystemTweaksViewModel : ViewModelBase
             : $"写入失败：{(!r1.Ok ? r1.Error : r2.Error)}（荣耀部分机型由 MagicOS 智能调度接管）";
     }
 
-    /// <summary>全局锁定 120Hz：min=peak=120，一键全程高刷</summary>
+    /// <summary>全局锁定 120Hz：min=peak=120，一键全程高刷（真机验证档位的快捷键）</summary>
     public RelayCommand Lock120Command { get; }
+
+    /// <summary>全局锁定自定义档位（60/90/120 三档）：与 120Hz 同链路，仅数值可选</summary>
+    public RelayCommand LockHzCommand { get; }
 
     /// <summary>恢复智能调度：清掉 min/peak 强制值</summary>
     public RelayCommand RestoreRefreshCommand { get; }
+
+    /// <summary>自定义全局锁定的目标档位（60/90/120）</summary>
+    private string _lockHzSelection = "120";
+    public string LockHzSelection
+    {
+        get => _lockHzSelection;
+        set
+        {
+            if (_lockHzSelection != value)
+            {
+                _lockHzSelection = value;
+                Raise();
+                Raise(nameof(LockHzButtonText));
+            }
+        }
+    }
+
+    /// <summary>按钮文案跟随所选档位</summary>
+    public string LockHzButtonText => $"锁定全局 {LockHzSelection}Hz";
 
     private string _lock120Status = string.Empty;
     public string Lock120Status
@@ -226,41 +249,101 @@ public class SystemTweaksViewModel : ViewModelBase
         private set { if (_lock120Status != value) { _lock120Status = value; Raise(); } }
     }
 
-    private async Task Lock120Async()
+    private string _lockHzStatus = string.Empty;
+    public string LockHzStatus
+    {
+        get => _lockHzStatus;
+        private set { if (_lockHzStatus != value) { _lockHzStatus = value; Raise(); } }
+    }
+
+    /// <summary>MagicOS 真机实测的刷新率档位映射（secure/hw_screen_freq）。
+    /// 档位机制直接接管硬件显示模式并覆盖 AOSP min/peak 投票：
+    /// 0=标准 60Hz / 2=智能动态 / 3=中等 90Hz / 1=高档 120Hz（系统设置切换档位时实测写入值）</summary>
+    private static readonly Dictionary<string, string> HwFreqGearByHz = new()
+    {
+        ["60"] = "0",
+        ["90"] = "3",
+        ["120"] = "1",
+    };
+
+    /// <summary>锁定前弹窗确认</summary>
+    private static bool ConfirmLockRefresh(string hz)
+    {
+        var gear = HwFreqGearByHz[hz];
+        var confirm = MsgBox.Show(
+            $"将系统全局锁定为 {hz}Hz。\n\n写入内容：\n" +
+            $"① 荣耀档位键 secure/hw_screen_freq = {gear}（{hz}Hz 档，真机实测映射）\n" +
+            (hz == "120" ? "② 荣耀高频键 hw_screen_high_freq = 120（沿用已验证链路）\n" : "") +
+            $"{(hz == "120" ? "③" : "②")} AOSP 键 min_refresh_rate = peak_refresh_rate = {hz}（双保险）\n\n" +
+            "生效方式：写入后需要【锁屏再点亮屏幕一次】（硬件模式切换只在显示重建时应用）。\n" +
+            "还原：点【恢复智能调度】。\n\n确认执行吗？",
+            $"全局锁定 {hz}Hz", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+        return confirm == MessageBoxResult.Yes;
+    }
+
+    /// <summary>全局锁定核心写入：荣耀档位键 + AOSP min/peak 双保险；返回 null 表示成功，否则为错误信息</summary>
+    private async Task<string?> LockRefreshCoreAsync(string hz)
     {
         var serial = _main.Device?.Serial;
-        if (serial is null)
+        if (serial is null) return "设备未连接。";
+
+        var writes = new List<(string Space, string Key, string Value)>
+        {
+            ("secure", "hw_screen_freq", HwFreqGearByHz[hz]),
+            ("system", "min_refresh_rate", hz),
+            ("system", "peak_refresh_rate", hz),
+        };
+        // 120Hz 保留原已验证的 high_freq 键写入；60/90 由档位键直接生效（系统设置切换 90Hz 档时并不写该键）
+        if (hz == "120")
+            writes.Insert(1, ("secure", "hw_screen_high_freq", "120"));
+
+        string? firstError = null;
+        foreach (var (space, key, value) in writes)
+        {
+            var r = await App.SystemSettings.PutAsync(serial, space, key, value);
+            if (!r.Ok) firstError ??= $"{space}/{key}：{r.Error}";
+        }
+
+        if (firstError is null)
+        {
+            RefreshRateMin = hz;
+            RefreshRateMax = hz;
+            RefreshStatus = $"✓ 已写入 {hz}Hz 锁定（请锁屏一次并点亮生效）";
+            return null;
+        }
+        return firstError;
+    }
+
+    private async Task Lock120Async()
+    {
+        if (_main.Device?.Serial is null)
         {
             MsgBox.Show("设备未连接。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
+        if (!ConfirmLockRefresh("120")) return;
 
-        var confirm = MsgBox.Show(
-            "将系统全局锁定为 120Hz。\n\n写入内容：\n" +
-            "① 荣耀档位键 hw_screen_freq = 1（最高档）+ hw_screen_high_freq = 120\n" +
-            "② AOSP 键 min_refresh_rate = peak_refresh_rate = 120（双保险）\n\n" +
-            "生效方式：写入后需要【锁屏再点亮屏幕一次】（硬件模式切换只在显示重建时应用）。\n" +
-            "还原：点【恢复智能调度】。\n\n确认执行吗？",
-            "全局锁定 120Hz", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
-        if (confirm != MessageBoxResult.Yes) return;
+        var err = await LockRefreshCoreAsync("120");
+        Lock120Status = err is null
+            ? "✓ 已写入：荣耀档位键 + AOSP 双保险 → 请锁屏再点亮屏幕一次生效"
+            : $"写入失败：{err}";
+    }
 
-        var r1 = await App.SystemSettings.PutAsync(serial, "secure", "hw_screen_freq", "1");
-        var r2 = await App.SystemSettings.PutAsync(serial, "secure", "hw_screen_high_freq", "120");
-        var r3 = await App.SystemSettings.PutAsync(serial, "system", "min_refresh_rate", "120");
-        var r4 = await App.SystemSettings.PutAsync(serial, "system", "peak_refresh_rate", "120");
-        var ok = r1.Ok && r2.Ok && r3.Ok && r4.Ok;
-
-        if (ok)
+    /// <summary>全局锁定自定义档位（60/90/120）：写入链路与 120Hz 相同</summary>
+    private async Task LockHzAsync()
+    {
+        if (_main.Device?.Serial is null)
         {
-            RefreshRateMin = "120";
-            RefreshRateMax = "120";
-            RefreshStatus = "? 已写入 120Hz 锁定（请锁屏一次并点亮生效）";
-            Lock120Status = "? 已写入：荣耀档位键 + AOSP 双保险 → 请锁屏再点亮屏幕一次生效";
+            MsgBox.Show("设备未连接。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
         }
-        else
-        {
-            Lock120Status = $"写入失败：{(!r1.Ok ? r1.Error : !r2.Ok ? r2.Error : !r3.Ok ? r3.Error : r4.Error)}";
-        }
+        var hz = LockHzSelection;
+        if (!ConfirmLockRefresh(hz)) return;
+
+        var err = await LockRefreshCoreAsync(hz);
+        LockHzStatus = err is null
+            ? $"✓ 已写入 {hz}Hz 锁定：荣耀档位键 + AOSP 双保险 → 请锁屏再点亮屏幕一次生效"
+            : $"写入失败：{err}";
     }
     private async Task RestoreRefreshAsync()
     {
@@ -273,13 +356,13 @@ public class SystemTweaksViewModel : ViewModelBase
 
         var confirm = MsgBox.Show(
             "恢复系统智能刷新率调度（回到荣耀默认档位）。\n\n写入内容：\n" +
-            "① 荣耀档位键 hw_screen_freq = 0（标准/智能档）\n" +
+            "① 荣耀档位键 hw_screen_freq = 2（智能动态档，真机实测映射；注意 0 是标准 60Hz 档）\n" +
             "② 删除 min/peak_refresh_rate 强制值\n\n" +
             "生效方式：写入后需要【锁屏再点亮屏幕一次】。\n\n确认执行吗？",
             "恢复智能调度", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
         if (confirm != MessageBoxResult.Yes) return;
 
-        var r1 = await App.SystemSettings.PutAsync(serial, "secure", "hw_screen_freq", "0");
+        var r1 = await App.SystemSettings.PutAsync(serial, "secure", "hw_screen_freq", "2");
         var d1 = await App.SystemSettings.DeleteAsync(serial, "system", "min_refresh_rate");
         var d2 = await App.SystemSettings.DeleteAsync(serial, "system", "peak_refresh_rate");
         var ok = r1.Ok && d1.Ok && d2.Ok;
@@ -288,8 +371,8 @@ public class SystemTweaksViewModel : ViewModelBase
         {
             RefreshRateMin = "90";
             RefreshRateMax = "120";
-            RefreshStatus = "? 已恢复智能调度（请锁屏一次并点亮生效）";
-            Lock120Status = "? 已恢复荣耀默认档位 → 请锁屏再点亮屏幕一次生效";
+            RefreshStatus = "✓ 已恢复智能调度（请锁屏一次并点亮生效）";
+            Lock120Status = "✓ 已恢复荣耀默认档位 → 请锁屏再点亮屏幕一次生效";
         }
         else
         {

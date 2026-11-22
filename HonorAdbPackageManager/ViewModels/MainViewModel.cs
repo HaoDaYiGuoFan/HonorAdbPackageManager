@@ -188,6 +188,22 @@ public class MainViewModel : ViewModelBase
         }
     }
 
+    /// <summary>隐藏已停用包（勾选后列表不显示 Status=Disabled 的包，停用成功后该行即时消失）</summary>
+    private bool _hideDisabled;
+    public bool HideDisabled
+    {
+        get => _hideDisabled;
+        set
+        {
+            if (_hideDisabled != value)
+            {
+                _hideDisabled = value;
+                Raise();
+                ApplyFilter();
+            }
+        }
+    }
+
     private PackageItem? _selectedItem;
     public PackageItem? SelectedItem
     {
@@ -264,23 +280,50 @@ public class MainViewModel : ViewModelBase
         _log.Info($"设备就绪：{d.Brand} {d.Model} | {d.MagicOsVersion} | Android {d.AndroidVersion} (API {d.SdkVersion})");
     }
 
-    /// <summary>搜索 + 筛选联合过滤（流程6）</summary>
+    /// <summary>全半角归一化：中文 IME 常见的全角字母/数字/空格（ＱＱ、１０、　）转为半角</summary>
+    private static string NormalizeSearchText(string s)
+    {
+        var sb = new System.Text.StringBuilder(s.Length);
+        foreach (var c in s)
+        {
+            if (c == '　') sb.Append(' ');
+            else if (c >= '\uFF01' && c <= '\uFF5E') sb.Append((char)(c - 0xFEE0));
+            else sb.Append(c);
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>搜索 + 类型 + 停用过滤联合过滤（流程6）。
+    /// 关键词支持多种方式：应用名称（QQ）/ 包名（com.tencent.mobileqq）/ 包名片段（mobileqq）/
+    /// 知识库描述与备注；空格分隔多关键词时取交集（如「腾讯 qq」「tencent mobileqq」）；
+    /// 不区分大小写，全半角自动归一化。</summary>
     public void ApplyFilter()
     {
         if (FilteredItems is null) return;
-        var kw = SearchText?.Trim() ?? string.Empty;
-        FilteredItems.Filter = string.IsNullOrEmpty(kw) && TypeFilter == "全部"
+        var tokens = NormalizeSearchText(SearchText ?? string.Empty)
+            .Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+        FilteredItems.Filter = tokens.Length == 0 && TypeFilter == "全部" && !_hideDisabled
             ? null
             : o =>
             {
                 if (o is not PackageItem it) return false;
+                if (_hideDisabled && it.Status == Models.PackageStatus.Disabled) return false;
                 if (TypeFilter != "全部" && TypeFilter != it.TypeDisplay) return false;
-                if (string.IsNullOrEmpty(kw)) return true;
-                return it.PackageName.Contains(kw, StringComparison.OrdinalIgnoreCase)
-                    || it.AppLabel.Contains(kw, StringComparison.OrdinalIgnoreCase)
-                    || it.Description.Contains(kw, StringComparison.OrdinalIgnoreCase)
-                    || it.Remark.Contains(kw, StringComparison.OrdinalIgnoreCase);
+                // 每个关键词需命中任一字段（应用名称/包名/描述/备注），关键词之间取交集
+                foreach (var t in tokens)
+                {
+                    var hit = it.PackageName.Contains(t, StringComparison.OrdinalIgnoreCase)
+                           || it.AppLabel.Contains(t, StringComparison.OrdinalIgnoreCase)
+                           || it.Description.Contains(t, StringComparison.OrdinalIgnoreCase)
+                           || it.Remark.Contains(t, StringComparison.OrdinalIgnoreCase);
+                    if (!hit) return false;
+                }
+                return true;
             };
+
+        // 勾选隐藏后，若当前选中的正是已停用包（已从视图移除），清掉选中避免详情区残留
+        if (_hideDisabled && SelectedItem is { Status: Models.PackageStatus.Disabled })
+            SelectedItem = null;
     }
 
     // ================= 流程1：设备检测 =================
@@ -576,6 +619,8 @@ public class MainViewModel : ViewModelBase
                     _log.Info($"[{item.PackageName}] 停用成功");
                 }
                 SessionActionCount++;
+                RefreshCounts();   // 统计卡片即时刷新
+                ApplyFilter();     // 「隐藏已停用包」勾选时该行即时消失
                 MsgBox.Show($"『{item.AppLabel}』{(isThird ? "卸载" : "停用")}成功。",
                     "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -616,6 +661,8 @@ public class MainViewModel : ViewModelBase
                 item.Status = Models.PackageStatus.Enabled;
                 item.AddHistory("还原启用成功 (pm enable)");
                 SessionActionCount++;
+                RefreshCounts();   // 统计卡片即时刷新
+                ApplyFilter();     // 与当前过滤条件保持一致
                 _log.Info($"[{item.PackageName}] 还原启用成功");
                 MsgBox.Show($"『{item.AppLabel}』已还原启用。", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
