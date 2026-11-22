@@ -326,6 +326,19 @@ public class MainViewModel : ViewModelBase
             SelectedItem = null;
     }
 
+    /// <summary>打开应用详情对话框（权限/存储/流量/启动控制，点击列表应用名称触发）</summary>
+    public void ShowPackageDetail(PackageItem item)
+    {
+        var serial = Device?.Serial;
+        if (serial is null)
+        {
+            MsgBox.Show("设备未连接，无法查询详情。", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+        var dlg = new PackageDetailDialog(item, serial) { Owner = Application.Current.MainWindow };
+        dlg.ShowDialog();
+    }
+
     // ================= 流程1：设备检测 =================
 
     public async Task RefreshDeviceAsync()

@@ -295,7 +295,9 @@
                                         <StackPanel>
                                             <TextBlock Text="{Binding AppLabel, Converter={StaticResource AppLabel}}"
                                                        FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
-                                                       Foreground="{StaticResource TextPrimary}"/>
+                                                       Foreground="{StaticResource TextPrimary}"
+                                                       Cursor="Hand" MouseLeftButtonUp="AppNameText_Click"
+                                                       ToolTip="点击查看权限 / 存储 / 流量 / 启动控制详情"/>
                                             <TextBlock Text="{Binding VersionName}" FontSize="11"
                                                        Foreground="{StaticResource TextSecondary}"
                                                        TextTrimming="CharacterEllipsis"/>

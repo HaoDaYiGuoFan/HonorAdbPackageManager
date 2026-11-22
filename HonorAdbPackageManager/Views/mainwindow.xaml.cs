@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace HonorAdbPackageManager.Views;
@@ -8,6 +9,13 @@ public partial class MainWindow : Window
 {
     private readonly ViewModels.MainViewModel _vm = new();
     private string _serial = string.Empty;
+
+    /// <summary>点击列表中的应用名称 → 打开权限/存储/流量/启动控制详情对话框</summary>
+    private void AppNameText_Click(object sender, MouseButtonEventArgs e)
+    {
+        if ((sender as FrameworkElement)?.DataContext is PackageItem item)
+            _vm.ShowPackageDetail(item);
+    }
 
     public MainWindow(DeviceInfo? device)
     {
