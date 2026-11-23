@@ -54,7 +54,11 @@
                     <StackPanel>
                         <TextBlock Text="🔒 手机权限" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
                         <TextBlock Text="按保护级别分块：危险（红）/ 签名·系统（蓝）/ 普通（灰）/ 开发（橙）；✓ 已允许 · ✗ 已禁止"
-                                   FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,8" TextWrapping="Wrap"/>
+                                   FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="开关说明：运行时权限（危险级）与悬浮窗/修改设置可启用/停用，停用会弹确认；普通/签名级由安装时授予，adb 无法更改"
+                                   FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,4" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="PermOpStatus" Text="" FontSize="12" Margin="0,0,0,4" TextWrapping="Wrap"
+                                   Foreground="{StaticResource SafeBrush}"/>
                         <ItemsControl ItemsSource="{Binding Groups}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -83,29 +87,43 @@
                                         <ItemsControl ItemsSource="{Binding Items}" Margin="8,4,0,0">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid Margin="0,1.5">
+                                                    <Grid Margin="0,2">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Text="{Binding DisplayText}" FontSize="11.5"
-                                                                   Foreground="{StaticResource TextPrimary}"
-                                                                   TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
-                                                        <TextBlock Grid.Column="1" Text="{Binding GrantedDisplay}" FontSize="11.5" Margin="10,0,0,0">
-                                                            <TextBlock.Style>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding GrantedTone}" Value="safe">
-                                                                            <Setter Property="Foreground" Value="{StaticResource SafeBrush}"/>
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding GrantedTone}" Value="danger">
-                                                                            <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </TextBlock.Style>
-                                                        </TextBlock>
+                                                        <StackPanel Grid.Column="0">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding DisplayText}" FontSize="11.5"
+                                                                           Foreground="{StaticResource TextPrimary}"
+                                                                           TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                                                <TextBlock Text="{Binding GrantedDisplay}" FontSize="11" Margin="10,0,0,0"
+                                                                           VerticalAlignment="Center">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding GrantedTone}" Value="safe">
+                                                                                    <Setter Property="Foreground" Value="{StaticResource SafeBrush}"/>
+                                                                                </DataTrigger>
+                                                                                <DataTrigger Binding="{Binding GrantedTone}" Value="danger">
+                                                                                    <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                            <!-- 中文作用说明 -->
+                                                            <TextBlock Text="{Binding Description}" FontSize="10.5"
+                                                                       Foreground="{StaticResource TextSecondary}"
+                                                                       TextWrapping="Wrap" Margin="0,1,0,0"
+                                                                       Visibility="{Binding HasDescription, Converter={StaticResource BoolToVis}}"/>
+                                                        </StackPanel>
+                                                        <CheckBox Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"
+                                                                  IsChecked="{Binding Granted, Mode=OneWay}"
+                                                                  IsEnabled="{Binding CanToggle}"
+                                                                  Click="PermToggle_Click" ToolTip="{Binding ToggleHint}"/>
                                                     </Grid>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>

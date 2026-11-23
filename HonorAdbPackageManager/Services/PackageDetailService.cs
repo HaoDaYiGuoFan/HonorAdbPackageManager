@@ -7,6 +7,7 @@ namespace HonorAdbPackageManager.Services;
 /// 数据源（真机 Magic5 Pro MagicOS 11 实测）：
 ///   dumpsys package      → requested/install/runtime permissions + appId/User 段
 ///   pm list permissions -f → 权限 → protectionLevel 映射（设备级缓存）
+///   PermissionDescriptions → 内置中文权限库（设备输出缺失/非中文系统的中文名与作用说明兜底）
 ///   dumpsys diskstats    → Package Names / App Sizes / App Data Sizes / Cache Sizes 平行数组
 ///   dumpsys netstats     → mAppUidStatsMap（uid rxBytes rxPackets txBytes txPackets，开机以来累计）
 ///   appops get pkg OP    → RUN_IN_BACKGROUND / RUN_ANY_IN_BACKGROUND 后台运行模式
@@ -15,8 +16,15 @@ namespace HonorAdbPackageManager.Services;
 /// </summary>
 public static class PackageDetailService
 {
-    /// <summary>protectionLevel 映射缓存（设备串号 → 权限名 → (级别, 中文label)）</summary>
-    private static readonly Dictionary<string, Dictionary<string, (string Level, string Label)>> _levelCache = new();
+    /// <summary>protectionLevel 映射缓存（设备串号 → 权限名 → (级别, 中文label, 中文description)）</summary>
+    private static readonly Dictionary<string, Dictionary<string, (string Level, string Label, string Desc)>> _levelCache = new();
+
+    /// <summary>特殊权限（appops 管控，可切换）映射：appop 操作名 → 对应权限名</summary>
+    private static readonly Dictionary<string, string> SpecialAppOps = new(StringComparer.Ordinal)
+    {
+        ["SYSTEM_ALERT_WINDOW"] = "android.permission.SYSTEM_ALERT_WINDOW",   // 悬浮窗
+        ["WRITE_SETTINGS"] = "android.permission.WRITE_SETTINGS",             // 修改系统设置
+    };
 
     /// <summary>加载详情（对话框一次性调用，约 4~7 条 adb 命令）</summary>
     public static async Task<PackageDetail> LoadAsync(string serial, PackageItem item)
@@ -38,7 +46,15 @@ public static class PackageDetailService
         var opBgAny = await adb.ShellAsync(serial, $"appops get {item.PackageName} RUN_ANY_IN_BACKGROUND");
         var idle = await adb.ShellAsync(serial, "dumpsys deviceidle whitelist", 15000);
 
-        var groups = BuildPermissionGroups(pkg, levels);
+        // 特殊权限（悬浮窗/修改设置）的当前态以 appops 为准，供开关显示
+        var appOpModes = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var kv in SpecialAppOps.Where(kv => pkg.Requested.Contains(kv.Value)))
+        {
+            var r = await adb.ShellAsync(serial, $"appops get {item.PackageName} {kv.Key}");
+            appOpModes[kv.Key] = ParseAppOpMode(r.StdOut, kv.Key);
+        }
+
+        var groups = BuildPermissionGroups(pkg, levels, appOpModes);
 
         var bootPerm = pkg.Requested.FirstOrDefault(p => p == "android.permission.RECEIVE_BOOT_COMPLETED");
         var bootGranted = bootPerm is not null && (pkg.Install.TryGetValue(bootPerm, out var g1) && g1
@@ -130,9 +146,9 @@ public static class PackageDetailService
         return new PkgDump(requested, install, runtime, appId, users);
     }
 
-    /// <summary>设备级权限 → (protectionLevel, 中文label) 映射（一次拉取，按设备缓存）。
-    /// 用 -g -f：真机实测 -f 缺失部分系统权限（如 READ_CALENDAR），-g -f 完整且带中文名称</summary>
-    private static async Task<Dictionary<string, (string Level, string Label)>> GetPermissionLevelsAsync(string serial, string packageDump)
+    /// <summary>设备级权限 → (protectionLevel, 中文label, 中文description) 映射（一次拉取，按设备缓存）。
+    /// 用 -g -f：真机实测 -f 缺失部分系统权限（如 READ_CALENDAR），-g -f 完整且带中文名称与说明</summary>
+    private static async Task<Dictionary<string, (string Level, string Label, string Desc)>> GetPermissionLevelsAsync(string serial, string packageDump)
     {
         if (_levelCache.TryGetValue(serial, out var cached)) return cached;
 
@@ -142,11 +158,12 @@ public static class PackageDetailService
         return map;
     }
 
-    /// <summary>解析 pm list permissions -g -f：+ permission:xxx / label:yyy / protectionLevel:zzz</summary>
-    private static Dictionary<string, (string Level, string Label)> ParsePermissionLevels(string text)
+    /// <summary>解析 pm list permissions -g -f：+ permission:xxx / label / description / protectionLevel</summary>
+    private static Dictionary<string, (string Level, string Label, string Desc)> ParsePermissionLevels(string text)
     {
         var map = new Dictionary<string, string>(StringComparer.Ordinal);
         var labels = new Dictionary<string, string>(StringComparer.Ordinal);
+        var descs = new Dictionary<string, string>(StringComparer.Ordinal);
         string? current = null;
         foreach (var raw in text.Split('\n'))
         {
@@ -165,8 +182,16 @@ public static class PackageDetailService
                 var label = line["label:".Length..].Trim();
                 if (label is not ("" or "null")) labels[current] = label;
             }
+            else if (current is not null && line.StartsWith("description:"))
+            {
+                var desc = line["description:".Length..].Trim();
+                if (desc is not ("" or "null")) descs[current] = desc;
+            }
         }
-        return map.ToDictionary(kv => kv.Key, kv => (kv.Value, labels.GetValueOrDefault(kv.Key, string.Empty)), StringComparer.Ordinal);
+        return map.ToDictionary(
+            kv => kv.Key,
+            kv => (kv.Value, labels.GetValueOrDefault(kv.Key, string.Empty), descs.GetValueOrDefault(kv.Key, string.Empty)),
+            StringComparer.Ordinal);
     }
 
     /// <summary>protectionLevel 串 → 分级枚举（多段如 signature|privileged 取第一关键段）</summary>
@@ -184,23 +209,65 @@ public static class PackageDetailService
         };
     }
 
-    /// <summary>分组构建：危险 → 签名/系统 → 普通 → 开发 → 未知；组内按名称排序</summary>
+    /// <summary>分组构建：危险 → 签名/系统 → 普通 → 开发 → 未知；组内按名称排序。
+    /// 运行时权限可 pm grant/revoke 切换；悬浮窗/修改设置走 appops（状态以 appops 为准）；其余不可切换</summary>
     private static List<PermissionGroup> BuildPermissionGroups(
-        PkgDump pkg, Dictionary<string, (string Level, string Label)> levels)
+        PkgDump pkg, Dictionary<string, (string Level, string Label, string Desc)> levels,
+        Dictionary<string, string> appOpModes)
     {
         var items = new List<PermissionItem>();
         foreach (var name in pkg.Requested.Distinct(StringComparer.Ordinal))
         {
-            var granted = pkg.Install.TryGetValue(name, out var g1) && g1
-                || pkg.Runtime.TryGetValue(name, out var g2) && g2;
-
-            var (levelRaw, label) = levels.TryGetValue(name, out var lv) ? lv : (null, string.Empty);
+            var (levelRaw, label, desc) = levels.TryGetValue(name, out var lv) ? lv : (null, string.Empty, string.Empty);
             var level = MapLevel(levelRaw);
+
+            // 内置中文权限库：优先采用内置中文名与作用说明（保证中文且覆盖常用标准权限）；
+            // 未收录时沿用设备返回的 label/description；两者皆无时给分类兜底文案，
+            // 保证权限列表每一行都有中文备注
+            if (PermissionDescriptions.TryGet(name, out var zhLabel, out var zhDesc))
+            {
+                if (!string.IsNullOrEmpty(zhLabel)) label = zhLabel;
+                if (!string.IsNullOrEmpty(zhDesc)) desc = zhDesc;
+            }
+            if (string.IsNullOrEmpty(desc))
+                desc = PermissionDescriptions.Fallback(name);
             // privileged/knownSigner 等系统级权限归入签名/系统块
             if (level == PermLevel.Unknown && levelRaw is not null)
                 level = PermLevel.Signature;
 
-            items.Add(new PermissionItem { Name = name, Label = label, Granted = granted, Level = level });
+            bool granted;
+            bool canToggle;
+            string toggleMode = string.Empty;
+            string opName = string.Empty;
+
+            var appOp = SpecialAppOps.FirstOrDefault(kv => kv.Value == name).Key;
+            if (appOp is not null && appOpModes.TryGetValue(appOp, out var mode) && mode != "unknown")
+            {
+                // 特殊权限：appops 为唯一可信状态源
+                granted = mode.Contains("allow");
+                canToggle = true;
+                toggleMode = "appop";
+                opName = appOp;
+            }
+            else
+            {
+                granted = pkg.Install.TryGetValue(name, out var g1) && g1
+                    || pkg.Runtime.TryGetValue(name, out var g2) && g2;
+                canToggle = pkg.Runtime.ContainsKey(name);
+                toggleMode = canToggle ? "pm" : string.Empty;
+            }
+
+            items.Add(new PermissionItem
+            {
+                Name = name,
+                Label = label,
+                Description = desc,
+                Level = level,
+                Granted = granted,
+                CanToggle = canToggle,
+                ToggleMode = toggleMode,
+                OpName = opName,
+            });
         }
 
         var order = new[] { PermLevel.Dangerous, PermLevel.Signature, PermLevel.Normal, PermLevel.Development, PermLevel.Unknown };

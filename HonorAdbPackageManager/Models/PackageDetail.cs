@@ -10,27 +10,55 @@ public enum PermLevel
     Unknown      // 未知（浅灰）
 }
 
-/// <summary>单条权限显示项</summary>
-public class PermissionItem
+/// <summary>单条权限显示项（Granted 可切换，支持 pm grant/revoke 与 appops 两种写入方式）</summary>
+public class PermissionItem : INotifyPropertyChanged
 {
+    private bool _granted;
+
     public string Name { get; init; } = string.Empty;
-    /// <summary>系统中文名（pm list permissions -g -f 的 label；无则空）</summary>
+    /// <summary>中文短名（内置中文权限库优先，其次设备 pm list permissions -g -f 的 label；无则空）</summary>
     public string Label { get; init; } = string.Empty;
-    public bool Granted { get; init; }
+    /// <summary>中文作用说明（内置中文权限库优先，其次设备 description；服务层兜底保证非空）</summary>
+    public string Description { get; init; } = string.Empty;
     public PermLevel Level { get; init; }
+    /// <summary>是否可通过 adb 切换（运行时权限 → pm；悬浮窗/修改设置 → appops）</summary>
+    public bool CanToggle { get; init; }
+    /// <summary>切换写入方式：pm / appop；不可切换为空</summary>
+    public string ToggleMode { get; init; } = string.Empty;
+    /// <summary>appop 方式对应的操作名（SYSTEM_ALERT_WINDOW / WRITE_SETTINGS）</summary>
+    public string OpName { get; init; } = string.Empty;
+
+    public bool Granted
+    {
+        get => _granted;
+        set
+        {
+            if (_granted != value)
+            {
+                _granted = value;
+                Raise();
+                Raise(nameof(GrantedDisplay));
+                Raise(nameof(GrantedTone));
+            }
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private void Raise([System.Runtime.CompilerServices.CallerMemberName] string? name = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
     /// <summary>行显示文本：优先中文权限名，无则用技术名</summary>
     public string DisplayText => string.IsNullOrEmpty(Label) ? Name : Label;
 
-    /// <summary>级别显示名</summary>
-    public string LevelDisplay => Level switch
-    {
-        PermLevel.Dangerous => "危险",
-        PermLevel.Normal => "普通",
-        PermLevel.Signature => "签名/系统",
-        PermLevel.Development => "开发",
-        _ => "未知",
-    };
+    /// <summary>作用说明是否存在（驱动第二行显示）</summary>
+    public bool HasDescription => !string.IsNullOrEmpty(Description);
+
+    /// <summary>开关提示</summary>
+    public string ToggleHint => CanToggle
+        ? (ToggleMode == "appop"
+            ? "特殊权限（悬浮窗/修改设置），通过 appops 切换；停用会弹确认"
+            : "运行时权限，通过 pm grant/revoke 切换；停用会弹确认")
+        : "安装时授予的普通/签名级权限，adb 无法更改";
 
     /// <summary>授予状态文案</summary>
     public string GrantedDisplay => Granted ? "✓ 已允许" : "✗ 已禁止";
@@ -39,13 +67,11 @@ public class PermissionItem
     public string GrantedTone => Granted ? "safe" : "danger";
 }
 
-/// <summary>权限分组块（按保护级别分块展示）</summary>
-public class PermissionGroup
+/// <summary>权限分组块（按保护级别分块展示；标题计数随开关切换实时更新）</summary>
+public class PermissionGroup : INotifyPropertyChanged
 {
     /// <summary>级别键（dangerous/normal/signature/development/unknown，驱动配色）</summary>
     public string LevelKey { get; }
-    /// <summary>块标题（含允许/禁止计数）</summary>
-    public string Title { get; }
     public PermLevel Level { get; }
     public List<PermissionItem> Items { get; }
 
@@ -61,10 +87,27 @@ public class PermissionGroup
             PermLevel.Development => "development",
             _ => "unknown",
         };
-        Title = items.Count == 0
-            ? string.Empty
-            : $"{items[0].LevelDisplay}权限（{items.Count(i => i.Granted)} 允许 / {items.Count - items.Count(i => i.Granted)} 禁止）";
+        foreach (var i in items)
+            i.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(PermissionItem.Granted)) Raise(nameof(Title)); };
     }
+
+    private string LevelDisplay => Level switch
+    {
+        PermLevel.Dangerous => "危险",
+        PermLevel.Normal => "普通",
+        PermLevel.Signature => "签名/系统",
+        PermLevel.Development => "开发",
+        _ => "未知",
+    };
+
+    /// <summary>块标题（含允许/禁止计数）</summary>
+    public string Title => Items.Count == 0
+        ? string.Empty
+        : $"{LevelDisplay}权限（{Items.Count(i => i.Granted)} 允许 / {Items.Count - Items.Count(i => i.Granted)} 禁止）";
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private void Raise([System.Runtime.CompilerServices.CallerMemberName] string? name = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
 
 /// <summary>启动控制单行显示项</summary>
