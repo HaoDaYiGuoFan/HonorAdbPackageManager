@@ -110,14 +110,32 @@ public class PermissionGroup : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
 
-/// <summary>启动控制单行显示项</summary>
-public class StartupControlItem
+/// <summary>启动管理行（Android 标准层等效控制；MagicOS 私有开关经真机实测不可读写）</summary>
+public class StartupControlItem : INotifyPropertyChanged
 {
+    private string _valueText = string.Empty;
+    private bool _toggleOn;
+
+    private string _tone = "muted";
+
     public string Title { get; init; } = string.Empty;
-    public string ValueText { get; init; } = string.Empty;
+    public string ValueText { get => _valueText; set { if (_valueText != value) { _valueText = value; Raise(); } } }
     /// <summary>状态色调键（safe/warn/danger/muted）</summary>
-    public string Tone { get; init; } = "muted";
+    public string Tone { get => _tone; set { if (_tone != value) { _tone = value; Raise(); } } }
     public string Note { get; init; } = string.Empty;
+    /// <summary>是否有可交互开关</summary>
+    public bool HasToggle { get; init; }
+    public bool ToggleOn { get => _toggleOn; set { if (_toggleOn != value) { _toggleOn = value; Raise(); } } }
+    /// <summary>开关类型：appops_bg（后台活动）/ boot（开机广播接收器组件）</summary>
+    public string ToggleKind { get; init; } = string.Empty;
+    /// <summary>开关提示</summary>
+    public string ToggleHint { get; init; } = string.Empty;
+    /// <summary>开机广播接收器组件全名列表（pkg/class，boot 类型用）</summary>
+    public List<string> Components { get; init; } = new();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private void Raise([System.Runtime.CompilerServices.CallerMemberName] string? name = null) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }
 
 /// <summary>应用详情对话框数据源</summary>

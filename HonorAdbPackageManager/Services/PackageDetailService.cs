@@ -56,10 +56,6 @@ public static class PackageDetailService
 
         var groups = BuildPermissionGroups(pkg, levels, appOpModes);
 
-        var bootPerm = pkg.Requested.FirstOrDefault(p => p == "android.permission.RECEIVE_BOOT_COMPLETED");
-        var bootGranted = bootPerm is not null && (pkg.Install.TryGetValue(bootPerm, out var g1) && g1
-            || pkg.Runtime.TryGetValue(bootPerm, out var g2) && g2);
-
         var dozeWhitelisted = idle.StdOut.Split('\n')
             .Any(l => l.Trim().EndsWith(item.PackageName, StringComparison.OrdinalIgnoreCase));
 
@@ -79,7 +75,7 @@ public static class PackageDetailService
             RxText = trafficOk ? FormatSize(rx) : "—",
             TxText = trafficOk ? FormatSize(tx) : "—",
             TotalTrafficText = trafficOk ? FormatSize(rx + tx) : "—",
-            StartupControls = BuildStartupControls(item, bootPerm is not null, bootGranted,
+            StartupControls = BuildStartupControls(item, dump.StdOut,
                 opBg.StdOut, opBgAny.StdOut, dozeWhitelisted),
         };
     }
@@ -360,37 +356,105 @@ public static class PackageDetailService
         return "unknown";
     }
 
+    /// <summary>启动管理行构建（Android 标准层等效控制）。
+    /// 真机实测：MagicOS 应用启动管理的 自动/手动 与三开关（自启动/关联启动/后台活动）完全存于
+    /// 私有存储（切换时 settings 表 / appops / 组件状态均无变化），ADB 不可读写。
+    /// 等效控制：后台活动 → appops RUN_ANY_IN_BACKGROUND（允许/禁止）；自启动 → 开机广播接收器组件禁用/启用</summary>
     private static List<StartupControlItem> BuildStartupControls(
-        PackageItem item, bool bootRequested, bool bootGranted,
+        PackageItem item, string pkgDump,
         string opBgOut, string opBgAnyOut, bool dozeWhitelisted)
     {
+        var (bootComps, bootDisabled) = ParseBootReceivers(pkgDump, item.PackageName);
+
         var list = new List<StartupControlItem>
         {
-            // 自启动：Android 层可读的是"开机自启能力"（RECEIVE_BOOT_COMPLETED）
+            // 自动管理（MagicOS）：私有，不可读
             new()
             {
-                Title = "开机自启（BOOT_COMPLETED）",
-                ValueText = !bootRequested ? "未申请开机广播"
-                          : bootGranted ? "已具备自启能力" : "已申请但未授予",
-                Tone = bootRequested && bootGranted ? "warn" : "muted",
-                Note = "MagicOS「自启动」开关由系统私有存储管理，ADB 无法读取（设置→应用→应用启动管理 查看）",
+                Title = "自动管理（MagicOS）",
+                ValueText = "状态不可读（存储于系统私有存储）",
+                Tone = "muted",
+                Note = "请在手机 设置→应用→应用启动管理 查看；真机实测切换开关时设置表/appops/组件状态均无变化",
             },
         };
 
-        // 后台运行：appops RUN_IN_BACKGROUND / RUN_ANY_IN_BACKGROUND
-        var modeBg = ParseAppOpMode(opBgOut, "RUN_IN_BACKGROUND");
-        var modeBgAny = opBgAnyOut.Contains("Unknown operation", StringComparison.OrdinalIgnoreCase)
-            ? null : ParseAppOpMode(opBgAnyOut, "RUN_ANY_IN_BACKGROUND");
-        var (bgText, bgTone) = DescribeBgMode(modeBg, modeBgAny);
+        // 允许自启动：开机广播接收器组件级等效控制
+        if (bootComps.Count == 0)
+        {
+            list.Add(new StartupControlItem
+            {
+                Title = "允许自启动（开机广播）",
+                ValueText = "该应用无开机广播接收器（系统层面无法开机自启）",
+                Tone = "muted",
+                Note = "未声明 BOOT_COMPLETED/LOCKED_BOOT_COMPLETED 接收器",
+            });
+        }
+        else
+        {
+            var enabledCount = bootComps.Count(c => !bootDisabled.Contains(FullClass(c, item.PackageName)));
+            var allEnabled = enabledCount == bootComps.Count;
+            list.Add(new StartupControlItem
+            {
+                Title = "允许自启动（开机广播）",
+                ValueText = allEnabled
+                    ? $"允许（{bootComps.Count} 个开机接收器已启用）"
+                    : $"已禁止（{bootComps.Count - enabledCount}/{bootComps.Count} 个接收器已禁用）",
+                Tone = allEnabled ? "warn" : "safe",
+                Note = "Android 层等效控制：禁用/启用 BOOT_COMPLETED 接收器组件（pm disable-user/enable）",
+                HasToggle = true,
+                ToggleOn = allEnabled,
+                ToggleKind = "boot",
+                ToggleHint = "开关=允许/禁止开机自启（组件级，可随时恢复）",
+                Components = bootComps,
+            });
+        }
+
+        // 允许关联启动：MagicOS 私有，无标准等效
         list.Add(new StartupControlItem
         {
-            Title = "后台运行（appops）",
-            ValueText = bgText,
-            Tone = bgTone,
-            Note = "RUN_IN_BACKGROUND" + (modeBgAny is null ? "" : " / RUN_ANY_IN_BACKGROUND"),
+            Title = "允许关联启动（被其他应用拉起）",
+            ValueText = "MagicOS 私有开关，ADB 不可读写",
+            Tone = "muted",
+            Note = "标准 Android 无对应控制点；请在手机 设置→应用→应用启动管理 查看/调整",
         });
 
-        // 电池优化白名单 = 后台不受 Doze 限制
+        // 允许后台活动：appops RUN_ANY_IN_BACKGROUND 等效控制
+        var modeAny = opBgAnyOut.Contains("Unknown operation", StringComparison.OrdinalIgnoreCase)
+            ? "unknown" : ParseAppOpMode(opBgAnyOut, "RUN_ANY_IN_BACKGROUND");
+        bool? bgAllowed = modeAny switch
+        {
+            "unknown" => null,                       // op 不存在 → 无法控制
+            var m when m.Contains("allow") => true,  // allow / default (allow)
+            _ => false,                              // deny / ignore
+        };
+        var modeBg = ParseAppOpMode(opBgOut, "RUN_IN_BACKGROUND");
+        if (bgAllowed is null)
+        {
+            list.Add(new StartupControlItem
+            {
+                Title = "允许后台活动（RUN_ANY_IN_BACKGROUND）",
+                ValueText = "该系统不支持此 appops 操作",
+                Tone = "muted",
+                Note = "RUN_IN_BACKGROUND 模式：" + DescribeBgMode(modeBg, null).Text,
+            });
+        }
+        else
+        {
+            list.Add(new StartupControlItem
+            {
+                Title = "允许后台活动（RUN_ANY_IN_BACKGROUND）",
+                ValueText = bgAllowed.Value ? "允许（默认）" : "禁止",
+                Tone = bgAllowed.Value ? "warn" : "safe",
+                Note = "Android 层等效控制（appops set allow/deny）；" +
+                       (modeBg.Contains("deny") ? "注意 RUN_IN_BACKGROUND 已被显式禁止" : "MagicOS「后台活动」开关不可读，此处为标准层等效开关"),
+                HasToggle = true,
+                ToggleOn = bgAllowed.Value,
+                ToggleKind = "appops_bg",
+                ToggleHint = "开关=允许/禁止后台活动（appops；禁止后推送/下载等后台行为将被拦截）",
+            });
+        }
+
+        // 电池优化白名单 = 后台不受 Doze 限制（信息项）
         list.Add(new StartupControlItem
         {
             Title = "电池优化白名单",
@@ -399,16 +463,73 @@ public static class PackageDetailService
             Note = "dumpsys deviceidle whitelist",
         });
 
-        // 关联启动：MagicOS 私有
-        list.Add(new StartupControlItem
-        {
-            Title = "关联启动（被其他应用拉起）",
-            ValueText = "MagicOS 私有开关，ADB 不可读",
-            Tone = "muted",
-            Note = "请在手机 设置→应用→应用启动管理 中查看/调整",
-        });
-
         return list;
+    }
+
+    /// <summary>展开组件短名为完整类名（pkg/.cls → pkg.cls；pkg/other.cls → pkg.other.cls）</summary>
+    private static string FullClass(string component, string pkg)
+    {
+        var cls = component[(component.IndexOf('/') + 1)..];
+        if (cls.StartsWith('.')) return pkg + cls[1..];
+        return cls.StartsWith(pkg + ".") ? cls : pkg + "." + cls;
+    }
+
+    /// <summary>解析 dumpsys package：BOOT_COMPLETED/LOCKED_BOOT_COMPLETED 接收器组件 + disabledComponents 列表。
+    /// 结构（真机）：「Receiver Resolver Table:」下按 action 分组，组内行为 "hash pkg/class filter id"；
+    /// 主用户段的 disabledComponents 列出被 pm disable 的组件全类名</summary>
+    private static (List<string> Components, HashSet<string> Disabled) ParseBootReceivers(string text, string pkg)
+    {
+        var comps = new List<string>();
+        var disabled = new HashSet<string>(StringComparer.Ordinal);
+        bool inResolver = false, resolverDone = false;
+        string? currentAction = null;
+        bool inDisabled = false, disabledCaptured = false;
+
+        foreach (var raw in text.Split('\n'))
+        {
+            var line = raw.TrimEnd('\r');
+            var t = line.Trim();
+
+            if (!resolverDone)
+            {
+                if (!inResolver)
+                {
+                    if (t == "Receiver Resolver Table:") inResolver = true;
+                    continue;
+                }
+                var indent = line.Length - line.TrimStart().Length;
+                // resolver 表内子节缩进 ≥3（Schemes:/Non-Data Actions: 为 3，action 组为 6，条目为 8）；
+                // 缩进 ≤2 的非空行 = 下一顶级段（如 Permission [...]），终止扫描
+                if (t.Length > 0 && indent <= 2) { inResolver = false; resolverDone = true; continue; }
+
+                if (indent == 6 && t.EndsWith(":")) { currentAction = t[..^1]; continue; }
+                if (indent == 8 && currentAction is "android.intent.action.BOOT_COMPLETED" or "android.intent.action.LOCKED_BOOT_COMPLETED")
+                {
+                    var parts = t.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length >= 2 && parts[1].StartsWith(pkg + "/"))
+                        comps.Add(parts[1]);
+                }
+                continue;
+            }
+
+            // resolver 段之后：抓首个 disabledComponents 列表（主用户段；分身用户的后续列表不采用）
+            if (!disabledCaptured)
+            {
+                if (t == "disabledComponents:") { inDisabled = true; continue; }
+                if (t == "enabledComponents:") { inDisabled = false; disabledCaptured = true; continue; }
+                if (inDisabled && t.Length > 0 && line.Length - line.TrimStart().Length >= 6)
+                {
+                    disabled.Add(t);
+                    // 非列表行（缩进不足且非空）说明列表已结束
+                }
+                else if (t.Length > 0 && line.Length - line.TrimStart().Length < 6)
+                {
+                    inDisabled = false;
+                    disabledCaptured = true;
+                }
+            }
+        }
+        return (comps.Distinct(StringComparer.Ordinal).ToList(), disabled);
     }
 
     private static (string Text, string Tone) DescribeBgMode(string mode, string? modeAny)

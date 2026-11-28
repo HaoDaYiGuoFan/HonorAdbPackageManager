@@ -119,5 +119,94 @@ public partial class PackageDetailDialog : Window
         PermOpStatus.Foreground = (Brush)FindResource(safe ? "SafeBrush" : "DangerBrush");
     }
 
+    // ────────── 启动管理开关 ──────────
+
+    private bool _startupBusy;
+
+    /// <summary>启动管理开关点击：Android 标准层等效控制。
+    /// boot → pm disable-user/enable 开机广播接收器组件；appops_bg → appops set RUN_ANY_IN_BACKGROUND。</summary>
+    private async void StartupToggle_Click(object sender, RoutedEventArgs e)
+    {
+        if (_startupBusy) return;
+        if (sender is not CheckBox { DataContext: StartupControlItem it } cb) return;
+        if (!it.HasToggle) return;
+
+        var target = !it.ToggleOn;
+        var action = target ? "允许" : "禁止";
+
+        // 关闭（禁止）影响使用 → 二次确认
+        if (!target)
+        {
+            var hint = it.ToggleKind == "boot"
+                ? $"禁用开机广播接收器（{it.Components.Count} 个）后，应用将无法在开机时自动启动。\n\n组件可随时重新启用。确认禁止吗？"
+                : "禁止后台活动后，该应用将无法在后台运行（推送、下载、同步等可能失效）。\n\n确认禁止吗？";
+            var confirm = MsgBox.Show(hint, $"禁止{it.Title}", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+            if (confirm != MessageBoxResult.Yes)
+            {
+                cb.IsChecked = it.ToggleOn;             // 取消：回滚视觉状态
+                return;
+            }
+        }
+
+        _startupBusy = true;
+        try
+        {
+            string err = string.Empty;
+            if (it.ToggleKind == "appops_bg")
+            {
+                var r = await App.Adb.ShellAsync(_serial,
+                    $"appops set {_item.PackageName} RUN_ANY_IN_BACKGROUND {(target ? "allow" : "deny")}");
+                if (!IsPermOpSuccess(r)) err = r.Combined.Trim();
+            }
+            else // boot：逐个组件 disable-user / enable
+            {
+                var failed = new List<string>();
+                foreach (var comp in it.Components)
+                {
+                    var cmd = target
+                        ? $"pm enable {comp}"
+                        : $"pm disable-user --user 0 {comp}";
+                    var r = await App.Adb.ShellAsync(_serial, cmd);
+                    if (!IsPermOpSuccess(r)) failed.Add(comp);
+                }
+                if (failed.Count > 0) err = $"{failed.Count} 个组件操作失败：{string.Join("；", failed.Take(2))}";
+            }
+
+            if (err.Length == 0)
+            {
+                it.ToggleOn = target;
+                it.ValueText = it.ToggleKind == "appops_bg"
+                    ? (target ? "允许（默认）" : "禁止")
+                    : (target
+                        ? $"允许（{it.Components.Count} 个开机接收器已启用）"
+                        : $"已禁止（{it.Components.Count} 个接收器已禁用）");
+                it.Tone = target ? "warn" : "safe";
+                SetStartupStatus($"✓ 已{action}「{it.Title}」" + (it.ToggleKind == "boot" && !target ? "（接收器组件已禁用）" : ""), safe: true);
+                App.Log.Info($"[{_item.PackageName}] 启动管理 {it.Title} → {action}");
+            }
+            else
+            {
+                cb.IsChecked = it.ToggleOn;             // 失败：回滚视觉状态
+                SetStartupStatus($"✗ {action}失败：{err}", safe: false);
+                App.Log.Error($"[{_item.PackageName}] 启动管理{action}失败 {it.Title}：{err}");
+            }
+        }
+        catch (Exception ex)
+        {
+            cb.IsChecked = it.ToggleOn;
+            SetStartupStatus($"✗ {action}失败：{ex.Message}", safe: false);
+        }
+        finally
+        {
+            _startupBusy = false;
+        }
+    }
+
+    private void SetStartupStatus(string text, bool safe)
+    {
+        StartupOpStatus.Text = text;
+        StartupOpStatus.Foreground = (Brush)FindResource(safe ? "SafeBrush" : "DangerBrush");
+    }
+
     private void Close_Click(object sender, RoutedEventArgs e) => Close();
 }

@@ -204,24 +204,29 @@
                     </StackPanel>
                 </Border>
 
-                <!-- ── 启动控制 ── -->
+                <!-- ── 启动管理 ── -->
                 <Border Background="{StaticResource GlassCardBrush}" BorderBrush="{StaticResource GlassBorderBrush}"
                         BorderThickness="1" CornerRadius="10" Padding="14,10" Margin="0,0,0,10">
                     <StackPanel>
-                        <TextBlock Text="🚀 启动控制" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock Text="🚀 启动管理" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock Text="MagicOS 应用启动管理（自动/手动 + 三开关）经真机实测完全存于系统私有存储，ADB 不可读写；下方开关为 Android 标准层等效控制，作用面见各行说明"
+                                   FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,2,0,4" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="StartupOpStatus" Text="" FontSize="12" Margin="0,0,0,4" TextWrapping="Wrap"
+                                   Foreground="{StaticResource SafeBrush}"/>
                         <ItemsControl ItemsSource="{Binding StartupControls}" Margin="0,6,0,0">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,3">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Key"/>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Text="{Binding Title}" FontSize="12"
                                                        Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center"/>
                                             <TextBlock Grid.Column="1" Text="{Binding ValueText}" FontSize="12" FontWeight="SemiBold"
-                                                       Margin="12,0,0,0" TextWrapping="Wrap">
+                                                       Margin="12,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
@@ -239,6 +244,10 @@
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
+                                            <CheckBox Grid.Column="2" VerticalAlignment="Center" Margin="10,0,0,0"
+                                                      IsChecked="{Binding ToggleOn, Mode=OneWay}"
+                                                      IsEnabled="{Binding HasToggle}"
+                                                      Click="StartupToggle_Click" ToolTip="{Binding ToggleHint}"/>
                                         </Grid>
                                         <TextBlock Text="{Binding Note}" FontSize="10.5" Foreground="{StaticResource TextSecondary}"
                                                    Margin="0,1,0,0" TextWrapping="Wrap"/>
