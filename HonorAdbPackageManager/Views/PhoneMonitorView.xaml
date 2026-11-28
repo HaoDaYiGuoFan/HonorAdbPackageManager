@@ -1,0 +1,232 @@
+<UserControl x:Class="HonorAdbPackageManager.Views.PhoneMonitorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:HonorAdbPackageManager.ViewModels"
+             xmlns:conv="clr-namespace:HonorAdbPackageManager.Converters"
+             FontFamily="Microsoft YaHei UI" FontSize="12.5">
+
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <Style x:Key="StatCardLite" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource GlassCardBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource GlassBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+        <Style x:Key="StatLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+        </Style>
+        <Style x:Key="StatValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="2,0,8,0">
+
+            <!-- ══════════ 设备状态 ══════════ -->
+            <Border Style="{StaticResource CardBorder}" Padding="16,12" Margin="0,0,0,12">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="📶" FontSize="15" VerticalAlignment="Center"/>
+                        <TextBlock Text=" 设备状态" FontSize="14.5" FontWeight="Bold" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                        <TextBlock Text="{Binding StatusRefreshText}" FontSize="11" VerticalAlignment="Center"
+                                   Margin="12,0,0,0" Foreground="{StaticResource TextSecondary}"/>
+                        <Button Content="立即刷新" Command="{Binding RefreshStatusCommand}"
+                                Style="{StaticResource GhostButton}" Padding="10,3" FontSize="11.5" Margin="12,0,0,0"/>
+                    </StackPanel>
+
+                    <UniformGrid Columns="4">
+                        <Border Style="{StaticResource StatCardLite}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatLabel}" Text="电量"/>
+                                <TextBlock Style="{StaticResource StatValue}" Text="{Binding BatteryText}"/>
+                                <TextBlock Style="{StaticResource StatLabel}" Text="{Binding BatteryTempText}" Foreground="{StaticResource WarnBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatCardLite}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatLabel}" Text="SIM 信号"/>
+                                <TextBlock Style="{StaticResource StatValue}" Text="{Binding SignalText}" FontSize="11.5" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatCardLite}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatLabel}" Text="网络"/>
+                                <TextBlock Style="{StaticResource StatValue}" Text="{Binding NetworkText}" FontSize="11.5" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource StatCardLite}" Margin="0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource StatLabel}" Text="本月流量（移动 / Wi-Fi）"/>
+                                <TextBlock Style="{StaticResource StatValue}" Text="{Binding MonthlyTrafficText}" FontSize="11.5" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+                    <TextBlock Text="流量口径：系统网络统计（netstats 小时桶）自本月 1 日 0 点起的收发合计；受系统保留时长限制，开机/清零会重新累计"
+                               FontSize="10.5" Foreground="{StaticResource TextSecondary}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ══════════ 游戏性能统计 ══════════ -->
+            <Border Style="{StaticResource CardBorder}" Padding="16,12" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid Margin="0,0,0,6">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🎮" FontSize="15" VerticalAlignment="Center"/>
+                            <TextBlock Text=" 游戏性能统计" FontSize="14.5" FontWeight="Bold" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                            <TextBlock Text="{Binding TargetText}" FontSize="11.5" VerticalAlignment="Center"
+                                       Margin="14,0,0,0" Foreground="{StaticResource TextSecondary}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="开始统计" Command="{Binding StartGameCommand}"
+                                    Style="{StaticResource PrimaryButton}" Padding="14,5"
+                                    Visibility="{Binding CanStart, Converter={StaticResource BoolToVis}}"/>
+                            <Button Content="⏳ 监控中…" IsEnabled="False"
+                                    Style="{StaticResource GhostButton}" Padding="14,5"
+                                    Visibility="{Binding IsMonitoring, Converter={StaticResource BoolToVis}}"/>
+                            <Button Content="结束统计" Command="{Binding StopGameCommand}"
+                                    Style="{StaticResource PrimaryButton}" Padding="14,5"
+                                    Visibility="{Binding IsMonitoring, Converter={StaticResource BoolToVis}}"/>
+                            <Button Content="导出 Excel" Command="{Binding ExportCommand}"
+                                    Style="{StaticResource GhostButton}" Padding="12,5" Margin="8,0,0,0"
+                                    ToolTip="导出逐秒明细与统计摘要（xlsx）"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="{Binding MonitorButtonHint}" FontSize="11" Foreground="{StaticResource WarnBrush}"
+                               Margin="0,0,0,4" TextWrapping="Wrap"/>
+                    <TextBlock Text="用法：手机进入游戏后点击【开始统计】，每秒采样一次；【结束统计】后显示摘要并可导出 Excel"
+                               FontSize="10.5" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,8" TextWrapping="Wrap"/>
+
+                    <!-- 实时数字 -->
+                    <Border Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}"
+                            BorderThickness="1" CornerRadius="8" Padding="10,6" Margin="0,0,0,8"
+                            ToolTip="CPU 占用为游戏进程全部线程在多核上的合计：150% 表示 1.5 个核心满载，多核下可超过 100%（单核上限 100%）">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding LiveText}" FontSize="12.5" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding ElapsedText}" FontSize="11.5" Margin="16,0,0,0"
+                                       VerticalAlignment="Center" Foreground="{StaticResource TextSecondary}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 折线图 -->
+                    <Border Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}"
+                            BorderThickness="1" CornerRadius="8" Padding="8,6"
+                            Visibility="{Binding HasSamples, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,4">
+                                <Border Width="14" Height="3" Background="{StaticResource AccentBrush}" CornerRadius="1" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding FpsLegendText}" FontSize="11" Foreground="{StaticResource AccentBrush}" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                <Border Width="14" Height="3" Background="{StaticResource WarnBrush}" CornerRadius="1" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding BatLegendText}" FontSize="11" Foreground="{StaticResource WarnBrush}" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                                <Border Width="14" Height="3" Background="{StaticResource DangerBrush}" CornerRadius="1" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding CpuLegendText}" FontSize="11" Foreground="{StaticResource DangerBrush}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Viewbox Stretch="Uniform" MaxHeight="250">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="46"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="46"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 左 Y 轴：FPS 刻度（蓝） -->
+                                    <Grid Grid.Column="0" Grid.Row="0" Margin="0,0,4,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Text="{Binding FpsTicks[0]}" FontSize="10" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding FpsTicks[1]}" FontSize="10" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="2" Text="{Binding FpsTicks[2]}" FontSize="10" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="3" Text="{Binding FpsTicks[3]}" FontSize="10" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="3" Text="{Binding FpsTicks[4]}" FontSize="10" Foreground="{StaticResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                                    </Grid>
+
+                                    <!-- 绘图区：坐标轴线 + 横/纵网格线 + 三条曲线 -->
+                                    <Canvas Grid.Column="1" Grid.Row="0" Width="{x:Static vm:PhoneMonitorViewModel.ChartW}" Height="{x:Static vm:PhoneMonitorViewModel.ChartH}"
+                                            Background="#11FFFFFF">
+                                        <!-- 横向网格线（25/50/75%）与底边轴线 -->
+                                        <Line X1="0" Y1="57.5" X2="{x:Static vm:PhoneMonitorViewModel.ChartW}" Y2="57.5"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1" StrokeDashArray="4 3"/>
+                                        <Line X1="0" Y1="115" X2="{x:Static vm:PhoneMonitorViewModel.ChartW}" Y2="115"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1" StrokeDashArray="4 3"/>
+                                        <Line X1="0" Y1="172.5" X2="{x:Static vm:PhoneMonitorViewModel.ChartW}" Y2="172.5"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1" StrokeDashArray="4 3"/>
+                                        <Line X1="0" Y1="{x:Static vm:PhoneMonitorViewModel.ChartH}" X2="{x:Static vm:PhoneMonitorViewModel.ChartW}" Y2="{x:Static vm:PhoneMonitorViewModel.ChartH}"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1"/>
+                                        <!-- 纵向网格线（25/50/75%）与左右 Y 轴线 -->
+                                        <Line X1="190" Y1="0" X2="190" Y2="{x:Static vm:PhoneMonitorViewModel.ChartH}"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1" StrokeDashArray="4 3"/>
+                                        <Line X1="380" Y1="0" X2="380" Y2="{x:Static vm:PhoneMonitorViewModel.ChartH}"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1" StrokeDashArray="4 3"/>
+                                        <Line X1="570" Y1="0" X2="570" Y2="{x:Static vm:PhoneMonitorViewModel.ChartH}"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1" StrokeDashArray="4 3"/>
+                                        <Line X1="0" Y1="0" X2="0" Y2="{x:Static vm:PhoneMonitorViewModel.ChartH}"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1"/>
+                                        <Line X1="{x:Static vm:PhoneMonitorViewModel.ChartW}" Y1="0" X2="{x:Static vm:PhoneMonitorViewModel.ChartW}" Y2="{x:Static vm:PhoneMonitorViewModel.ChartH}"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1"/>
+                                        <!-- 顶部边线 -->
+                                        <Line X1="0" Y1="0" X2="{x:Static vm:PhoneMonitorViewModel.ChartW}" Y2="0"
+                                              Stroke="{StaticResource BorderBrush}" StrokeThickness="1"/>
+                                        <Polyline Points="{Binding CpuTempPoints}" Stroke="{StaticResource DangerBrush}" StrokeThickness="1.6" StrokeLineJoin="Round"/>
+                                        <Polyline Points="{Binding BatTempPoints}" Stroke="{StaticResource WarnBrush}" StrokeThickness="1.6" StrokeLineJoin="Round"/>
+                                        <Polyline Points="{Binding FpsPoints}" Stroke="{StaticResource AccentBrush}" StrokeThickness="2" StrokeLineJoin="Round"/>
+                                    </Canvas>
+
+                                    <!-- 右 Y 轴：温度刻度（橙红） -->
+                                    <Grid Grid.Column="2" Grid.Row="0" Margin="4,0,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Text="{Binding TempTicks[0]}" FontSize="10" Foreground="{StaticResource WarnBrush}" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding TempTicks[1]}" FontSize="10" Foreground="{StaticResource WarnBrush}" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="2" Text="{Binding TempTicks[2]}" FontSize="10" Foreground="{StaticResource WarnBrush}" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="3" Text="{Binding TempTicks[3]}" FontSize="10" Foreground="{StaticResource WarnBrush}" VerticalAlignment="Top"/>
+                                        <TextBlock Grid.Row="3" Text="{Binding TempTicks[4]}" FontSize="10" Foreground="{StaticResource WarnBrush}" VerticalAlignment="Bottom"/>
+                                    </Grid>
+
+                                    <!-- X 轴：时间刻度 -->
+                                    <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="46,3,46,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding XTicks[0]}" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Left"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding XTicks[1]}" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding XTicks[2]}" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding XTicks[3]}" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Center"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding XTicks[4]}" FontSize="10" Foreground="{StaticResource TextSecondary}" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="时间（秒）"
+                                               FontSize="10" Foreground="{StaticResource TextSecondary}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,14,0,0"/>
+                                </Grid>
+                            </Viewbox>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 统计摘要 -->
+                    <Border Background="{StaticResource GlassInputBrush}" BorderBrush="{StaticResource GlassBorderBrush}"
+                            BorderThickness="1" CornerRadius="8" Padding="12,8" Margin="0,8,0,0"
+                            Visibility="{Binding HasSummary, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="{Binding SummaryText}" FontSize="12" FontFamily="Consolas"
+                                   Foreground="{StaticResource TextPrimary}" TextWrapping="Wrap" LineHeight="19"/>
+                    </Border>
+
+                    <TextBlock Text="帧率来源：SurfaceFlinger 图层帧时间戳（逐帧真实渲染节拍）；帧间隔 > 20ms 计为卡顿帧；CPU 占用为多核合计（可超 100%，150% = 1.5 个核心满载）。个别纯 Vulkan/独立渲染引擎的游戏若取不到图层，FPS 显示 0 属正常现象，温度/CPU 占用不受影响"
+                               FontSize="10.5" Foreground="{StaticResource TextSecondary}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

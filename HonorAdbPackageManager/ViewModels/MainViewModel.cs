@@ -27,6 +27,9 @@ public class MainViewModel : ViewModelBase
 
     /// <summary>动画调节 + 功能选项卡</summary>
     public ViewModels.SystemTweaksViewModel Tweaks { get; }
+
+    /// <summary>手机性能监测选项卡</summary>
+    public ViewModels.PhoneMonitorViewModel Monitor { get; }
     public RelayCommand RestoreHintCommand { get; }
     public RelayCommand ClearSearchCommand { get; }
 
@@ -48,6 +51,7 @@ public class MainViewModel : ViewModelBase
         ClearSearchCommand = new(_ => SearchText = string.Empty);
         Toolbox = new ToolboxViewModel(this);
         Tweaks = new SystemTweaksViewModel(this);
+        Monitor = new PhoneMonitorViewModel(this);
     }
 
     // ================= 设备状态 =================

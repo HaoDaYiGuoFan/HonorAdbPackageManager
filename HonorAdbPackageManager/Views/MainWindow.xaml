@@ -561,7 +561,17 @@
                     </TabItem.Header>
                     <views:SystemTweaksView Tag="FuncOnly" DataContext="{Binding Tweaks}" Margin="0,10,0,0"/>
                 </TabItem>
-            
+
+                <TabItem IsEnabled="{Binding IsDeviceOnline}">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📱" FontSize="14" VerticalAlignment="Center"/>
+                            <TextBlock Text=" 手机性能监测" FontSize="13.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <views:PhoneMonitorView DataContext="{Binding Monitor}" Margin="0,10,0,0"/>
+                </TabItem>
+
             </TabControl>
         </Grid>
         <!-- ============ 底部详情面板 ============ -->
